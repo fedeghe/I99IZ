@@ -5,9 +5,9 @@ import Hash from './Hash.js'
 import Enumerable from './Enumerable.js'
 
 export default {
-    Enumerable,
-    Prototype,
     Ajax,
     Class,
-    Hash
+    Enumerable,
+    Hash,
+    Prototype,
 }
