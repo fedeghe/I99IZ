@@ -572,6 +572,7 @@ var PeriodicalExecuter = Class.create({
         }
     }
 });
+
 Object.extend(String, {
     interpret: function(value) {
         return value == null ? '' : String(value);
