@@ -1,3 +1,11 @@
+/**
+ * whenever we suspect a polluted function from another prototype is used
+ * just count that this mathod has been translated 
+ * to 
+ * NS.p[constructor][function](ctx, ...rest)
+ */
+
+
 var Enumerable = (function() {
     function each(iterator, context) {
         try {
@@ -67,6 +75,13 @@ var Enumerable = (function() {
         return results;
     }
 
+
+    /**
+     * 
+     * THIS IS NOT EVEN PUBLISHED
+     * 
+     * I comment it out
+     *
     function grep(filter, iterator, context) {
         iterator = iterator || Prototype.K;
         var results = [];
@@ -80,6 +95,7 @@ var Enumerable = (function() {
         }, this);
         return results;
     }
+    */
 
     function include(object) {
         if (Object.isFunction(this.indexOf) && this.indexOf(object) != -1)
@@ -203,15 +219,6 @@ var Enumerable = (function() {
     function inspect() {
         return '#<Enumerable:' + this.toArray().inspect() + '>';
     }
-
-
-
-
-
-
-
-
-
     return {
         each: each,
         eachSlice: eachSlice,
