@@ -16,4 +16,14 @@ describe('$', () => {
         const r2 = screen.queryByTestId('visible')
         expect(r1.innerHTML).toBe(r2.innerHTML)
     })
+    it('should not find an element', () => {
+        document.body.innerHTML = `
+            <span data-testid="not-empty">
+                <span data-testid="empty"></span>
+            </span>
+            <div id="visible" data-testid="visible">Visible Example</div>
+        `
+        const r1 = $('foofoo')
+        expect(r1).toBeNull()
+    })
 })
