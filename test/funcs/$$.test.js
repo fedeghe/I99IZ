@@ -42,6 +42,17 @@ describe('$$', () => {
         expect(r1[3].tagName).toBe('STRONG')
         expect(r1.length).toBe(4)
     })
+    it('returns an array', () => {
+        document.body.innerHTML = `
+            <span data-testid="not-empty">
+                <span data-testid="empty"></span>
+            </span>
+            <div id="visible" data-testid="visible">Visible Example</div>
+            <strong class="foo">foo</strong>
+        `
+        const r = $$('#visible', 'strong.foo', 'span')
+        expect(r instanceof Array).toBeTruthy()
+    })
     it('should return an empty array', () => {
         document.body.innerHTML = `
             <span data-testid="not-empty">
