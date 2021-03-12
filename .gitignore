@@ -1,3 +1,5 @@
 node_modules
 api.prototypejs.org
 prototypejs.org
+coverage
+.nyc_output
