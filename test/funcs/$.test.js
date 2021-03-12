@@ -26,4 +26,15 @@ describe('$', () => {
         const r1 = $('foofoo')
         expect(r1).toBeNull()
     })
+    it('should return the element passed', () => {
+        document.body.innerHTML = `
+            <span data-testid="not-empty">
+                <span data-testid="empty"></span>
+            </span>
+            <div id="visible" data-testid="visible">Visible Example</div>
+        `
+        const e = document.getElementById('visible')
+        const r1 = $(e)
+        expect(e).toBe(r1)
+    })
 })
