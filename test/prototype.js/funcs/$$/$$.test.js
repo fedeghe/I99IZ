@@ -1,12 +1,15 @@
+import { replace } from './../../utils'
+
 const fs = require('fs'),
     path = require('path'),
-    html = fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf8');
+    config = require('./../../config.json'),
+    html = fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf8').toString();
 
 jest.dontMock('fs');
 
 describe('$$', function () {
     beforeEach(() => {
-        document.documentElement.innerHTML = html.toString();
+        document.documentElement.innerHTML = replace(html, config);
     });
 
     afterEach(jest.resetModules);
