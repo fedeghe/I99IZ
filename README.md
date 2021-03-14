@@ -1,12 +1,14 @@
 ## I99IZ
+
+a migration plan for a huge appication that is using **_prototype.js_** (1.7.X)  
+
+
+Final goal: free the application from prototype.js
+
 ---
-Migration plan for a huge appication that is using **_prototype.js_** (1.7.X)  
 
-**Goal**: free the application from prototype.js
+Should be clear **why** a library like prototype.js is a problem nowadays (2021) 
 
----
-
-First things first, should be clear **why** a library like prototype.js is a problem nowadays (2021) 
 
 1) global scope is filled with a lot of stuff, ... some not even [documented](http://api.prototypejs.org/)  
 
@@ -26,9 +28,12 @@ Other considerations in the implementation must be highlighted on the higher lev
 
 6) ... things we can't be aware of till our hands gets dirty 
 
+---
 
-## So the first question to answer is:  
-Do we want to:  
-1) maximize the performances. [Best option](readme/maximize_performances.md) 
-1) minimize the effort and introduce other dependencies (e.g. jQuery, lodash) lowering preformances. [I see that as a the last choice](readme/move_depencencies.md)
+## First fork  
 
+0) [maximize the performances.](readme/maximize_performances.md)  
+1) 
+2) [minimize the effort and introduce other dependencies, lowering performances.](readme/move_depencencies.md)
+
+since **both cant be achieved** we have to either opt for one of the two either have hybrid solution in the middle.
