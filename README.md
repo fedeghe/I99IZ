@@ -1,6 +1,6 @@
-## I99IZ
+# I99IZ
 
-a migration plan for a huge appication that is using **_prototype.js_** (1.7.X)  
+a migration plan for a huge application which uses **_prototype.js_** (1.7.X)  
 
 
 Final goal: free the application from prototype.js
@@ -26,14 +26,16 @@ Other considerations in the implementation must be highlighted on the higher lev
 
 5) [Sizzle](https://github.com/jquery/sizzle) in 2021 is [not needed](https://caniuse.com/?search=querySelector) (still some exceptions may apply).
 
-6) ... things we can't be aware of till our hands gets dirty 
+6) _prototype.js_ internally has a lot of code that could once make sense but today do not any longer; as compatibility reference I'll refer here to [caniuse](https://caniuse.com/), still I need to decide what will be that solution compatible with.
+
+7) ... things one can't be aware of till our hands gets dirty 
 
 ---
 
 ## First fork  
 
 0) [maximize the performances.](readme/maximize_performances.md)  
-1) 
+1) [something in the middle](readme/hybrid.md)
 2) [minimize the effort and introduce other dependencies, lowering performances.](readme/move_depencencies.md)
 
 since **both cant be achieved** we have to either opt for one of the two either have hybrid solution in the middle.
