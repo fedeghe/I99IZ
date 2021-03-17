@@ -1,3 +1,4 @@
+import regeneratorRuntime from "regenerator-runtime";
 import $A from '../../../src/funcs/$A'
 
 const fs = require('fs'),
@@ -21,19 +22,22 @@ describe('$A', function () {
         _(1,2,3,4,5)
     })
 
-    // it('HTMLcollection to array', async () => {
-    //     window.onload = () => {
-    //         var spans = document.getElementsByTagName('span'),
-    //             spansArr = $A(spans);
-    //         expect(spansArr.length).toBe(2)
-    //     }
-    // });
+    it('HTMLcollection to array', async () => {
+        window.onload = () => {
+            var spans = document.getElementsByTagName('span'),
+                spansArr = $A(spans);
+            console.log(spans)
+            expect(spansArr.length).toBe(2)
+            // expect(true).toBeTruthy()
+        }
+    });
 
-    // it('NodeList to array', () => {
-    //     window.onload = () => {
-    //         var parent = document.getElementById('parent'),
-    //             NodeList = $A(parent.children);
-    //         expect(NodeList.length).toBe(3)   
-    //     }
-    // });
+    it('NodeList to array', () => {
+        window.onload = () => {
+            var parent = document.getElementById('parent'),
+                NodeList = $A(parent.children);
+            console.log(NodeList)
+            expect(NodeList.length).toBe(5)   
+        }
+    });
 });
