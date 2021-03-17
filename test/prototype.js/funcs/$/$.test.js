@@ -10,7 +10,7 @@ jest.dontMock('fs');
 
 describe('$', function () {
     beforeEach(() => {
-        document.documentElement.innerHTML = replace(html, config);
+        document.body.innerHTML = replace(html, config);
     });
 
     afterEach(jest.resetModules);
