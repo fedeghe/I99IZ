@@ -58,14 +58,8 @@ var Class = (function() {
             if (ancestor && isFunction(value) &&
                 
                 _Object.argumentNames(value)[0] == "$super") {
-                // value.argumentNames()[0] == "$super") {
 
                 var method = value;
-                // value = (function(m) {
-                //     return function() {
-                //         return ancestor[m].apply(this, arguments);
-                //     };
-                // })(property).wrap(method);
                 value = _Function.wrap(
                     (function(m) {
                         return function() {
@@ -74,10 +68,6 @@ var Class = (function() {
                     })(property),
                     method
                 );
-
-
-
-
                 value.valueOf = (function(method) {
                     return function() {
                         return method.valueOf.call(method);
