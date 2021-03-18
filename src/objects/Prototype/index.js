@@ -1,7 +1,7 @@
 import Browser from './Browser'
 import BrowserFeatures from './BrowserFeatures'
 import Selector from './Selector'
-import { mixin } from './../../core/shared'
+import { extend } from './../../core/shared'
 import pkg from './../../../package.json'
 
 
@@ -14,8 +14,8 @@ const Prototype =  {
     emptyFunction,
     K,
 };
-mixin(Prototype, Browser)
-mixin(Prototype, BrowserFeatures)
-mixin(Prototype, Selector)
+extend(Prototype, Browser)
+extend(Prototype, BrowserFeatures)
+extend(Prototype, Selector)
 
 export default Prototype
