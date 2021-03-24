@@ -16,9 +16,9 @@
  * toQueryString
  * values
  */
-import Hash from './../objects/Hash'
+// import Hash from './../objects/Hash'
 import extend from './../core/shared'
-import {IS_DONTENUM_BUGGY, DONT_ENUMS} from './../core/constants'
+import { IS_DONTENUM_BUGGY, DONT_ENUMS } from './../core/constants'
 import {
     _hasOwnProperty,
     isArray,
@@ -32,11 +32,12 @@ import {
 } from './../core/checkers'
 import _string from './String'
 
-const _Object = (function () {
+const _Object = (function() {
 
     function clone(object) {
         return extend({}, object);
     }
+
     function keys(object) {
         if (!isObject(object)) {
             throw new TypeError();
@@ -51,26 +52,27 @@ const _Object = (function () {
         return results;
     }
 
-    function isHash(object) {
-        return object instanceof Hash;
-    }
-    function toQueryString(object) {
-        return Hash(object).toQueryString();
-    }
-    
+    // function isHash(object) {
+    //     return object instanceof Hash;
+    // }
+    // function toQueryString(object) {
+    //     return Hash(object).toQueryString();
+    // }
+
     function stringify(object) {
         return JSON.stringify(object);
     }
+
     function toHTML(object) {
         return object && object.toHTML ? object.toHTML() : String.interpret(object);
     }
 
-    return  {
+    return {
         clone,
         extend,
         inspect: o => JSON.stringify(o, null, 2),
         isArray,
-        isHash,
+        // isHash,
         isString,
         isDate,
         isUndefined,
@@ -78,7 +80,7 @@ const _Object = (function () {
         isFunction,
         isNumber,
         keys,
-        toQueryString,
+        // toQueryString,
         values,
         toJSON: stringify,
         toHTML,

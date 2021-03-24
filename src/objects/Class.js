@@ -1,5 +1,5 @@
 import { IS_DONTENUM_BUGGY } from './../core/constants'
-import {isFunction} from './../core/checkers'
+import { isFunction } from './../core/checkers'
 import $A from './../funcs/$A'
 import { extend } from './../core/shared'
 import Prototype, { emptyFunction } from './../objects/Prototype'
@@ -8,7 +8,6 @@ import _Object from './../protos/Object'
 
 // TODO: replacements apart it it might be a good idea to rewrite it
 var Class = (function() {
-    
     function subclass() {};
 
     function create() {
@@ -56,7 +55,7 @@ var Class = (function() {
             var property = properties[i],
                 value = source[property];
             if (ancestor && isFunction(value) &&
-                
+
                 _Object.argumentNames(value)[0] == "$super") {
 
                 var method = value;
