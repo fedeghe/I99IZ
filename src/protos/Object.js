@@ -32,11 +32,13 @@ import {
 } from './../core/checkers'
 import _string from './String'
 
-const _Object = (function() {
+export const clone = function(object) {
+    return extend({}, object);
+}
 
-    function clone(object) {
-        return extend({}, object);
-    }
+
+
+export default (function() {
 
     function keys(object) {
         if (!isObject(object)) {
@@ -86,5 +88,3 @@ const _Object = (function() {
         toHTML,
     }
 })();
-
-export default _Object

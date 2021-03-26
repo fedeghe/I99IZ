@@ -1,4 +1,4 @@
-import _Object from './../protos/Object'
+import { _Object } from './../protos/Object'
 import _Class from './Class'
 import _Enumerable from './Enumerable'
 
