@@ -16,45 +16,35 @@
  * toQueryString
  * values
  */
-import Hash from './../objects/Hash'
-import exp from './../core/shared'
-import CONSTANTS from './../core/constants'
-import CHECKERS from './../core/checkers'
+// import Hash from './../objects/Hash'
+import extend from './../core/shared'
+import { IS_DONTENUM_BUGGY, DONT_ENUMS } from './../core/constants'
+import {
+    _hasOwnProperty,
+    isArray,
+    isDate,
+    isElement,
+    isFunction,
+    isObject,
+    isNumber,
+    isString,
+    isUndefined,
+} from './../core/checkers'
 import _string from './String'
 
-const { IS_DONTENUM_BUGGY, DONT_ENUMS, } = CONSTANTS
-const  {
-    _hasOwnProperty,
-    isObject,
-    isElement,
-    isArray
-} = CHECKERS
+export const clone = function(object) {
+    return extend({}, object);
+}
 
-const _Object = (function () {
 
-    function clone(object) {
-        return exp({}, object);
-    }
 
-    // TODO: original implementation... does IS_DONTENUM_BUGGY
-    // stil make sense?
+export default (function() {
+
     function keys(object) {
         if (!isObject(object)) {
             throw new TypeError();
         }
-        var results = [],
-            p;
-        for (p in object) {
-            if (_hasOwnProperty.call(object, p))
-                results.push(p);
-        }
-        if (IS_DONTENUM_BUGGY) {
-            for (p = 0; p = DONT_ENUMS[i]; i++) {
-                if (_hasOwnProperty.call(object, p))
-                    results.push(p);
-            }
-        }
-        return results;
+        return Object.keys(object)
     }
 
     function values(object) {
@@ -64,25 +54,37 @@ const _Object = (function () {
         return results;
     }
 
-    function isHash(object) {
-        return object instanceof Hash;
-    }
-    
+    // function isHash(object) {
+    //     return object instanceof Hash;
+    // }
+    // function toQueryString(object) {
+    //     return Hash(object).toQueryString();
+    // }
+
     function stringify(object) {
         return JSON.stringify(object);
     }
 
-    return  {
+    function toHTML(object) {
+        return object && object.toHTML ? object.toHTML() : String.interpret(object);
+    }
+
+    return {
         clone,
+        extend,
         inspect: o => JSON.stringify(o, null, 2),
         isArray,
+        // isHash,
+        isString,
+        isDate,
+        isUndefined,
         isElement,
-        isHash,
+        isFunction,
+        isNumber,
         keys,
-        toHTML: _string.interpret,
-        toJSON: stringify,
+        // toQueryString,
         values,
+        toJSON: stringify,
+        toHTML,
     }
-})()
-
-export default _Object
+})();

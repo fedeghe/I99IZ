@@ -1,13 +1,13 @@
 import { IS_DONTENUM_BUGGY } from './../core/constants'
-import {isFunction} from './../core/checkers'
+import { isFunction } from './../core/checkers'
 import $A from './../funcs/$A'
-import { mixin } from './../core/shared'
+import { extend } from './../core/shared'
 import Prototype, { emptyFunction } from './../objects/Prototype'
 import _Function from './../protos/Function'
+import _Object from './../protos/Object'
 
 // TODO: replacements apart it it might be a good idea to rewrite it
 var Class = (function() {
-    
     function subclass() {};
 
     function create() {
@@ -20,7 +20,7 @@ var Class = (function() {
             this.initialize.apply(this, arguments);
         }
 
-        mixin(klass, Class.Methods);
+        extend(klass, Class.Methods);
         klass.superclass = parent;
         klass.subclasses = [];
 
@@ -55,14 +55,18 @@ var Class = (function() {
             var property = properties[i],
                 value = source[property];
             if (ancestor && isFunction(value) &&
-                value.argumentNames()[0] == "$super") {
-                var method = value;
-                value = (function(m) {
-                    return function() {
-                        return ancestor[m].apply(this, arguments);
-                    };
-                })(property).wrap(method);
 
+                _Object.argumentNames(value)[0] == "$super") {
+
+                var method = value;
+                value = _Function.wrap(
+                    (function(m) {
+                        return function() {
+                            return ancestor[m].apply(this, arguments);
+                        };
+                    })(property),
+                    method
+                );
                 value.valueOf = (function(method) {
                     return function() {
                         return method.valueOf.call(method);

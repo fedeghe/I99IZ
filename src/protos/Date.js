@@ -1,19 +1,18 @@
+import { toPaddedString } from './Number'
 
-const _Date = (function () {
-    function toISOString(d) {
-        return d.getUTCFullYear() + '-' +
-            (d.getUTCMonth() + 1).toPaddedString(2) + '-' +
-            d.getUTCDate().toPaddedString(2) + 'T' +
-            d.getUTCHours().toPaddedString(2) + ':' +
-            d.getUTCMinutes().toPaddedString(2) + ':' +
-            d.getUTCSeconds().toPaddedString(2) + 'Z';
-    }
-    function toJSON(d) {
-        return d.toISOString();
-    }
-    return  {
+
+const _Date = (function() {
+    const toISOString = d => ([
+        d.getUTCFullYear(), '-',
+        toPaddedString(d.getUTCMonth() + 1, 2), '-',
+        toPaddedString(d.getUTCDate(), 2), 'T',
+        toPaddedString(d.getUTCHours(), 2), ':',
+        toPaddedString(d.getUTCMinutes(), 2), ':',
+        toPaddedString(d.getUTCSeconds(), 2), 'Z'
+    ].join(''))
+    return {
         toISOString,
-        toJSON
+        toJSON: toISOString
     }
 })();
 
