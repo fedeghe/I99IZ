@@ -1,5 +1,5 @@
 import $A from '../../../src/funcs/$A'
-import {isArray} from '../../../src/core/checkers'
+import { isArray } from '../../../src/core/checkers'
 
 const fs = require('fs'),
     path = require('path'),
@@ -7,7 +7,7 @@ const fs = require('fs'),
 
 jest.dontMock('fs');
 
-describe('$A', function () {
+describe('$A', function() {
     beforeEach(() => {
         document.body.innerHTML = html;
     });
@@ -19,10 +19,10 @@ describe('$A', function () {
             var args = $A(arguments)
             expect(args.length).toBe(5)
         }
-        fn(1,2,3,4,5)
+        fn(1, 2, 3, 4, 5)
     })
 
-    it('HTMLcollection to array',  () => {
+    it('HTMLcollection to array', () => {
         var spans = document.getElementsByTagName('span'),
             spansArr = $A(spans);
         expect(spansArr.length).toBe(4);
@@ -31,7 +31,7 @@ describe('$A', function () {
     it('NodeList to array', () => {
         var parent = document.getElementById('parent'),
             NodeList = $A(parent.children);
-        
+
         expect(NodeList.length).toBe(3);
     });
     it('falsy to empty array', () => {
@@ -40,10 +40,10 @@ describe('$A', function () {
         expect(isArray(a)).toBeTruthy()
     });
     it('Array to array', () => {
-        var a = $A([1,2,3,4,5]);
+        var a = $A([1, 2, 3, 4, 5]);
         expect(a.length).toBe(5);
         expect(isArray(a)).toBeTruthy()
     });
 
-    it.skip('Iterable to array', () => {})
+    // it.skip('Iterable to array', () => {})
 });

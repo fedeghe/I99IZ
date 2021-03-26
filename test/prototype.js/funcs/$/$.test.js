@@ -8,15 +8,16 @@ const fs = require('fs'),
 jest.dontMock('fs');
 
 
-describe('$', function () {
+describe('$', function() {
     beforeEach(() => {
-        document.body.innerHTML = replace(html, config);
+        document.documentElement.innerHTML = replace(html, config);
     });
 
     afterEach(jest.resetModules);
 
     it('finds a node', () => {
         window.onload = () => {
+            console.log(document.body.innerHTML)
             expect($('el')).toBeInTheDocument()
         }
     });

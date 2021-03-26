@@ -7,15 +7,12 @@ const fs = require('fs'),
 
 jest.dontMock('fs');
 
-describe('$$', function () {
+describe('$$', function() {
     beforeEach(() => {
         document.body.innerHTML = replace(html, config);
     });
 
     afterEach(jest.resetModules);
-
-
-
     it('basic case', () => {
         window.onload = () => {
             const r1 = $$('span')
@@ -56,4 +53,3 @@ describe('$$', function () {
     })
 
 });
-
