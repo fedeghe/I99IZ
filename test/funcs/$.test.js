@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 // just for the coverage
 import './../../src/index.js'
 

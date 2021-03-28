@@ -1,4 +1,8 @@
-// just for the coverage
+/**
+ * @jest-environment jsdom
+ */
+
+
 import './../../src/index.js'
 
 import $$ from './../../src/funcs/$$'
