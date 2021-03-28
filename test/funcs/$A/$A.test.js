@@ -5,15 +5,20 @@
 import $A from '../../../src/funcs/$A'
 import { isArray } from '../../../src/core/checkers'
 
-const fs = require('fs'),
-    path = require('path'),
-    html = fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf8').toString();
-
-jest.dontMock('fs');
+// jest.dontMock('fs');
 
 describe('$A', function() {
     beforeEach(() => {
-        document.body.innerHTML = html;
+        document.body.innerHTML = `
+        <div>
+            <span id="parent">
+                <span data-testid="empty"></span>
+                <span data-testid="empty"></span>
+                <span data-testid="empty"></span>
+            </span>
+            <div id="visible" data-testid="visible">Visible Example</div>
+            <strong class="foo">foo</strong>
+        </div>`
     });
 
     afterEach(jest.resetModules);
@@ -49,5 +54,6 @@ describe('$A', function() {
         expect(isArray(a)).toBeTruthy()
     });
 
+    // needs Hash
     // it.skip('Iterable to array', () => {})
 });
