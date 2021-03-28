@@ -1,5 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
 import _Number from './../../src/protos/Number'
-
 
 describe('prototype - Number', function() {
     it('abs', () => {
