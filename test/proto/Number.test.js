@@ -1,5 +1,6 @@
 import _Number from './../../src/protos/Number'
 
+
 describe('prototype - Number', function() {
     it('abs', () => {
         expect(_Number.abs(-2)).toBe(2)

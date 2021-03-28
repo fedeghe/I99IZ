@@ -1,29 +1,20 @@
-import { replace } from './../../utils'
+import 'expect-puppeteer'
 
-const fs = require('fs'),
-    path = require('path'),
-    config = require('./../../config.json'),
-    html = fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf8').toString();
+let page;
 
-jest.dontMock('fs');
-
-
-describe('$', function() {
-    beforeEach(() => {
-        document.documentElement.innerHTML = replace(html, config);
+describe('$', () => {
+    beforeAll(async() => {
+        page = await browser.newPage();
+        await page.goto('http://localhost:8080/', {
+            waitUntil: 'networkidle0'
+        });
+    });
+    afterAll(async() => {
+        await page.close();
     });
 
-    afterEach(jest.resetModules);
-
-    it('finds a node', () => {
-        window.onload = () => {
-            console.log(document.body.innerHTML)
-            expect($('el')).toBeInTheDocument()
-        }
-    });
-    it('do not finds a node', () => {
-        window.onload = () => {
-            expect($('foofoo')).toBeNull()
-        }
-    });
-});
+    it('finds an element as expected', async() => {
+        const elContent = await page.evaluate(el => window.$(el).innerText, 'el')
+        expect(elContent).toBe('Foo')
+    })
+})
