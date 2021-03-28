@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import $A from '../../../src/funcs/$A'
 import { isArray } from '../../../src/core/checkers'
 
