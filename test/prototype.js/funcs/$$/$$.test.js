@@ -1,59 +1,74 @@
-import { replace } from './../../utils'
+import 'expect-puppeteer'
 
-const fs = require('fs'),
-    path = require('path'),
-    config = require('./../../config.json'),
-    html = fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf8').toString();
+let page;
 
-jest.dontMock('fs');
-
-describe('$$', function () {
-    beforeEach(() => {
-        document.body.innerHTML = replace(html, config);
+describe('$$', function() {
+    beforeAll(async() => {
+        page = await browser.newPage();
+        await page.goto('http://localhost:8080/', {
+            waitUntil: 'networkidle0'
+        });
+    });
+    afterAll(async() => {
+        await page.close();
     });
 
-    afterEach(jest.resetModules);
+    it('basic case', async() => {
+        const elCount = await page.evaluate(() => window.$$('span').length)
+        expect(elCount).toBe(4)
+    })
 
+    it('more selectors case', async() => {
 
+        const r = await page.evaluate(() => {
+            const res = window.$$('strong.foo', 'span')
 
-    it('basic case', () => {
-        window.onload = () => {
-            const r1 = $$('span')
-            expect(r1.length).toBe(2)
-        }
+            return {
+                count: res.length,
+                el0: res[0].tagName,
+                el1: res[1].tagName,
+                el2: res[2].tagName,
+            }
+        })
+        expect(r.count).toBe(6)
+        expect(r.el0).toBe('SPAN')
+        expect(r.el1).toBe('SPAN')
+        expect(r.el2).toBe('STRONG')
+
     })
-    it('more selectors case', () => {
-        window.onload = () => {
-            const r1 = $$('span', 'strong.foo')
-            expect(r1[0].tagName).toBe('SPAN')
-            expect(r1[1].tagName).toBe('SPAN')
-            expect(r1[2].tagName).toBe('STRONG')
-            expect(r1.length).toBe(3)
-        }
+    it('more selectors ordered per document presence', async() => {
+        const r = await page.evaluate(() => {
+            const res = window.$$('#visible', 'strong.foo', 'span')
+            return {
+                count: res.length,
+                el0: res[5].tagName,
+            }
+        })
+
+        expect(r.count).toBe(7)
+        expect(r.el0).toBe('DIV')
+
     })
-    it('more selectors ordered per document presence', () => {
-        window.onload = () => {
-            const r1 = $$('#visible', 'strong.foo', 'span')
-            expect(r1[0].tagName).toBe('SPAN')
-            expect(r1[1].tagName).toBe('SPAN')
-            expect(r1[2].tagName).toBe('DIV')
-            expect(r1[3].tagName).toBe('STRONG')
-            expect(r1.length).toBe(4)
-        }
+
+    it('returns an array', async() => {
+        const r = await page.evaluate(() => {
+            const res = window.$$('#visible', 'strong.foo', 'span')
+            return res instanceof Array
+        })
+        expect(r).toBeTruthy()
     })
-    it('returns an array', () => {
-        window.onload = () => {
-            const r = $$('#visible', 'strong.foo', 'span')
-            expect(r instanceof Array).toBeTruthy()
-        }
-    })
-    it('should return an empty array', () => {
-        window.onload = () => {
-            const r1 = $$('#visiblestrong.foo')
-            expect(r1 instanceof Array).toBeTruthy()
-            expect(r1.length).toBe(0)
-        }
+
+    it('should return an empty array', async() => {
+
+        const r = await page.evaluate(() => {
+            const res = window.$$('#visiblestrong.foo')
+            return {
+                isArray: res instanceof Array,
+                count: res.length
+            }
+        })
+        expect(r.isArray).toBeTruthy()
+        expect(r.count).toBe(0)
     })
 
 });
-
