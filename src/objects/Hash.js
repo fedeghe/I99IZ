@@ -1,4 +1,4 @@
-import { _Object } from './../protos/Object'
+import _Object from './../protos/Object'
 import _Class from './Class'
 import _Enumerable from './Enumerable'
 
@@ -8,7 +8,7 @@ const Hash = _Class.create(_Enumerable, (function() {
     function initialize(object) {
         this._object = _Object.isHash(object) ?
             toObject(object) :
-            Object.clone(object);
+            _Object.clone(object);
     }
     return {
         initialize,
@@ -17,4 +17,4 @@ const Hash = _Class.create(_Enumerable, (function() {
     };
 })());
 
-export default Hash;
+export default Hash

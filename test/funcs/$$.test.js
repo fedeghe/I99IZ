@@ -2,9 +2,6 @@
  * @jest-environment jsdom
  */
 
-
-import './../../src/index.js'
-
 import $$ from './../../src/funcs/$$'
 describe('$$', () => {
     it.only('basic case', () => {

@@ -1,21 +1,3 @@
-/**
- * clone
- * extend
- * inspect
- * isArray
- * isDate
- * isElement
- * isFunction
- * isHash
- * isNumber
- * isString
- * isUndefined
- * keys
- * toHTML
- * toJSON
- * toQueryString
- * values
- */
 // import Hash from './../objects/Hash'
 import { extend } from './../core/shared'
 import { IS_DONTENUM_BUGGY, DONT_ENUMS } from './../core/constants'
@@ -51,12 +33,9 @@ export const values = object => {
     return results;
 }
 
-// function isHash(object) {
-//     return object instanceof Hash;
-// }
-// function toQueryString(object) {
-//     return Hash(object).toQueryString();
-// }
+export const isHash = object => object instanceof Hash
+
+export const toQueryString = object => Hash(object).toQueryString()
 
 export const stringify = object => {
     return JSON.stringify(object);
@@ -66,9 +45,6 @@ export const toHTML = object => {
     return object && object.toHTML ? object.toHTML() : String.interpret(object);
 }
 
-
-
-
 export default {
     clone,
     extend,
@@ -77,13 +53,13 @@ export default {
     isDate,
     isElement,
     isFunction,
-    // isHash,
+    isHash,
     isNumber,
     isString,
     isUndefined,
     keys,
     toHTML,
     toJSON: stringify,
-    // toQueryString,
+    toQueryString,
     values,
 }
