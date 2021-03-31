@@ -2,8 +2,7 @@
  * @jest-environment jsdom
  */
 import { screen } from '@testing-library/dom'
-import _Object from './../../src/protos/Object'
-import _Class from './../../src/objects/Class'
+import { _Object, _Class, _Hash } from './../../src/Triad'
 import _String from './../../src/protos/String'
 
 describe('prototype - Object', function() {
@@ -91,7 +90,10 @@ describe('prototype - Object', function() {
         bench.negative.forEach(b => expect(_Object.isFunction(b)).toBe(false))
     });
 
-    it.skip('isHash', () => {});
+    it('isHash', () => {
+        const h = new _Hash([1, 2, 3, 4]);
+        expect(_Object.isHash(h)).toBe(true)
+    });
 
     it('isNumber', () => {
         const bench = {
@@ -145,7 +147,7 @@ describe('prototype - Object', function() {
             str = JSON.stringify(aaa);
         expect(_Object.toJSON(aaa)).toBe(str)
     });
-    it.skip('toHTML', () => {
+    it('toHTML', () => {
         var Bookmark = _Class.create({
             initialize: function(name, url) {
                 this.name = name;
@@ -158,9 +160,11 @@ describe('prototype - Object', function() {
         var api = new Bookmark('Prototype API', 'http://prototypejs.org/api');
         expect(_Object.toHTML(api)).toBe('<a href="http://prototypejs.org/api">Prototype API</a>')
     });
-    it.skip('toQueryString', () => {
-        // needs Hash
+    it('toQueryString', () => {
+        const params = { a: "one", b: 2, c: "asd:asda" };
+        expect(_Object.toQueryString(params)).toBe('a=one&b=2&c=asd%3Aasda')
     });
+
     it('values', () => {
         const aaa = { a: 1, b: 2, c: 3, d: { e: 4 } },
             k = _Object.values(aaa)

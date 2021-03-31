@@ -2,10 +2,6 @@
  * @jest-environment jsdom
  */
 
-// just for the coverage
-import './../../src/index.js'
-
-
 import { screen } from '@testing-library/dom'
 import $ from './../../src/funcs/$'
 describe('$', () => {

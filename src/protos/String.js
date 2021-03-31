@@ -1,7 +1,7 @@
-import { isNumber, isFunction } from './../core/checkers'
+import { isNumber, isFunction, isString } from './../core/checkers'
 import Prototype from './../objects/Prototype'
 import { toPaddedString } from './Number'
-import _Template from './../objects/Template'
+import { _Template } from './../Triad'
 
 
 const blank = str => /^\s*$/.test(str)
@@ -81,7 +81,7 @@ const gsub = (str, pattern, replacement) => {
         match;
     replacement = prepareReplacement(replacement);
 
-    if (Object.isString(pattern))
+    if (isString(pattern))
         pattern = RegExp.escape(pattern);
 
     if (!(pattern.length || isNonEmptyRegExp(pattern))) {

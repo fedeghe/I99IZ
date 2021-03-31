@@ -6,6 +6,8 @@
  */
 
 
+var $break = {};
+
 var Enumerable = (function() {
     function each(iterator, context) {
         try {
