@@ -3,7 +3,7 @@ import Ajax from './Ajax.js'
 import Enumerable from './Enumerable.js'
 // import Hash from './Hash.js'
 import Prototype from './Prototype'
-import Template from './Template'
+// import Template from './Template'
 
 export default {
     Ajax,
@@ -11,5 +11,5 @@ export default {
     Enumerable,
     // Hash,
     Prototype,
-    Template
+    // Template
 }

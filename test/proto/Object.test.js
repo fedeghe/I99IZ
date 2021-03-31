@@ -2,12 +2,13 @@
  * @jest-environment jsdom
  */
 import { screen } from '@testing-library/dom'
-import { _Object } from './../../src/TRIAD1'
-import { _Class } from './../../src/TRIAD1'
+import { _Object, _Class, _Hash } from './../../src/TRIAD1'
 import _String from './../../src/protos/String'
-import { _Hash } from './../../src/TRIAD1'
 
 describe('prototype - Object', function() {
+    it('run', () => {
+        expect(true).toBeTruthy()
+    })
     it('clone', () => {
         const o = { a: 1, b: { c: 33 } },
             oStr = JSON.stringify(o),

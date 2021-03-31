@@ -1,7 +1,7 @@
 import { isNumber, isFunction } from './../core/checkers'
 import Prototype from './../objects/Prototype'
 import { toPaddedString } from './Number'
-import _Template from './../objects/Template'
+import { _Template } from './../TRIAD1'
 
 
 const blank = str => /^\s*$/.test(str)

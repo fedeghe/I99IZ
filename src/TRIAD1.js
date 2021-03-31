@@ -11,7 +11,7 @@ import {
     isString,
     isUndefined,
 } from './core/checkers'
-import _string from './protos/String'
+import _String from './protos/String'
 
 import _Enumerable from './Objects/Enumerable'
 
@@ -160,23 +160,183 @@ export const _Class = {
 
 // _Hash ===============================================================
 export const _Hash = _Class.create(_Enumerable, (function() {
-    const toObject = o => _Object.clone(o._object);
-
     function initialize(object) {
         this._object = _Object.isHash(object) ?
             toObject(object) :
             _Object.clone(object);
     }
+
+    function _each(iterator, context) {
+        var i = 0;
+        for (var key in this._object) {
+            var value = this._object[key],
+                pair = [key, value];
+            pair.key = key;
+            pair.value = value;
+            iterator.call(context, pair, i);
+            i++;
+        }
+    }
+
+    function set(key, value) {
+        return this._object[key] = value;
+    }
+
+    function get(key) {
+        if (this._object[key] !== Object.prototype[key])
+            return this._object[key];
+    }
+
+    function unset(key) {
+        var value = this._object[key];
+        delete this._object[key];
+        return value;
+    }
+
+    function toObject() {
+        return Object.clone(this._object);
+    }
+
+
+
+    function keys() {
+        return this.pluck('key');
+    }
+
+    function values() {
+        return this.pluck('value');
+    }
+
+    function index(value) {
+        var match = this.detect(function(pair) {
+            return pair.value === value;
+        });
+        return match && match.key;
+    }
+
+    function merge(object) {
+        return this.clone().update(object);
+    }
+
+    function update(object) {
+        return new _Hash(object).inject(this, function(result, pair) {
+            result.set(pair.key, pair.value);
+            return result;
+        });
+    }
+
+    function toQueryPair(key, value) {
+        if (Object.isUndefined(value)) return key;
+
+        value = String.interpret(value);
+
+        value = value.gsub(/(\r)?\n/, '\r\n');
+        value = encodeURIComponent(value);
+        value = value.gsub(/%20/, '+');
+        return key + '=' + value;
+    }
+
+    function toQueryString() {
+        return this.inject([], function(results, pair) {
+            var key = encodeURIComponent(pair.key),
+                values = pair.value;
+
+            if (values && typeof values == 'object') {
+                if (Object.isArray(values)) {
+                    var queryValues = [];
+                    for (var i = 0, len = values.length, value; i < len; i++) {
+                        value = values[i];
+                        queryValues.push(toQueryPair(key, value));
+                    }
+                    return results.concat(queryValues);
+                }
+            } else results.push(toQueryPair(key, values));
+            return results;
+        }).join('&');
+    }
+
+    function inspect() {
+        return '#<Hash:{' + this.map(function(pair) {
+            return pair.map(Object.inspect).join(': ');
+        }).join(', ') + '}>';
+    }
+
+    function clone() {
+        return new _Hash(this);
+    }
+
     return {
-        initialize,
-        toObject,
-        toTemplateReplacements: toObject
+        initialize: initialize,
+        _each: _each,
+        set: set,
+        get: get,
+        unset: unset,
+        toObject: toObject,
+        toTemplateReplacements: toObject,
+        keys: keys,
+        values: values,
+        index: index,
+        merge: merge,
+        update: update,
+        toQueryString: toQueryString,
+        inspect: inspect,
+        toJSON: toObject,
+        clone: clone
     };
 })());
+
+
+// Template ===========================
+
+
+var Pattern = /(^|.|\r|\n)(#\{(.*?)\})/;
+
+export const _Template = _Class.create({
+    initialize: function(template, pattern) {
+        this.template = template.toString();
+        this.pattern = pattern || Pattern;
+    },
+
+    evaluate: function(object) {
+        if (object && isObject(object))
+            object = _Hash.toTemplateReplacements(object);
+
+        return _String.gsub(this.template, this.pattern, function(match) {
+            if (object == null) return (match[1] + '');
+
+            var before = match[1] || '';
+            if (before == '\\') return match[2];
+
+            var ctx = object,
+                expr = match[3],
+                pattern = /^([^.[]+|\[((?:.*?[^\\])?)\])(\.|\[|$)/;
+
+            match = pattern.exec(expr);
+            if (match == null) return before;
+
+            while (match != null) {
+
+                var comp = _String.startsWith(match[1], '[') ?
+                    match[2].replace(/\\\\]/g, ']') :
+                    match[1];
+                ctx = ctx[comp];
+                if (null == ctx || '' == match[3]) break;
+                expr = expr.substring('[' == match[3] ? match[1].length : match[0].length);
+                match = pattern.exec(expr);
+            }
+
+            return before + _String.interpret(ctx);
+        });
+    }
+});
+_Template.Pattern = Pattern;
+
+
 
 // export triad
 export default {
     _Class,
     _Hash,
-    _Object
+    _Object,
+    _Template
 }

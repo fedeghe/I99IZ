@@ -13,6 +13,7 @@ import TRIAD from './TRIAD1'
     protos.p.Object = TRIAD._Object
     objects.Hash = TRIAD._Hash
     objects.Class = TRIAD._Class
+    objects.Template = TRIAD._Template
 
     exp.extend(NS, protos)
     exp.extend(NS, funcs)
