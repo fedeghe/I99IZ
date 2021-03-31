@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import { screen } from '@testing-library/dom'
-import { _Object, _Class, _Hash } from './../../src/TRIAD1'
+import { _Object, _Class, _Hash } from './../../src/Triad'
 import _String from './../../src/protos/String'
 
 describe('prototype - Object', function() {

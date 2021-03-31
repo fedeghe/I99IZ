@@ -4,16 +4,16 @@ import protos from './protos'
 import funcs from './funcs'
 import objects from './objects'
 import BOM from './BOM'
-import TRIAD from './TRIAD1'
+import Triad from './Triad'
 
 (function(CTX) {
     CTX[vars.LIB] = {};
     const NS = CTX[vars.LIB];
 
-    protos.p.Object = TRIAD._Object
-    objects.Hash = TRIAD._Hash
-    objects.Class = TRIAD._Class
-    objects.Template = TRIAD._Template
+    protos.p.Object = Triad._Object
+    objects.Hash = Triad._Hash
+    objects.Class = Triad._Class
+    objects.Template = Triad._Template
 
     exp.extend(NS, protos)
     exp.extend(NS, funcs)
