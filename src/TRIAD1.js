@@ -298,8 +298,10 @@ export const _Template = _Class.create({
     },
 
     evaluate: function(object) {
-        if (object && isObject(object))
-            object = _Hash.toTemplateReplacements(object);
+        if (object && isFunction(object.toTemplateReplacements)) {
+            console.log(_Hash)
+            object = object.toTemplateReplacements();
+        }
 
         return _String.gsub(this.template, this.pattern, function(match) {
             if (object == null) return (match[1] + '');

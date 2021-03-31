@@ -6,9 +6,6 @@ import { _Object, _Class, _Hash } from './../../src/TRIAD1'
 import _String from './../../src/protos/String'
 
 describe('prototype - Object', function() {
-    it('run', () => {
-        expect(true).toBeTruthy()
-    })
     it('clone', () => {
         const o = { a: 1, b: { c: 33 } },
             oStr = JSON.stringify(o),
@@ -150,7 +147,7 @@ describe('prototype - Object', function() {
             str = JSON.stringify(aaa);
         expect(_Object.toJSON(aaa)).toBe(str)
     });
-    it.skip('toHTML', () => {
+    it('toHTML', () => {
         var Bookmark = _Class.create({
             initialize: function(name, url) {
                 this.name = name;

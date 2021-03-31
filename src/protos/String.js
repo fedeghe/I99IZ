@@ -1,4 +1,4 @@
-import { isNumber, isFunction } from './../core/checkers'
+import { isNumber, isFunction, isString } from './../core/checkers'
 import Prototype from './../objects/Prototype'
 import { toPaddedString } from './Number'
 import { _Template } from './../TRIAD1'
@@ -81,7 +81,7 @@ const gsub = (str, pattern, replacement) => {
         match;
     replacement = prepareReplacement(replacement);
 
-    if (Object.isString(pattern))
+    if (isString(pattern))
         pattern = RegExp.escape(pattern);
 
     if (!(pattern.length || isNonEmptyRegExp(pattern))) {
