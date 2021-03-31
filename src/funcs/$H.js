@@ -1,1 +1,3 @@
-export default sel => document.getEelementById(sel)
+import { _Hash } from './../Triad'
+
+export default object => new _Hash(object);
