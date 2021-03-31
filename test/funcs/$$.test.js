@@ -4,7 +4,7 @@
 
 import $$ from './../../src/funcs/$$'
 describe('$$', () => {
-    it.only('basic case', () => {
+    it('basic case', () => {
         document.body.innerHTML = `
             <span data-testid="not-empty">
                 <span data-testid="empty"></span>

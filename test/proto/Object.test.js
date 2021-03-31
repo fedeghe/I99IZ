@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 import { screen } from '@testing-library/dom'
-import _Object from './../../src/protos/Object'
-import _Class from './../../src/objects/Class'
+import { _Object } from './../../src/TRIAD1'
+import { _Class } from './../../src/TRIAD1'
 import _String from './../../src/protos/String'
-import Hash from './../../src/objects/Hash'
+import { _Hash } from './../../src/TRIAD1'
 
 describe('prototype - Object', function() {
     it('clone', () => {
@@ -92,8 +92,8 @@ describe('prototype - Object', function() {
         bench.negative.forEach(b => expect(_Object.isFunction(b)).toBe(false))
     });
 
-    it.skip('isHash', () => {
-        const h = new Hash([1, 2, 3, 4]);
+    it('isHash', () => {
+        const h = new _Hash([1, 2, 3, 4]);
         expect(_Object.isHash(h)).toBe(true)
     });
 
