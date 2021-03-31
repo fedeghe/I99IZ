@@ -160,9 +160,11 @@ describe('prototype - Object', function() {
         var api = new Bookmark('Prototype API', 'http://prototypejs.org/api');
         expect(_Object.toHTML(api)).toBe('<a href="http://prototypejs.org/api">Prototype API</a>')
     });
-    it.skip('toQueryString', () => {
-        // needs Hash
+    it('toQueryString', () => {
+        const params = { a: "one", b: 2, c: "asd:asda" };
+        expect(_Object.toQueryString(params)).toBe('a=one&b=2&c=asd%3Aasda')
     });
+
     it('values', () => {
         const aaa = { a: 1, b: 2, c: 3, d: { e: 4 } },
             k = _Object.values(aaa)

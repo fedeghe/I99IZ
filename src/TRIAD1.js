@@ -21,6 +21,7 @@ import _Function from './protos/Function'
 
 
 
+
 // _OBJECT ============================================
 export const clone = function(object) {
     return extend({}, object);
@@ -42,7 +43,7 @@ export const values = object => {
 
 export const isHash = object => object instanceof _Hash
 
-export const toQueryString = object => _Hash(object).toQueryString()
+export const toQueryString = object => new _Hash(object).toQueryString()
 
 export const stringify = object => {
     return JSON.stringify(object);
@@ -226,13 +227,13 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function toQueryPair(key, value) {
-        if (Object.isUndefined(value)) return key;
+        if (isUndefined(value)) return key;
 
-        value = String.interpret(value);
+        value = _String.interpret(value);
 
-        value = value.gsub(/(\r)?\n/, '\r\n');
+        value = _String.gsub(value, /(\r)?\n/, '\r\n');
         value = encodeURIComponent(value);
-        value = value.gsub(/%20/, '+');
+        value = _String.gsub(value, /%20/, '+');
         return key + '=' + value;
     }
 
