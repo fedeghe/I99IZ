@@ -210,7 +210,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function toObject() {
-        return Object.clone(this._object);
+        return _Object.clone(this._object);
     }
 
     function keys() {
@@ -229,7 +229,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function merge(object) {
-        return this.clone().update(object);
+        return this.clone().update(object)
     }
 
     function update(object) {
@@ -254,7 +254,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
                 values = pair.value;
 
             if (values && typeof values == 'object') {
-                if (Object.isArray(values)) {
+                if (_Object.isArray(values)) {
                     var queryValues = [];
                     for (var i = 0, len = values.length, value; i < len; i++) {
                         value = values[i];
@@ -269,12 +269,12 @@ export const _Hash = _Class.create(_Enumerable, (function() {
 
     function inspect() {
         return '#<Hash:{' + this.map(function(pair) {
-            return pair.map(Object.inspect).join(': ');
+            return pair.map(_Object.inspect).join(': ');
         }).join(', ') + '}>';
     }
 
     function clone() {
-        return new _Hash(this);
+        return new _Hash(this._object);
     }
 
     return {

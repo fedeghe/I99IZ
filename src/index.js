@@ -19,4 +19,8 @@ import Triad from './Triad'
     exp.extend(NS, funcs)
     exp.extend(NS, objects)
     exp.extend(NS, BOM)
+    exp.extend(NS, {
+        "$continue": new Error('"throw $continue" is deprecated, use "return" instead'),
+        "$break": {}
+    })
 })(window);
