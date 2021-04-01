@@ -39,6 +39,7 @@ describe('object - Hash', function() {
         h.unset('b');
         expect(h.get('b')).toBeUndefined()
     });
+
     it('toObject', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
@@ -46,24 +47,28 @@ describe('object - Hash', function() {
 
         expect(JSON.stringify(o)).toBe(JSON.stringify(a))
     });
+
     it('keys', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.keys();
         expect(JSON.stringify(k)).toBe(JSON.stringify(['a', 'b', 'c']))
     });
+
     it('values', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.values();
         expect(JSON.stringify(k)).toBe(JSON.stringify(['apple', 'banana', 'coconut']))
     });
+
     it('index', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.index('banana');
         expect(k).toBe('b')
     });
+
     it('merge', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
@@ -73,6 +78,7 @@ describe('object - Hash', function() {
         expect(k.get('c')).toBe('coconut')
         expect(k.get('e')).toBe('elephant')
     });
+
     it('update', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a);
@@ -82,6 +88,7 @@ describe('object - Hash', function() {
         expect(h.get('a')).toBe('ant')
         expect(JSON.stringify(k)).toBe(JSON.stringify(['a', 'b', 'c', 'e']))
     });
+
     it('toQueryString', () => {
         const a = {
                 action: 'ship',
@@ -93,6 +100,7 @@ describe('object - Hash', function() {
 
         expect(qs).toBe('action=ship&order_id=123&fees=f1&fees=f2');
     });
+
     it('inspect', () => {
         const a = {
                 action: 'ship',
@@ -104,6 +112,7 @@ describe('object - Hash', function() {
 
         expect(i).toBe(`#<Hash:{"action": "ship", "order_id": 123, "fees": [\n  "f1",\n  "f2"\n]}>`);
     });
+
     it('inspect', () => {
         const a = {
                 action: 'ship',

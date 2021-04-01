@@ -30,6 +30,65 @@ describe('Class', function() {
         expect(true).toBeTruthy()
 
     });
+    it('Class.create deeper', async() => {
+        // from http://api.prototypejs.org/language/Class/prototype/addMethods/
+        const r = await page.evaluate(() => {
+            var Animal = Class.create({
+                initialize: function(name, sound) {
+                    this.name = name;
+                    this.sound = sound;
+                },
+                speak: function() {
+                    return (this.name + " says: " + this.sound + "!");
+                }
+            });
+            var Snake = Class.create(Animal, {
+                initialize: function($super, name) {
+                    $super(name, 'hissssssssss');
+                }
+            });
+            var ringneck = new Snake("Ringneck");
 
 
+            return ringneck.speak();
+
+        })
+        expect(r).toBe('Ringneck says: hissssssssss!');
+    });
+
+    it.skip('Class.addMethods', async() => {
+        // from http://api.prototypejs.org/language/Class/prototype/addMethods/
+        // fails !!!!
+        const r = await page.evaluate(() => {
+            var Animal = Class.create({
+                initialize: function(name, sound) {
+                    this.name = name;
+                    this.sound = sound;
+                },
+                speak: function() {
+                    return (this.name + " says: " + this.sound + "!");
+                }
+            });
+            var Snake = Class.create(Animal, {
+                initialize: function($super, name) {
+                    $super(name, 'hissssssssss');
+                }
+            });
+            var ringneck = new Snake("Ringneck");
+
+            Snake.addMethods({
+                attack: function($super) {
+                    $super();
+                    return "You should probably run. He looks really mad.";
+                }
+            });
+
+            return {
+                speak: ringneck.speak(),
+                attack: ringneck.attack()
+            }
+
+        })
+        expect(r.attack).toBe('You should probably run. He looks really mad.');
+    });
 });
