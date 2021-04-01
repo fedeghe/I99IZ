@@ -1,5 +1,4 @@
 import 'expect-puppeteer'
-import { isArray } from '../../../../src/core/checkers';
 
 let page;
 
