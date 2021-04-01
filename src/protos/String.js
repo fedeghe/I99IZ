@@ -1,8 +1,10 @@
 import { isNumber, isFunction, isString } from './../core/checkers'
 import _Prototype from './../objects/Prototype'
 import _RegExp from './RegExp'
+import _Array from './Array'
+
 import { toPaddedString } from './Number'
-import { _Template } from './../Triad'
+import { _Template, _Object } from './../Triad'
 
 
 const blank = str => /^\s*$/.test(str)
@@ -111,6 +113,42 @@ const times = (str, count) => count < 1 ?
     '' :
     new Array(count + 1).join(str);
 
+const isJSON = str => {
+    try {
+        JSON.parse(str)
+    } catch (e) {
+        return false
+    }
+    return true
+}
+const strip = str => str.replace(/^\s+/, '').replace(/\s+$/, '');
+
+const toQueryParams = (str, separator) => {
+    var match = strip(str).match(/([^?#]*)(#.*)?$/);
+    if (!match) return {};
+
+    var mArr = match[1].split(separator || '&')
+    return _Array.inject(mArr, {}, function(hash, pair) {
+        if ((pair = pair.split('='))[0]) {
+            var key = decodeURIComponent(pair.shift()),
+                value = pair.length > 1 ? pair.join('=') : pair[0];
+
+            if (value != undefined) {
+                value = gsub(value, '+', ' ');
+                value = decodeURIComponent(value);
+            }
+
+            if (key in hash) {
+                if (!_Object.isArray(hash[key])) hash[key] = [hash[key]];
+                hash[key].push(value);
+            } else hash[key] = value;
+        }
+        return hash;
+    });
+}
+
+
+
 export default {
     blank,
     camelize,
@@ -122,13 +160,13 @@ export default {
     evalJSON,
     evalScripts,
     extractScripts,
+    gsub,
     include,
     inspect,
     interpolate,
     interpret,
-    isJSON: () => {},
-    gsub,
-    parseQuery: () => {},
+    isJSON,
+    parseQuery: toQueryParams,
     scan: () => {},
     specialChar: {
         '\b': '\\b',
@@ -139,14 +177,14 @@ export default {
         '\\': '\\\\'
     },
     startsWith: () => {},
-    strip: () => {},
+    strip,
     stripScripts: () => {},
     stripTags: () => {},
     sub: () => {},
     succ: () => {},
     times,
     toArray: () => {},
-    toQueryParams: () => {},
+    toQueryParams,
     truncate: () => {},
     unescapeHTML: () => {},
     underscore: () => {},

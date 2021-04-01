@@ -24,7 +24,14 @@
 
 import $A from './../funcs/$A'
 
-const _Array = {
-    from: $A
+const inject = (arr, memo, iterator) => {
+    iterator = iterator || Prototype.K;
+    var context = arguments[3];
+    return arr.reduce(iterator.bind(context), memo);
 }
-export default _Array
+
+
+export default {
+    from: $A,
+    inject
+}

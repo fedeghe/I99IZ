@@ -93,14 +93,58 @@ describe('prototype - String', function() {
         expect(sc).toBe('click, dblclick, mousedown, mouseup, mouseover, mousemove, mouseout')
     });
 
-    // var mouseEvents = ;
-    // mouseEvents.gsub(' ', ', ');
+    it('include', () => {
+        const bench = {
+            positive: [
+                ['framework', 'frame']
+            ],
+            negative: [
+                ['framework', 'fre']
+            ],
+        }
+        bench.positive.forEach(p => expect(_String.include.apply(null, p)).toBe(true))
+        bench.negative.forEach(p => expect(_String.include.apply(null, p)).toBe(false))
+    });
+
+    it('inspect', () => {
+        const s = 'I\'m so happy.',
+            r1 = _String.inspect(s),
+            r2 = _String.inspect(s, true);
+
+        expect(r1).toBe("'I\\\'m so happy.'")
+        expect(r2).toBe('"I\'m so happy."')
+    });
 
     it('interpolate', () => {
         const o = { url: 'http://I99IZ.io', name: 'I99IZ' },
             int = _String.interpolate('<a href="#{url}">#{name}</a>', o);
 
         expect(int).toBe(`<a href="${o.url}">${o.name}</a>`)
+    });
+    it('interpret', () => {
+        const bench = {
+            input: [1],
+            output: ['1'],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_String.interpret(input)).toBe(bench.output[i])
+        })
+    });
+
+    it('isJSON', () => {
+        const bench = {
+            positive: ["{ \"foo\": 42 }", '{ "foo": 42 }'],
+            negative: ['{ foo: 42 }', ' ', 'a', ' a'],
+        }
+        bench.positive.forEach(p => expect(_String.isJSON(p)).toBe(true))
+        bench.negative.forEach(p => expect(_String.isJSON(p)).toBe(false))
+    });
+    it('parseQuery', () => {
+        const s = 'section=blog&id=45',
+            res = _String.parseQuery(s)
+
+        expect(res.section).toBe('blog')
+        expect(res.id).toBe("45")
     });
 
 
