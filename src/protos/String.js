@@ -1,16 +1,18 @@
 import { isNumber, isFunction, isString } from './../core/checkers'
-import Prototype from './../objects/Prototype'
+import _Prototype from './../objects/Prototype'
+import _RegExp from './RegExp'
 import { toPaddedString } from './Number'
 import { _Template } from './../Triad'
 
 
 const blank = str => /^\s*$/.test(str)
-const interpret = str => str == null ? '' : String(str)
+
 const camelize = str => str.replace(
     /-+(.)?/g,
     (_, chr) => chr ? chr.toUpperCase() : ''
 )
 const capitalize = str => str.charAt(0).toUpperCase() + str.substring(1).toLowerCase()
+
 const dasherize = str => str.replace(/_/g, '-')
     // not being triple here allows new String('') to return true here
 const empty = str => str == ''
@@ -41,8 +43,8 @@ const evalJSON = (str, sanitize) => {
 const evalScripts = str => extractScripts(str).map(eval)
 
 const extractScripts = str => {
-    var matchAll = new RegExp(Prototype.ScriptFragment, 'img'),
-        matchOne = new RegExp(Prototype.ScriptFragment, 'im');
+    var matchAll = new RegExp(_Prototype.ScriptFragment, 'img'),
+        matchOne = new RegExp(_Prototype.ScriptFragment, 'im');
     return (str.match(matchAll) || []).map(function(scriptTag) {
         return (scriptTag.match(matchOne) || ['', ''])[1];
     });
@@ -62,7 +64,7 @@ const inspect = (str, useDoubleQuotes) => {
 
 const interpolate = (str, object, pattern) => new _Template(str, pattern).evaluate(object)
 
-
+const interpret = str => str == null ? '' : String(str)
 
 function prepareReplacement(replacement) {
     if (isFunction(replacement)) return replacement;
@@ -82,7 +84,7 @@ const gsub = (str, pattern, replacement) => {
     replacement = prepareReplacement(replacement);
 
     if (isString(pattern))
-        pattern = RegExp.escape(pattern);
+        pattern = _RegExp.escape(pattern);
 
     if (!(pattern.length || isNonEmptyRegExp(pattern))) {
         replacement = replacement('');
@@ -102,7 +104,9 @@ const gsub = (str, pattern, replacement) => {
     return result;
 }
 
-
+function unfilterJSON(str, filter) {
+    return str.replace(filter || _Prototype.JSONFilter, '$1');
+}
 const times = (str, count) => count < 1 ?
     '' :
     new Array(count + 1).join(str);
@@ -119,7 +123,6 @@ export default {
     evalScripts,
     extractScripts,
     include,
-
     inspect,
     interpolate,
     interpret,
@@ -147,5 +150,5 @@ export default {
     truncate: () => {},
     unescapeHTML: () => {},
     underscore: () => {},
-    unfilterJSON: () => {},
+    unfilterJSON,
 }
