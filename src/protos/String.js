@@ -1,16 +1,20 @@
-import { isNumber, isFunction, isString } from './../core/checkers'
-import Prototype from './../objects/Prototype'
+import { isNumber, isFunction, isString, isUndefined } from './../core/checkers'
+import _Prototype from './../objects/Prototype'
+import _RegExp from './RegExp'
+import _Array from './Array'
+
 import { toPaddedString } from './Number'
-import { _Template } from './../Triad'
+import { _Template, _Object } from './../Triad'
 
 
 const blank = str => /^\s*$/.test(str)
-const interpret = str => str == null ? '' : String(str)
+
 const camelize = str => str.replace(
     /-+(.)?/g,
     (_, chr) => chr ? chr.toUpperCase() : ''
 )
 const capitalize = str => str.charAt(0).toUpperCase() + str.substring(1).toLowerCase()
+
 const dasherize = str => str.replace(/_/g, '-')
     // not being triple here allows new String('') to return true here
 const empty = str => str == ''
@@ -41,8 +45,8 @@ const evalJSON = (str, sanitize) => {
 const evalScripts = str => extractScripts(str).map(eval)
 
 const extractScripts = str => {
-    var matchAll = new RegExp(Prototype.ScriptFragment, 'img'),
-        matchOne = new RegExp(Prototype.ScriptFragment, 'im');
+    var matchAll = new RegExp(_Prototype.ScriptFragment, 'img'),
+        matchOne = new RegExp(_Prototype.ScriptFragment, 'im');
     return (str.match(matchAll) || []).map(function(scriptTag) {
         return (scriptTag.match(matchOne) || ['', ''])[1];
     });
@@ -62,7 +66,7 @@ const inspect = (str, useDoubleQuotes) => {
 
 const interpolate = (str, object, pattern) => new _Template(str, pattern).evaluate(object)
 
-
+const interpret = str => str == null ? '' : String(str)
 
 function prepareReplacement(replacement) {
     if (isFunction(replacement)) return replacement;
@@ -82,7 +86,7 @@ const gsub = (str, pattern, replacement) => {
     replacement = prepareReplacement(replacement);
 
     if (isString(pattern))
-        pattern = RegExp.escape(pattern);
+        pattern = _RegExp.escape(pattern);
 
     if (!(pattern.length || isNonEmptyRegExp(pattern))) {
         replacement = replacement('');
@@ -102,10 +106,77 @@ const gsub = (str, pattern, replacement) => {
     return result;
 }
 
+function unfilterJSON(str, filter) {
+    return str.replace(filter || _Prototype.JSONFilter, '$1');
+}
 
-const times = (str, count) => count < 1 ?
-    '' :
-    new Array(count + 1).join(str);
+
+const isJSON = str => {
+    try {
+        JSON.parse(str)
+    } catch (e) {
+        return false
+    }
+    return true
+}
+
+const toQueryParams = (str, separator) => {
+    var match = strip(str).match(/([^?#]*)(#.*)?$/);
+    if (!match) return {};
+
+    var mArr = match[1].split(separator || '&')
+    return _Array.inject(mArr, {}, function(hash, pair) {
+        if ((pair = pair.split('='))[0]) {
+            var key = decodeURIComponent(pair.shift()),
+                value = pair.length > 1 ? pair.join('=') : pair[0];
+
+            if (value != undefined) {
+                value = gsub(value, '+', ' ');
+                value = decodeURIComponent(value);
+            }
+
+            if (key in hash) {
+                if (!_Object.isArray(hash[key])) hash[key] = [hash[key]];
+                hash[key].push(value);
+            } else hash[key] = value;
+        }
+        return hash;
+    });
+}
+const scan = (str, pattern, iterator) => String(gsub(str, pattern, iterator));
+
+function startsWith(str, pattern, position) {
+    position = isNumber(position) ? position : 0;
+    return str.lastIndexOf(pattern, position) === position;
+}
+
+const strip = str => str.replace(/^\s+/, '').replace(/\s+$/, '');
+
+const stripScripts = str => str.replace(new RegExp(_Prototype.ScriptFragment, 'img'), '');
+
+const stripTags = str => str.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi, '');
+
+
+const sub = (str, pattern, replacement, count) => {
+    replacement = prepareReplacement(replacement);
+    count = isUndefined(count) ? 1 : count;
+
+    return gsub(str, pattern, function(match) {
+        if (--count < 0) return match[0];
+        return replacement(match);
+    });
+}
+const succ = str => {
+    const l = str.length
+    return str.slice(0, l - 1) +
+        String.fromCharCode(str.charCodeAt(l - 1) + 1);
+}
+
+const times = (str, count) => {
+    return count < 1 ? '' : new Array(count + 1).join(str);
+}
+
+
 
 export default {
     blank,
@@ -118,15 +189,14 @@ export default {
     evalJSON,
     evalScripts,
     extractScripts,
+    gsub,
     include,
-
     inspect,
     interpolate,
     interpret,
-    isJSON: () => {},
-    gsub,
-    parseQuery: () => {},
-    scan: () => {},
+    isJSON,
+    parseQuery: toQueryParams,
+    scan,
     specialChar: {
         '\b': '\\b',
         '\t': '\\t',
@@ -135,17 +205,17 @@ export default {
         '\r': '\\r',
         '\\': '\\\\'
     },
-    startsWith: () => {},
-    strip: () => {},
-    stripScripts: () => {},
-    stripTags: () => {},
-    sub: () => {},
-    succ: () => {},
+    startsWith,
+    strip,
+    stripScripts,
+    stripTags,
+    sub,
+    succ,
     times,
     toArray: () => {},
-    toQueryParams: () => {},
+    toQueryParams,
     truncate: () => {},
     unescapeHTML: () => {},
     underscore: () => {},
-    unfilterJSON: () => {},
+    unfilterJSON,
 }
