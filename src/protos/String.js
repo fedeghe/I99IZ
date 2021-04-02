@@ -106,9 +106,7 @@ const gsub = (str, pattern, replacement) => {
     return result;
 }
 
-function unfilterJSON(str, filter) {
-    return str.replace(filter || _Prototype.JSONFilter, '$1');
-}
+
 
 
 const isJSON = str => {
@@ -175,8 +173,25 @@ const succ = str => {
 const times = (str, count) => {
     return count < 1 ? '' : new Array(count + 1).join(str);
 }
+const toArray = str => str.split('')
+
+const truncate = (str, length, truncation) => {
+    length = length || 30;
+    truncation = isUndefined(truncation) ? '...' : truncation;
+    return str.length > length ?
+        str.slice(0, length - truncation.length) + truncation : String(str);
+}
+
+const underscore = str => str.replace(/::/g, '/')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+    .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+    .replace(/-/g, '_')
+    .toLowerCase();
 
 
+const unescapeHTML = str => stripTags(str).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+
+const unfilterJSON = (str, filter) => str.replace(filter || _Prototype.JSONFilter, '$1');
 
 export default {
     blank,
@@ -212,10 +227,10 @@ export default {
     sub,
     succ,
     times,
-    toArray: () => {},
+    toArray,
     toQueryParams,
-    truncate: () => {},
-    unescapeHTML: () => {},
-    underscore: () => {},
+    truncate,
+    unescapeHTML,
+    underscore,
     unfilterJSON,
 }
