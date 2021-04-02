@@ -59,8 +59,6 @@ describe('prototype - String', function() {
         bench.negative.forEach(p => expect(_String.empty(p)).toBe(false))
     });
 
-
-
     it('escapeHTML', () => {
         const s = '<div class="article">This is an article</div>',
             sc = _String.escapeHTML(s);
@@ -122,6 +120,7 @@ describe('prototype - String', function() {
 
         expect(int).toBe(`<a href="${o.url}">${o.name}</a>`)
     });
+
     it('interpret', () => {
         const bench = {
             input: [1],
@@ -183,10 +182,12 @@ describe('prototype - String', function() {
         ];
         strs.forEach(s => expect(s).toBe('foo'))
     });
+
     it('stripScripts', () => {
         var str = _String.stripScripts('<p>This is a test.<script>alert("Look, a test!");</script>End of test</p>');
         expect(str).toBe('<p>This is a test.End of test</p>')
     });
+
     it('stripTags', () => {
         var strs = [
             _String.stripTags('a <a href="#">link</a>'),
@@ -232,6 +233,7 @@ describe('prototype - String', function() {
             (p, i) => expect(_String.sub.apply(null, p)).toBe(bench.output[i])
         )
     });
+
     it('succ', () => {
         let benchs = {
             input: ['a', 'aaa'],
@@ -241,8 +243,9 @@ describe('prototype - String', function() {
             (p, i) => expect(_String.succ(p)).toBe(benchs.output[i])
         )
     });
+
     it('times', () => {
-        let benchs = {
+        const benchs = {
             input: [
                 ['a', 3],
                 ['abc', 5],
@@ -259,6 +262,91 @@ describe('prototype - String', function() {
         )
     });
 
+    it('toArray', () => {
+        let benchs = {
+            input: [
+                'Hello world!'
+            ],
+            output: [
+                ['H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '!']
+            ]
+        };
+        benchs.input.forEach(
+            (p, i) => expect(JSON.stringify(_String.toArray(p))).toBe(JSON.stringify(benchs.output[i]))
+        )
+    });
 
+    // alias
+    it('toQueryParams', () => {
+        const s = 'section=blog&id=45',
+            res = _String.toQueryParams(s)
 
+        expect(res.section).toBe('blog')
+        expect(res.id).toBe("45")
+    });
+
+    it('truncate', () => {
+        const benchs = {
+            input: [
+                ['A random sentence whose length exceeds 30 characters.'],
+                ['Some random text'],
+                ['Some random text', 10],
+                ['Some random text', 10, ' [...]'],
+            ],
+            output: [
+                'A random sentence whose len...',
+                'Some random text',
+                'Some ra...',
+                'Some [...]'
+            ]
+        };
+        benchs.input.forEach(
+            (p, i) => expect(_String.truncate.apply(null, p)).toBe(benchs.output[i])
+        )
+    });
+
+    it('underscore', () => {
+        const benchs = {
+            input: [
+                'borderBottomWidth',
+            ],
+            output: [
+                'border_bottom_width',
+            ]
+        };
+        benchs.input.forEach(
+            (p, i) => expect(_String.underscore(p)).toBe(benchs.output[i])
+        )
+    });
+
+    it('unescapeHTML', () => {
+        const benchs = {
+            input: [
+                'x &gt; 10',
+                '<h1>Pride &amp; Prejudice</h1>;'
+            ],
+            output: [
+                'x > 10',
+                'Pride & Prejudice;'
+            ]
+        };
+        benchs.input.forEach(
+            (p, i) => expect(_String.unescapeHTML(p)).toBe(benchs.output[i])
+        )
+    });
+
+    it('unfilterJSON', () => {
+        const benchs = {
+            input: [
+                '/*-secure-\n{"name": "Violet", "occupation": "character", "age": 25}\n*\/'
+            ],
+            output: [
+                { "name": "Violet", "occupation": "character", "age": 25 }
+            ]
+        };
+        benchs.input.forEach(
+            (p, i) => expect(JSON.stringify(JSON.parse(_String.unfilterJSON(p))))
+            .toBe(JSON.stringify(benchs.output[i]))
+        )
+    });
 });
