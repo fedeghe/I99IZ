@@ -1,4 +1,4 @@
-import { isNumber, isFunction, isString } from './../core/checkers'
+import { isNumber, isFunction, isString, isUndefined } from './../core/checkers'
 import _Prototype from './../objects/Prototype'
 import _RegExp from './RegExp'
 import _Array from './Array'
@@ -109,9 +109,7 @@ const gsub = (str, pattern, replacement) => {
 function unfilterJSON(str, filter) {
     return str.replace(filter || _Prototype.JSONFilter, '$1');
 }
-const times = (str, count) => count < 1 ?
-    '' :
-    new Array(count + 1).join(str);
+
 
 const isJSON = str => {
     try {
@@ -121,7 +119,6 @@ const isJSON = str => {
     }
     return true
 }
-const strip = str => str.replace(/^\s+/, '').replace(/\s+$/, '');
 
 const toQueryParams = (str, separator) => {
     var match = strip(str).match(/([^?#]*)(#.*)?$/);
@@ -147,6 +144,37 @@ const toQueryParams = (str, separator) => {
     });
 }
 const scan = (str, pattern, iterator) => String(gsub(str, pattern, iterator));
+
+function startsWith(str, pattern, position) {
+    position = isNumber(position) ? position : 0;
+    return str.lastIndexOf(pattern, position) === position;
+}
+
+const strip = str => str.replace(/^\s+/, '').replace(/\s+$/, '');
+
+const stripScripts = str => str.replace(new RegExp(_Prototype.ScriptFragment, 'img'), '');
+
+const stripTags = str => str.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi, '');
+
+
+const sub = (str, pattern, replacement, count) => {
+    replacement = prepareReplacement(replacement);
+    count = isUndefined(count) ? 1 : count;
+
+    return gsub(str, pattern, function(match) {
+        if (--count < 0) return match[0];
+        return replacement(match);
+    });
+}
+const succ = str => {
+    const l = str.length
+    return str.slice(0, l - 1) +
+        String.fromCharCode(str.charCodeAt(l - 1) + 1);
+}
+
+const times = (str, count) => {
+    return count < 1 ? '' : new Array(count + 1).join(str);
+}
 
 
 
@@ -177,12 +205,12 @@ export default {
         '\r': '\\r',
         '\\': '\\\\'
     },
-    startsWith: () => {},
+    startsWith,
     strip,
-    stripScripts: () => {},
-    stripTags: () => {},
-    sub: () => {},
-    succ: () => {},
+    stripScripts,
+    stripTags,
+    sub,
+    succ,
     times,
     toArray: () => {},
     toQueryParams,

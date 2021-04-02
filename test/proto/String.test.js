@@ -140,6 +140,7 @@ describe('prototype - String', function() {
         bench.positive.forEach(p => expect(_String.isJSON(p)).toBe(true))
         bench.negative.forEach(p => expect(_String.isJSON(p)).toBe(false))
     });
+
     it('parseQuery', () => {
         const s = 'section=blog&id=45',
             res = _String.parseQuery(s)
@@ -147,13 +148,117 @@ describe('prototype - String', function() {
         expect(res.section).toBe('blog')
         expect(res.id).toBe("45")
     });
+
     it('scan', () => {
         var fruits = [];
         _String.scan('apple, pear & orange', /\w+/, function(match) { fruits.push(match[0]) });
         var r = _Array.inspect(fruits);
         expect(fruits.length).toBe(3)
         expect(r.length).toBe(27)
-    })
+    });
+
+    it('startsWith', () => {
+        const bench = {
+            positive: [
+                ['hamburger', 'ham'],
+                ['hamburger', 'amburger', 1],
+                ['hamburger', 'burger', 3]
+            ],
+            negative: [
+                ['hamburger', 'ha', 1],
+                ['hamburger', 'han'],
+            ],
+        }
+        bench.positive.forEach(p => expect(_String.startsWith.apply(null, p)).toBe(true))
+        bench.negative.forEach(p => expect(_String.startsWith.apply(null, p)).toBe(false))
+    });
+
+    it('strip', () => {
+        var strs = [
+            _String.strip(' foo'),
+            _String.strip('   foo'),
+            _String.strip('foo '),
+            _String.strip('foo   '),
+            _String.strip('   foo    ')
+        ];
+        strs.forEach(s => expect(s).toBe('foo'))
+    });
+    it('stripScripts', () => {
+        var str = _String.stripScripts('<p>This is a test.<script>alert("Look, a test!");</script>End of test</p>');
+        expect(str).toBe('<p>This is a test.End of test</p>')
+    });
+    it('stripTags', () => {
+        var strs = [
+            _String.stripTags('a <a href="#">link</a>'),
+            _String.stripTags('a <a href="#">link</a><script>alert("hello world!");</script>'),
+        ];
+        expect(strs[0]).toBe('a link')
+        expect(strs[1]).toBe('a linkalert("hello world!");')
+    });
+
+    it('sub', () => {
+        let str = 'apple pear orange',
+            bench = {
+                input: [
+                    [str, ' ', ', '],
+                    [str, ' ', ', ', 1],
+                    [str, ' ', ', ', 2],
+                    [str, /\w+/, function(match) { return _String.capitalize(match[0]) + ',' }, 2]
+                ],
+                output: [
+                    'apple, pear orange',
+                    'apple, pear orange',
+                    'apple, pear, orange',
+                    'Apple, Pear, orange'
+                ],
+            };
+        bench.input.forEach(
+            (p, i) => expect(_String.sub.apply(null, p)).toBe(bench.output[i])
+        )
+        str = '![a pear](/img/pear.jpg) ![an orange](/img/orange.jpg)';
+        bench = {
+            input: [
+                [str, /!\[(.*?)\]\((.*?)\)/, function(match) {
+                    return '<img alt="' + match[1] + '" src="' + match[2] + '" />';
+                }],
+                [str, /!\[(.*?)\]\((.*?)\)/, '<img alt="#{1}" src="#{2}" />']
+            ],
+            output: [
+                '<img alt="a pear" src="/img/pear.jpg" /> ![an orange](/img/orange.jpg)',
+                '<img alt="a pear" src="/img/pear.jpg" /> ![an orange](/img/orange.jpg)'
+            ],
+        };
+        bench.input.forEach(
+            (p, i) => expect(_String.sub.apply(null, p)).toBe(bench.output[i])
+        )
+    });
+    it('succ', () => {
+        let benchs = {
+            input: ['a', 'aaa'],
+            output: ['b', 'aab']
+        };
+        benchs.input.forEach(
+            (p, i) => expect(_String.succ(p)).toBe(benchs.output[i])
+        )
+    });
+    it('times', () => {
+        let benchs = {
+            input: [
+                ['a', 3],
+                ['abc', 5],
+                ['echo', 2],
+            ],
+            output: [
+                'aaa',
+                'abcabcabcabcabc',
+                'echoecho'
+            ]
+        };
+        benchs.input.forEach(
+            (p, i) => expect(_String.times.apply(null, p)).toBe(benchs.output[i])
+        )
+    });
+
 
 
 });
