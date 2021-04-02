@@ -3,6 +3,7 @@
  */
 
 import _String from './../../src/protos/String'
+import _Array from './../../src/protos/Array'
 
 describe('prototype - String', function() {
 
@@ -146,6 +147,13 @@ describe('prototype - String', function() {
         expect(res.section).toBe('blog')
         expect(res.id).toBe("45")
     });
+    it('scan', () => {
+        var fruits = [];
+        _String.scan('apple, pear & orange', /\w+/, function(match) { fruits.push(match[0]) });
+        var r = _Array.inspect(fruits);
+        expect(fruits.length).toBe(3)
+        expect(r.length).toBe(27)
+    })
 
 
 });

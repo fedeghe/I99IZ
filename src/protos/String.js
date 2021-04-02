@@ -146,6 +146,7 @@ const toQueryParams = (str, separator) => {
         return hash;
     });
 }
+const scan = (str, pattern, iterator) => String(gsub(str, pattern, iterator));
 
 
 
@@ -167,7 +168,7 @@ export default {
     interpret,
     isJSON,
     parseQuery: toQueryParams,
-    scan: () => {},
+    scan,
     specialChar: {
         '\b': '\\b',
         '\t': '\\t',
