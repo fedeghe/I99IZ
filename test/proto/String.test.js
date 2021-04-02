@@ -277,7 +277,7 @@ describe('prototype - String', function() {
     });
 
     // alias
-    it.skip('toQueryParams', () => {
+    it('toQueryParams', () => {
         const s = 'section=blog&id=45',
             res = _String.toQueryParams(s)
             // console.log('res', res)
