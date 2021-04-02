@@ -34,6 +34,9 @@ const inspect = a => '[' + a.map(_Object.inspect).join(', ') + ']';
 
 
 export default {
+    _each: (a, b, c, d) => {
+        console.log('each called: ', a, b, c, d)
+    },
     from: $A,
     inject,
     inspect
