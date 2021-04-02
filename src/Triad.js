@@ -311,7 +311,7 @@ export const _Template = (function() {
 
         evaluate: function(object) {
             if (object && isFunction(object.toTemplateReplacements)) {
-                console.log(_Hash)
+                // console.log(_Hash)
                 object = object.toTemplateReplacements();
             }
 
