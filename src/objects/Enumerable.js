@@ -9,24 +9,7 @@ import Prototype from './Prototype'
 var $break = {};
 
 var Enumerable = (function() {
-    function each(iterator, context) {
-        try {
-            this._each(iterator, context);
-        } catch (e) {
-            if (e != $break) throw e;
-        }
-        return this;
-    }
 
-    function eachSlice(number, iterator, context) {
-        var index = -number,
-            slices = [],
-            array = this.toArray();
-        if (number < 1) return array;
-        while ((index += number) < array.length)
-            slices.push(array.slice(index, index + number));
-        return slices.collect(iterator, context);
-    }
 
     function all(iterator, context) {
         iterator = iterator || Prototype.K;
@@ -68,6 +51,25 @@ var Enumerable = (function() {
         return result;
     }
 
+    function each(iterator, context) {
+        try {
+            this._each(iterator, context);
+        } catch (e) {
+            if (e != $break) throw e;
+        }
+        return this;
+    }
+
+    function eachSlice(number, iterator, context) {
+        var index = -number,
+            slices = [],
+            array = this.toArray();
+        if (number < 1) return array;
+        while ((index += number) < array.length)
+            slices.push(array.slice(index, index + number));
+        return slices.collect(iterator, context);
+    }
+
     function findAll(iterator, context) {
         var results = [];
         this.each(function(value, index) {
@@ -80,8 +82,7 @@ var Enumerable = (function() {
 
     /**
      * 
-     * THIS IS NOT EVEN PUBLISHED
-     * 
+     * THIS IS NOT EVEN PUBLISHED OR USED ANYWHERE WITHIN Enumerable
      * I comment it out
      *
     function grep(filter, iterator, context) {
@@ -126,6 +127,10 @@ var Enumerable = (function() {
             memo = iterator.call(context, memo, value, index, this);
         }, this);
         return memo;
+    }
+
+    function inspect() {
+        return '#<Enumerable:' + this.toArray().inspect() + '>';
     }
 
     function invoke(method) {
@@ -185,6 +190,10 @@ var Enumerable = (function() {
         return results;
     }
 
+    function size() {
+        return this.toArray().length;
+    }
+
     function sortBy(iterator, context) {
         return this.map(function(value, index) {
             return {
@@ -214,43 +223,37 @@ var Enumerable = (function() {
         });
     }
 
-    function size() {
-        return this.toArray().length;
-    }
 
-    function inspect() {
-        return '#<Enumerable:' + this.toArray().inspect() + '>';
-    }
     return {
+        all: all,
+        any: any,
+        collect: collect,
+        detect: detect,
         each: each,
         eachSlice: eachSlice,
-        all: all,
+        entries: toArray,
         every: all,
-        any: any,
-        some: any,
-        collect: collect,
-        map: collect,
-        detect: detect,
-        findAll: findAll,
-        select: findAll,
         filter: findAll,
+        find: detect,
+        findAll: findAll,
         include: include,
-        member: include,
         inGroupsOf: inGroupsOf,
         inject: inject,
+        inspect: inspect,
         invoke: invoke,
+        map: collect,
         max: max,
+        member: include,
         min: min,
         partition: partition,
         pluck: pluck,
         reject: reject,
+        select: findAll,
+        size: size,
+        some: any,
         sortBy: sortBy,
         toArray: toArray,
-        entries: toArray,
-        zip: zip,
-        size: size,
-        inspect: inspect,
-        find: detect
+        zip: zip
     };
 })();
 
