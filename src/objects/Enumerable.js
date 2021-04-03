@@ -9,14 +9,13 @@ import Prototype from './Prototype'
 var $break = {};
 
 var Enumerable = (function() {
-    function each(en, iterator, context) {
+    function each(iterator, context) {
         try {
-            // console.log(en, iterator, context)
-            this._each(en, iterator, context);
+            this._each(iterator, context);
         } catch (e) {
             if (e != $break) throw e;
         }
-        return en;
+        return this;
     }
 
     function eachSlice(number, iterator, context) {
