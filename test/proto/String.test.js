@@ -280,6 +280,7 @@ describe('prototype - String', function() {
     it('toQueryParams', () => {
         const s = 'section=blog&id=45',
             res = _String.toQueryParams(s)
+            // console.log('res', res)
 
         expect(res.section).toBe('blog')
         expect(res.id).toBe("45")

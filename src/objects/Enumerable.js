@@ -4,18 +4,19 @@
  * to 
  * NS.p[constructor][function](ctx, ...rest)
  */
-
+import Prototype from './Prototype'
 
 var $break = {};
 
 var Enumerable = (function() {
-    function each(iterator, context) {
+    function each(en, iterator, context) {
         try {
-            this._each(iterator, context);
+            // console.log(en, iterator, context)
+            this._each(en, iterator, context);
         } catch (e) {
             if (e != $break) throw e;
         }
-        return this;
+        return en;
     }
 
     function eachSlice(number, iterator, context) {
