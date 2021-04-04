@@ -182,10 +182,10 @@ export const _Hash = _Class.create(_Enumerable, (function() {
             _Object.clone(object);
     }
 
-    function _each(iterator, context) {
+    function _each(els, iterator, context) {
         var i = 0;
-        for (var key in this._object) {
-            var value = this._object[key],
+        for (var key in els) {
+            var value = els[key],
                 pair = [key, value];
             pair.key = key;
             pair.value = value;
@@ -214,7 +214,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function keys() {
-        return this.pluck('key');
+        return this.pluck(this._object, 'key');
     }
 
     function values() {
@@ -249,7 +249,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function toQueryString() {
-        return this.inject([], function(results, pair) {
+        return this.inject(this._object, [], function(results, pair) {
             var key = encodeURIComponent(pair.key),
                 values = pair.value;
 
@@ -268,7 +268,8 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function inspect() {
-        return '#<Hash:{' + this.map(function(pair) {
+
+        return '#<Hash:{' + this.map(this._object, function(pair) {
             return pair.map(_Object.inspect).join(': ');
         }).join(', ') + '}>';
     }

@@ -11,30 +11,30 @@ var $break = {};
 var Enumerable = (function() {
 
 
-    function all(iterator, context) {
+    function all(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result = true;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             result = result && !!iterator.call(context, value, index, this);
             if (!result) throw $break;
         }, this);
         return result;
     }
 
-    function any(iterator, context) {
+    function any(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result = false;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (result = !!iterator.call(context, value, index, this))
                 throw $break;
         }, this);
         return result;
     }
 
-    function collect(iterator, context) {
+    function collect(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var results = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             results.push(iterator.call(context, value, index, this));
         }, this);
         return results;
@@ -51,23 +51,25 @@ var Enumerable = (function() {
         return result;
     }
 
-    function each(iterator, context) {
+    function each(els, iterator, context) {
         try {
-            this._each(iterator, context);
+            this._each(els, iterator, context);
         } catch (e) {
             if (e != $break) throw e;
         }
-        return this;
+        return els;
     }
 
     function eachSlice(number, iterator, context) {
         var index = -number,
             slices = [],
             array = this.toArray();
+        console.log(array)
         if (number < 1) return array;
         while ((index += number) < array.length)
             slices.push(array.slice(index, index + number));
         return slices.collect(iterator, context);
+
     }
 
     function findAll(iterator, context) {
@@ -122,8 +124,8 @@ var Enumerable = (function() {
         });
     }
 
-    function inject(memo, iterator, context) {
-        this.each(function(value, index) {
+    function inject(els, memo, iterator, context) {
+        this.each(els, function(value, index) {
             memo = iterator.call(context, memo, value, index, this);
         }, this);
         return memo;
@@ -173,9 +175,9 @@ var Enumerable = (function() {
         return [trues, falses];
     }
 
-    function pluck(property) {
+    function pluck(els, property) {
         var results = [];
-        this.each(function(value) {
+        this.each(els, function(value) {
             results.push(value[property]);
         });
         return results;

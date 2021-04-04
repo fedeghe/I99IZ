@@ -47,7 +47,7 @@ export default {
     inspect
 }
 // export default extend({
-//     _each,
+//     _each: each,
 //     from: $A,
 //     inject,
 //     inspect
