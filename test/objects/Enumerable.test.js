@@ -46,7 +46,7 @@ describe('object - Enumerable', () => {
 
     })
     describe('any', () => {
-        it.skip('should return true', () => {
+        it('should return true', () => {
             var YourObject = extend({
                 els: [0, false, 1, ''],
                 _each: function(els, iterator) {
@@ -55,7 +55,7 @@ describe('object - Enumerable', () => {
             }, Enumerable);
             expect(YourObject.any(YourObject.els)).toBeTruthy()
         });
-        it.skip('should return false', () => {
+        it('should return false', () => {
             var YourObject = extend({
                 els: ['', 0, false, null],
                 _each: function(els, iterator) {
@@ -64,7 +64,7 @@ describe('object - Enumerable', () => {
             }, Enumerable);
             expect(YourObject.any(YourObject.els)).toBeFalsy()
         });
-        it.skip('should return true - with iterator', () => {
+        it('should return true - with iterator', () => {
             var YourObject = extend({
                 els: [2, 1, 3, 5],
                 _each: function(els, iterator) {
@@ -73,7 +73,7 @@ describe('object - Enumerable', () => {
             }, Enumerable);
             expect(YourObject.any(YourObject.els, e => e % 2 === 0)).toBeTruthy()
         });
-        it.skip('should return false - with iwterator', () => {
+        it('should return false - with iwterator', () => {
             var YourObject = extend({
                 els: [1, 7, 3, 9],
                 _each: function(els, iterator) {
@@ -84,7 +84,7 @@ describe('object - Enumerable', () => {
         });
     })
     describe('collect', () => {
-        it.skip('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
                 els: ['Hitch', "Hiker's", 'Guide', 'to', 'the', 'Galaxy'],
                 _each: function(els, iterator) {
@@ -96,14 +96,14 @@ describe('object - Enumerable', () => {
         });
     })
     describe('detect', () => {
-        it.skip('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
                 els: ['Hitch', "Hiker's", 'Guide', 'to', 'the', 'Galaxy'],
-                _each: function(iterator) {
-                    this.els.forEach(iterator)
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
                 }
             }, Enumerable);
-            expect(YourObject.detect(s => s.charAt(0).toUpperCase() === 'G'))
+            expect(YourObject.detect(YourObject.els, s => s.charAt(0).toUpperCase() === 'G'))
                 .toBe('Guide')
         });
     })
@@ -184,11 +184,12 @@ describe('object - Enumerable', () => {
                     { name: 'Amelie', age: 26 },
                     { name: 'Will', age: 21 }
                 ],
-                _each: function(iterator) {
-                    this.els.forEach(iterator)
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
                 }
             }, Enumerable);
-            expect(YourObject.eachSlice(3, s => s.name, YourObject.els))
+
+            expect(YourObject.eachSlice(YourObject.els, 3, s => s.name, YourObject.els))
                 .toMatchObject([
                     ['Sunny', 'Audrey', 'Matt'],
                     ['Amelie', 'Will']

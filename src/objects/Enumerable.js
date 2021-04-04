@@ -34,15 +34,17 @@ var Enumerable = (function() {
     function collect(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var results = [];
+        console.log('els: ', els)
         this.each(els, function(value, index) {
+            console.log('v: ', value)
             results.push(iterator.call(context, value, index, this));
         }, this);
         return results;
     }
 
-    function detect(iterator, context) {
+    function detect(els, iterator, context) {
         var result;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (iterator.call(context, value, index, this)) {
                 result = value;
                 throw $break;
@@ -60,15 +62,15 @@ var Enumerable = (function() {
         return els;
     }
 
-    function eachSlice(number, iterator, context) {
+    function eachSlice(els, number, iterator, context) {
         var index = -number,
             slices = [],
-            array = this.toArray();
-        console.log(array)
+            array = this.toArray(els);
+
         if (number < 1) return array;
         while ((index += number) < array.length)
             slices.push(array.slice(index, index + number));
-        return slices.collect(iterator, context);
+        return this.collect(slices, iterator, context);
 
     }
 
@@ -209,8 +211,8 @@ var Enumerable = (function() {
         }).pluck('value');
     }
 
-    function toArray() {
-        return this.map(Prototype.K);
+    function toArray(o) {
+        return o.map(Prototype.K);
     }
 
     function zip() {
