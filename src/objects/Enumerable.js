@@ -6,10 +6,11 @@
  */
 import Prototype from './Prototype'
 
+import { isFunction, isUndefined } from './../core/checkers'
+
 var $break = {};
 
 var Enumerable = (function() {
-
 
     function all(els, iterator, context) {
         iterator = iterator || Prototype.K;
@@ -72,15 +73,14 @@ var Enumerable = (function() {
 
     }
 
-    function findAll(iterator, context) {
+    function findAll(els, iterator, context) {
         var results = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (iterator.call(context, value, index, this))
                 results.push(value);
         }, this);
         return results;
     }
-
 
     /**
      * 
@@ -102,12 +102,12 @@ var Enumerable = (function() {
     }
     */
 
-    function include(object) {
-        if (Object.isFunction(this.indexOf) && this.indexOf(object) != -1)
+    function include(els, object) {
+        if (isFunction(els.indexOf) && els.indexOf(object) != -1)
             return true;
 
         var found = false;
-        this.each(function(value) {
+        this.each(els, function(value) {
             if (value == object) {
                 found = true;
                 throw $break;
@@ -116,10 +116,14 @@ var Enumerable = (function() {
         return found;
     }
 
-    function inGroupsOf(number, fillWith) {
-        fillWith = Object.isUndefined(fillWith) ? null : fillWith;
-        return this.eachSlice(number, function(slice) {
-            while (slice.length < number) slice.push(fillWith);
+    function inGroupsOf(els, number, fillWith) {
+        fillWith = isUndefined(fillWith) ? null : fillWith;
+        return this.eachSlice(els, number, function(slice) {
+            console.log('slice: ', slice)
+            while (slice.length < number) {
+                slice.push(fillWith)
+                console.log('fill')
+            }
             return slice;
         });
     }

@@ -4,6 +4,7 @@
 import Enumerable from './../../src/objects/Enumerable'
 import { _Class } from './../../src/Triad'
 import { extend } from './../../src/core/shared'
+import { isString } from './../../src/core/checkers'
 
 describe('object - Enumerable', () => {
     describe('all', () => {
@@ -194,6 +195,64 @@ describe('object - Enumerable', () => {
                     ['Sunny', 'Audrey', 'Matt'],
                     ['Amelie', 'Will']
                 ])
+        })
+    })
+    describe('findAll', () => {
+        // it.skip('problem, cause uses Enumerable.collect thus we need array to be extended with Enumerable, which cant be', () => {});
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: [1, 'two', 3, 'four', 5],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.findAll(YourObject.els, isString))
+                .toMatchObject(['two', 'four'])
+        })
+    })
+
+    describe('include', () => {
+        // it.skip('problem, cause uses Enumerable.collect thus we need array to be extended with Enumerable, which cant be', () => {});
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: [1, 'two', 3, 'four', 5],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.include(YourObject.els, 3))
+                .toBeTruthy()
+            expect(YourObject.include(YourObject.els, 7))
+                .toBeFalsy()
+        })
+    })
+
+    describe('inGroupsOf', () => {
+        // it.skip('problem, cause uses Enumerable.collect thus we need array to be extended with Enumerable, which cant be', () => {});
+        it.skip('should return the expected', () => {
+            var YourObject = extend({
+                els: [
+                    { name: 'Sunny', age: 20 },
+                    { name: 'Audrey', age: 21 },
+                    { name: 'Matt', age: 20 },
+                    { name: 'Amelie', age: 26 },
+                    { name: 'Will', age: 21 }
+                ],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+            var res = YourObject.inGroupsOf(YourObject.els, 2, { name: '', age: 0 })
+            console.log('res: ', res)
+            expect(res)
+                .toMatchObject([
+                    [{ name: 'Sunny', age: 20 }, { name: 'Audrey', age: 21 }],
+                    [{ name: 'Matt', age: 20 }, { name: 'Amelie', age: 26 }],
+                    [{ name: 'Will', age: 21 }, { name: '', age: 0 }]
+                ])
+
         })
     })
 
