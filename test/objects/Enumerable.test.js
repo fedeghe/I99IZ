@@ -176,7 +176,7 @@ describe('object - Enumerable', () => {
     });
     describe('eachSlice', () => {
         // it.skip('problem, cause uses Enumerable.collect thus we need array to be extended with Enumerable, which cant be', () => {});
-        it.skip('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
                 els: [{ name: 'Sunny', age: 20 },
                     { name: 'Audrey', age: 21 },
@@ -189,7 +189,7 @@ describe('object - Enumerable', () => {
                 }
             }, Enumerable);
 
-            expect(YourObject.eachSlice(YourObject.els, 3, s => s.name, YourObject.els))
+            expect(YourObject.eachSlice(YourObject.els, 3, s => s.name))
                 .toMatchObject([
                     ['Sunny', 'Audrey', 'Matt'],
                     ['Amelie', 'Will']

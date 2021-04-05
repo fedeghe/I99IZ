@@ -34,9 +34,7 @@ var Enumerable = (function() {
     function collect(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var results = [];
-        console.log('els: ', els)
         this.each(els, function(value, index) {
-            console.log('v: ', value)
             results.push(iterator.call(context, value, index, this));
         }, this);
         return results;
@@ -69,8 +67,8 @@ var Enumerable = (function() {
 
         if (number < 1) return array;
         while ((index += number) < array.length)
-            slices.push(array.slice(index, index + number));
-        return this.collect(slices, iterator, context);
+            slices.push(this.collect(array.slice(index, index + number), iterator, context))
+        return slices
 
     }
 
