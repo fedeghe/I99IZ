@@ -176,7 +176,6 @@ describe('object - Enumerable', () => {
         });
     });
     describe('eachSlice', () => {
-        // it.skip('problem, cause uses Enumerable.collect thus we need array to be extended with Enumerable, which cant be', () => {});
         it('should return the expected', () => {
             var YourObject = extend({
                 els: [{ name: 'Sunny', age: 20 },
@@ -230,8 +229,7 @@ describe('object - Enumerable', () => {
     })
 
     describe('inGroupsOf', () => {
-        // it.skip('problem, cause uses Enumerable.collect thus we need array to be extended with Enumerable, which cant be', () => {});
-        it.skip('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
                 els: [
                     { name: 'Sunny', age: 20 },
@@ -245,7 +243,6 @@ describe('object - Enumerable', () => {
                 }
             }, Enumerable);
             var res = YourObject.inGroupsOf(YourObject.els, 2, { name: '', age: 0 })
-            console.log('res: ', res)
             expect(res)
                 .toMatchObject([
                     [{ name: 'Sunny', age: 20 }, { name: 'Audrey', age: 21 }],

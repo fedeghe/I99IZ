@@ -82,26 +82,6 @@ var Enumerable = (function() {
         return results;
     }
 
-    /**
-     * 
-     * THIS IS NOT EVEN PUBLISHED OR USED ANYWHERE WITHIN Enumerable
-     * I comment it out
-     *
-    function grep(filter, iterator, context) {
-        iterator = iterator || Prototype.K;
-        var results = [];
-
-        if (Object.isString(filter))
-            filter = new RegExp(RegExp.escape(filter));
-
-        this.each(function(value, index) {
-            if (filter.match(value))
-                results.push(iterator.call(context, value, index, this));
-        }, this);
-        return results;
-    }
-    */
-
     function include(els, object) {
         if (isFunction(els.indexOf) && els.indexOf(object) != -1)
             return true;
@@ -118,14 +98,13 @@ var Enumerable = (function() {
 
     function inGroupsOf(els, number, fillWith) {
         fillWith = isUndefined(fillWith) ? null : fillWith;
-        return this.eachSlice(els, number, function(slice) {
-            console.log('slice: ', slice)
-            while (slice.length < number) {
-                slice.push(fillWith)
-                console.log('fill')
-            }
-            return slice;
-        });
+        var slices = this.eachSlice(els, number, slice => slice),
+            l = slices.length;
+        while (slices[l - 1].length < number) {
+            slices[l - 1].push(fillWith)
+        }
+        return slices
+
     }
 
     function inject(els, memo, iterator, context) {
