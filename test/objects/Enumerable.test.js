@@ -253,4 +253,18 @@ describe('object - Enumerable', () => {
         })
     })
 
+    describe('inject', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.inject(YourObject.els, 0, function(acc, n) { return acc + n; }))
+                .toBe(45)
+        })
+    })
+
 });
