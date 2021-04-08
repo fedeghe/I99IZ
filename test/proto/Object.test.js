@@ -162,6 +162,7 @@ describe('prototype - Object', function() {
     });
     it('toQueryString', () => {
         const params = { a: "one", b: 2, c: "asd:asda" };
+
         expect(_Object.toQueryString(params)).toBe('a=one&b=2&c=asd%3Aasda')
     });
 

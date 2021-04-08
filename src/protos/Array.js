@@ -28,27 +28,26 @@ import Prototype from './../objects/Prototype'
 import { extend } from './../core/shared'
 import { _Object } from './../Triad'
 
-function inject(arr, memo, iterator, ctx) {
-    // console.log(arr, memo, iterator, ctx)
-    iterator = iterator || Prototype.K;
-    return arr.reduce(iterator.bind(ctx), memo);
-}
+// function inject(arr, memo, iterator, ctx) {
+//     iterator = iterator || Prototype.K;
+//     return arr.reduce(iterator.bind(ctx), memo);
+// }
 const inspect = a => '[' + a.map(_Object.inspect).join(', ') + ']';
 
 const each = (a, iterator, ctx) => {
-    // console.log('a: ', a)
-    // console.log('iterator: ', iterator)
-    return a.forEach(iterator.bind(ctx))
-}
-export default {
-    each,
+        // console.log('a: ', a)
+        // console.log('iterator: ', iterator)
+        return a.forEach(iterator.bind(ctx))
+    }
+    // export default {
+    //     each,
+    //     from: $A,
+    //     inject,
+    //     inspect
+    // }
+export default extend(Enumerable, {
+    _each: each,
     from: $A,
-    inject,
+    // inject,
     inspect
-}
-// export default extend({
-//     _each,
-//     from: $A,
-//     inject,
-//     inspect
-// }, Enumerable)
+})

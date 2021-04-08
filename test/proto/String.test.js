@@ -262,7 +262,7 @@ describe('prototype - String', function() {
         )
     });
 
-    it('toArray', () => {
+    it.skip('toArray', () => {
         let benchs = {
             input: [
                 'Hello world!'

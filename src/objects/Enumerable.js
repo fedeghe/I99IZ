@@ -5,62 +5,48 @@
  * NS.p[constructor][function](ctx, ...rest)
  */
 import Prototype from './Prototype'
+// import _Array from './../protos/Array'
+
+import $A from './../funcs/$A'
+
+import { isFunction, isUndefined } from './../core/checkers'
 
 var $break = {};
 
 var Enumerable = (function() {
-    function each(en, iterator, context) {
-        try {
-            // console.log(en, iterator, context)
-            this._each(en, iterator, context);
-        } catch (e) {
-            if (e != $break) throw e;
-        }
-        return en;
-    }
 
-    function eachSlice(number, iterator, context) {
-        var index = -number,
-            slices = [],
-            array = this.toArray();
-        if (number < 1) return array;
-        while ((index += number) < array.length)
-            slices.push(array.slice(index, index + number));
-        return slices.collect(iterator, context);
-    }
-
-    function all(iterator, context) {
+    function all(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result = true;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             result = result && !!iterator.call(context, value, index, this);
             if (!result) throw $break;
         }, this);
         return result;
     }
 
-    function any(iterator, context) {
+    function any(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result = false;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (result = !!iterator.call(context, value, index, this))
                 throw $break;
         }, this);
         return result;
     }
 
-    function collect(iterator, context) {
+    function collect(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var results = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             results.push(iterator.call(context, value, index, this));
         }, this);
         return results;
     }
 
-    function detect(iterator, context) {
+    function detect(els, iterator, context) {
         var result;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (iterator.call(context, value, index, this)) {
                 result = value;
                 throw $break;
@@ -69,43 +55,42 @@ var Enumerable = (function() {
         return result;
     }
 
-    function findAll(iterator, context) {
+    function each(els, iterator, context) {
+        try {
+            this._each(els, iterator, context);
+        } catch (e) {
+            if (e != $break) throw e;
+        }
+        return els;
+    }
+
+    function eachSlice(els, number, iterator, context) {
+        var index = -number,
+            slices = [],
+            array = this.toArray(els);
+
+        if (number < 1) return array;
+        while ((index += number) < array.length)
+            slices.push(this.collect(array.slice(index, index + number), iterator, context))
+        return slices
+
+    }
+
+    function findAll(els, iterator, context) {
         var results = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (iterator.call(context, value, index, this))
                 results.push(value);
         }, this);
         return results;
     }
 
-
-    /**
-     * 
-     * THIS IS NOT EVEN PUBLISHED
-     * 
-     * I comment it out
-     *
-    function grep(filter, iterator, context) {
-        iterator = iterator || Prototype.K;
-        var results = [];
-
-        if (Object.isString(filter))
-            filter = new RegExp(RegExp.escape(filter));
-
-        this.each(function(value, index) {
-            if (filter.match(value))
-                results.push(iterator.call(context, value, index, this));
-        }, this);
-        return results;
-    }
-    */
-
-    function include(object) {
-        if (Object.isFunction(this.indexOf) && this.indexOf(object) != -1)
+    function include(els, object) {
+        if (isFunction(els.indexOf) && els.indexOf(object) != -1)
             return true;
 
         var found = false;
-        this.each(function(value) {
+        this.each(els, function(value) {
             if (value == object) {
                 found = true;
                 throw $break;
@@ -114,32 +99,40 @@ var Enumerable = (function() {
         return found;
     }
 
-    function inGroupsOf(number, fillWith) {
-        fillWith = Object.isUndefined(fillWith) ? null : fillWith;
-        return this.eachSlice(number, function(slice) {
-            while (slice.length < number) slice.push(fillWith);
-            return slice;
-        });
+    function inGroupsOf(els, number, fillWith) {
+        fillWith = isUndefined(fillWith) ? null : fillWith;
+        var slices = this.eachSlice(els, number, slice => slice),
+            l = slices.length;
+        while (slices[l - 1].length < number) {
+            slices[l - 1].push(fillWith)
+        }
+        return slices
+
     }
 
-    function inject(memo, iterator, context) {
-        this.each(function(value, index) {
+    function inject(els, memo, iterator, context) {
+        this.each(els, function(value, index) {
             memo = iterator.call(context, memo, value, index, this);
         }, this);
         return memo;
     }
 
+    function inspect(o) {
+        // return '#<Enumerable:' + this.toArray().inspect() + '>';
+        return '#<Enumerable:' + _Array.inspect(this.toArray(o)) + '>';
+    }
+
     function invoke(method) {
         var args = $A(arguments).slice(1);
-        return this.map(function(value) {
+        return this.els.map(function(value) {
             return value[method].apply(value, args);
         });
     }
 
-    function max(iterator, context) {
+    function max(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             value = iterator.call(context, value, index, this);
             if (result == null || value >= result)
                 result = value;
@@ -147,10 +140,10 @@ var Enumerable = (function() {
         return result;
     }
 
-    function min(iterator, context) {
+    function min(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             value = iterator.call(context, value, index, this);
             if (result == null || value < result)
                 result = value;
@@ -169,9 +162,9 @@ var Enumerable = (function() {
         return [trues, falses];
     }
 
-    function pluck(property) {
+    function pluck(els, property) {
         var results = [];
-        this.each(function(value) {
+        this.each(els, function(value) {
             results.push(value[property]);
         });
         return results;
@@ -184,6 +177,10 @@ var Enumerable = (function() {
                 results.push(value);
         }, this);
         return results;
+    }
+
+    function size() {
+        return this.toArray().length;
     }
 
     function sortBy(iterator, context) {
@@ -199,8 +196,8 @@ var Enumerable = (function() {
         }).pluck('value');
     }
 
-    function toArray() {
-        return this.map(Prototype.K);
+    function toArray(o) {
+        return o.map(Prototype.K);
     }
 
     function zip() {
@@ -215,43 +212,37 @@ var Enumerable = (function() {
         });
     }
 
-    function size() {
-        return this.toArray().length;
-    }
 
-    function inspect() {
-        return '#<Enumerable:' + this.toArray().inspect() + '>';
-    }
     return {
+        all: all,
+        any: any,
+        collect: collect,
+        detect: detect,
         each: each,
         eachSlice: eachSlice,
-        all: all,
+        entries: toArray,
         every: all,
-        any: any,
-        some: any,
-        collect: collect,
-        map: collect,
-        detect: detect,
-        findAll: findAll,
-        select: findAll,
         filter: findAll,
+        find: detect,
+        findAll: findAll,
         include: include,
-        member: include,
         inGroupsOf: inGroupsOf,
         inject: inject,
+        inspect: inspect,
         invoke: invoke,
+        map: collect,
         max: max,
+        member: include,
         min: min,
         partition: partition,
         pluck: pluck,
         reject: reject,
+        select: findAll,
+        size: size,
+        some: any,
         sortBy: sortBy,
         toArray: toArray,
-        entries: toArray,
-        zip: zip,
-        size: size,
-        inspect: inspect,
-        find: detect
+        zip: zip
     };
 })();
 
