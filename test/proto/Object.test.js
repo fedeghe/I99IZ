@@ -160,7 +160,7 @@ describe('prototype - Object', function() {
         var api = new Bookmark('Prototype API', 'http://prototypejs.org/api');
         expect(_Object.toHTML(api)).toBe('<a href="http://prototypejs.org/api">Prototype API</a>')
     });
-    it.skip('toQueryString', () => {
+    it('toQueryString', () => {
         const params = { a: "one", b: 2, c: "asd:asda" };
 
         expect(_Object.toQueryString(params)).toBe('a=one&b=2&c=asd%3Aasda')

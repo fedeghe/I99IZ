@@ -28,10 +28,10 @@ import Prototype from './../objects/Prototype'
 import { extend } from './../core/shared'
 import { _Object } from './../Triad'
 
-function inject(arr, memo, iterator, ctx) {
-    iterator = iterator || Prototype.K;
-    return arr.reduce(iterator.bind(ctx), memo);
-}
+// function inject(arr, memo, iterator, ctx) {
+//     iterator = iterator || Prototype.K;
+//     return arr.reduce(iterator.bind(ctx), memo);
+// }
 const inspect = a => '[' + a.map(_Object.inspect).join(', ') + ']';
 
 const each = (a, iterator, ctx) => {
@@ -48,6 +48,6 @@ const each = (a, iterator, ctx) => {
 export default extend(Enumerable, {
     _each: each,
     from: $A,
-    inject,
+    // inject,
     inspect
 })
