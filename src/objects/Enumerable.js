@@ -5,6 +5,7 @@
  * NS.p[constructor][function](ctx, ...rest)
  */
 import Prototype from './Prototype'
+// import _Array from './../protos/Array'
 
 import { isFunction, isUndefined } from './../core/checkers'
 
@@ -114,8 +115,9 @@ var Enumerable = (function() {
         return memo;
     }
 
-    function inspect() {
+    function inspect(o) {
         return '#<Enumerable:' + this.toArray().inspect() + '>';
+        // return '#<Enumerable:' + _Array.inspect(this.toArray(o)) + '>';
     }
 
     function invoke(method) {

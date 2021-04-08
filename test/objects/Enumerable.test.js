@@ -109,7 +109,7 @@ describe('object - Enumerable', () => {
         });
     })
     describe('* each', () => {
-        it('works as expected', () => {
+        it('class create', () => {
             var YourObject = _Class.create(Enumerable, {
                 initialize: function(e) {
                     this.e = e;
@@ -123,57 +123,6 @@ describe('object - Enumerable', () => {
             myO.each(myO.e, a => s += a)
             expect(s).toBe(6)
         })
-
-        it.skip('class create - no context', () => {
-            var YourObject = _Class.create(Enumerable, {
-                initialize: function(e) {
-                    this.e = e;
-                },
-                _each: function(iterator) {
-                    this.e.forEach(iterator)
-                },
-            });
-            var myO = new YourObject([1, 2, 3])
-            var s = 0
-            myO.each(a => s += a)
-            expect(s).toBe(6)
-        });
-        it.skip('class create - with context', () => {
-            var YourObject = _Class.create(Enumerable, {
-                initialize: function(e) {
-                    this.e = e;
-                },
-                _each: function(iterator, ctx) {
-                    ctx.forEach(iterator)
-                },
-            });
-            var myO = new YourObject([1, 2, 3])
-            var s = 0
-            myO.each(a => s += a, myO.e)
-            expect(s).toBe(6)
-        });
-
-        it.skip('extend - no context', () => {
-            var YourObject = extend({
-                el: [1, 2, 3],
-                _each: function(iterator) {
-                    this.el.forEach(iterator)
-                }
-            }, Enumerable);
-            var s = 0
-            YourObject.each(a => s += a)
-            expect(s).toBe(6)
-        });
-
-        it.skip('extend - with context', () => {
-            var YourObject = extend({
-                el: [1, 2, 3],
-                _each: (iterator, ctx) => ctx.forEach(iterator)
-            }, Enumerable);
-            var s = 0
-            YourObject.each(a => s += a, YourObject.el)
-            expect(s).toBe(6)
-        });
     });
     describe('eachSlice', () => {
         it('should return the expected', () => {
@@ -264,6 +213,20 @@ describe('object - Enumerable', () => {
 
             expect(YourObject.inject(YourObject.els, 0, function(acc, n) { return acc + n; }))
                 .toBe(45)
+        })
+    })
+
+    describe('toArray', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+            var o = YourObject.toArray(YourObject.els)
+            expect(o).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9])
+            expect(o[2]).toBe(3)
         })
     })
 
