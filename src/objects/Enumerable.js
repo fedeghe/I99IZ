@@ -116,8 +116,8 @@ var Enumerable = (function() {
     }
 
     function inspect(o) {
-        return '#<Enumerable:' + this.toArray().inspect() + '>';
-        // return '#<Enumerable:' + _Array.inspect(this.toArray(o)) + '>';
+        // return '#<Enumerable:' + this.toArray().inspect() + '>';
+        return '#<Enumerable:' + _Array.inspect(this.toArray(o)) + '>';
     }
 
     function invoke(method) {

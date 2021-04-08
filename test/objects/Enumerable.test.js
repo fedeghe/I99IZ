@@ -216,6 +216,19 @@ describe('object - Enumerable', () => {
         })
     })
 
+    describe('inspect', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.inspect(YourObject.els)).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9]')
+        })
+    })
+
     describe('toArray', () => {
         it('should return the expected', () => {
             var YourObject = extend({
