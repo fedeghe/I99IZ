@@ -230,7 +230,7 @@ describe('object - Enumerable', () => {
     })
 
     describe('invoke', () => {
-        it.only('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
                 els: ['hello', 'world'],
                 _each: function(els, iterator) {
@@ -242,7 +242,7 @@ describe('object - Enumerable', () => {
         })
     })
     describe('max', () => {
-        it.only('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
                 els: [1, 5, 3, 9, 5, 66, 3],
                 _each: function(els, iterator) {
@@ -252,9 +252,19 @@ describe('object - Enumerable', () => {
 
             expect(YourObject.max(YourObject.els)).toBe(66)
         })
+        it('should return the expected with a max function', () => {
+            var YourObject = extend({
+                els: ['hello', 'foo'],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.max(YourObject.els, e => e.length)).toBe(5)
+        })
     })
     describe('min', () => {
-        it.only('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
                 els: [1, 5, -3, 9, -5, 66, 3],
                 _each: function(els, iterator) {
@@ -263,6 +273,16 @@ describe('object - Enumerable', () => {
             }, Enumerable);
 
             expect(YourObject.min(YourObject.els)).toBe(-5)
+        })
+        it('should return the expected with a min function', () => {
+            var YourObject = extend({
+                els: ['hello', 'foo'],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.min(YourObject.els, e => e.length)).toBe(3)
         })
     })
 
