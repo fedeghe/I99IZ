@@ -129,10 +129,10 @@ var Enumerable = (function() {
         });
     }
 
-    function max(iterator, context) {
+    function max(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             value = iterator.call(context, value, index, this);
             if (result == null || value >= result)
                 result = value;
