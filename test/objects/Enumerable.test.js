@@ -253,6 +253,18 @@ describe('object - Enumerable', () => {
             expect(YourObject.max(YourObject.els)).toBe(66)
         })
     })
+    describe('min', () => {
+        it.only('should return the expected', () => {
+            var YourObject = extend({
+                els: [1, 5, -3, 9, -5, 66, 3],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.min(YourObject.els)).toBe(-5)
+        })
+    })
 
     describe('toArray', () => {
         it('should return the expected', () => {

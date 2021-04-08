@@ -140,10 +140,10 @@ var Enumerable = (function() {
         return result;
     }
 
-    function min(iterator, context) {
+    function min(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var result;
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             value = iterator.call(context, value, index, this);
             if (result == null || value < result)
                 result = value;
