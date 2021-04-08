@@ -7,6 +7,8 @@
 import Prototype from './Prototype'
 // import _Array from './../protos/Array'
 
+import $A from './../funcs/$A'
+
 import { isFunction, isUndefined } from './../core/checkers'
 
 var $break = {};
@@ -122,7 +124,7 @@ var Enumerable = (function() {
 
     function invoke(method) {
         var args = $A(arguments).slice(1);
-        return this.map(function(value) {
+        return this.els.map(function(value) {
             return value[method].apply(value, args);
         });
     }

@@ -228,6 +228,18 @@ describe('object - Enumerable', () => {
             expect(YourObject.inspect(YourObject.els)).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9]')
         })
     })
+    describe('invoke', () => {
+        it.only('should return the expected', () => {
+            var YourObject = extend({
+                els: ['hello', 'world'],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.invoke('toUpperCase', ...YourObject.els)).toMatchObject(["HELLO", "WORLD"])
+        })
+    })
 
     describe('toArray', () => {
         it('should return the expected', () => {
