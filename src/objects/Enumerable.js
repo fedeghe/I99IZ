@@ -198,7 +198,7 @@ var Enumerable = (function() {
     }
 
     function toArray(o) {
-        return o.map(Prototype.K);
+        return this.map(o, Prototype.K);
     }
 
     function zip() {

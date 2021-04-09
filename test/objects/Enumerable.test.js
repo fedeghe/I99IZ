@@ -5,6 +5,7 @@ import Enumerable from './../../src/objects/Enumerable'
 import { _Class } from './../../src/Triad'
 import { extend } from './../../src/core/shared'
 import { isString } from './../../src/core/checkers'
+import $H from './../../src/funcs/$H'
 
 describe('object - Enumerable', () => {
     describe('all', () => {
@@ -121,6 +122,20 @@ describe('object - Enumerable', () => {
             var myO = new YourObject([1, 2, 3])
             var s = 0
             myO.each(myO.e, a => s += a)
+            expect(s).toBe(6)
+        })
+        it('class create, obj', () => {
+            var YourObject = _Class.create(Enumerable, {
+                initialize: function(e) {
+                    this.e = e;
+                },
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                },
+            });
+            var myO = new YourObject([{ n: 1 }, { n: 2 }, { n: 3 }])
+            var s = 0
+            myO.each(myO.e, a => s += a.n)
             expect(s).toBe(6)
         })
     });
@@ -375,6 +390,20 @@ describe('object - Enumerable', () => {
             var o = YourObject.toArray(YourObject.els)
             expect(o).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9])
             expect(o[2]).toBe(3)
+        })
+        it.skip('should return the expected - hash', () => {
+            var YourObject = extend({
+                els: $H({ name: 'Sunny', age: 20 }),
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+            var o = YourObject.toArray(YourObject.els)
+                // console.log(o)
+            expect(o).toMatchObject([
+                ['name', 'Sunny'],
+                ['age', 20]
+            ])
         })
     })
 
