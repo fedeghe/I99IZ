@@ -151,11 +151,11 @@ var Enumerable = (function() {
         return result;
     }
 
-    function partition(iterator, context) {
+    function partition(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var trues = [],
             falses = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             (iterator.call(context, value, index, this) ?
                 trues : falses).push(value);
         }, this);
@@ -170,21 +170,21 @@ var Enumerable = (function() {
         return results;
     }
 
-    function reject(iterator, context) {
+    function reject(els, iterator, context) {
         var results = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (!iterator.call(context, value, index, this))
                 results.push(value);
         }, this);
         return results;
     }
 
-    function size() {
-        return this.toArray().length;
+    function size(els) {
+        return this.toArray(els).length;
     }
 
-    function sortBy(iterator, context) {
-        return this.map(function(value, index) {
+    function sortBy(els, iterator, context) {
+        var t = this.map(els, function(value, index) {
             return {
                 value: value,
                 criteria: iterator.call(context, value, index, this)
@@ -193,11 +193,12 @@ var Enumerable = (function() {
             var a = left.criteria,
                 b = right.criteria;
             return a < b ? -1 : a > b ? 1 : 0;
-        }).pluck('value');
+        })
+        return this.pluck(t, 'value');
     }
 
     function toArray(o) {
-        return o.map(Prototype.K);
+        return this.map(o, Prototype.K);
     }
 
     function zip() {
