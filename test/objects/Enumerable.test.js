@@ -391,6 +391,8 @@ describe('object - Enumerable', () => {
             expect(o).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9])
             expect(o[2]).toBe(3)
         })
+
+        // TODO
         it.skip('should return the expected - hash', () => {
             var YourObject = extend({
                 els: $H({ name: 'Sunny', age: 20 }),
