@@ -408,5 +408,19 @@ describe('object - Enumerable', () => {
             ])
         })
     })
+    describe('zip', () => {
+        it.skip('should return the expected', () => {
+            var YourObject = extend({
+                firstNames: ['Jane', 'Nitin', 'Guy'],
+                lastNames: ['Doe', 'Patel', 'Forcier'],
+                ages: [23, 41, 17],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+            const t = YourObject.zip(YourObject.firstNames, YourObject.lastNames)
+            expect(t).toMatchObject(['is', 'this', 'nice', 'hello', 'world'])
+        })
+    })
 
 });
