@@ -315,6 +315,18 @@ describe('object - Enumerable', () => {
             ])
         })
     })
+    describe('pluck', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: ['hello', 'my', 'dear'],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.pluck(YourObject.els, 'length')).toMatchObject([5, 2, 4])
+        })
+    })
 
     describe('toArray', () => {
         it('should return the expected', () => {
