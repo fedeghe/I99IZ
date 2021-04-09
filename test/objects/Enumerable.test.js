@@ -339,6 +339,18 @@ describe('object - Enumerable', () => {
             expect(t).toMatchObject([1, 2, false, true, 3])
         })
     })
+    describe('size', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: ['hello', 1, 'dear', 2, false, true, 3],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+            const t = YourObject.size(YourObject.els, isString)
+            expect(t).toBe(7)
+        })
+    })
 
     describe('toArray', () => {
         it('should return the expected', () => {

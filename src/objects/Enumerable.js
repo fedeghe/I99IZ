@@ -179,8 +179,8 @@ var Enumerable = (function() {
         return results;
     }
 
-    function size() {
-        return this.toArray().length;
+    function size(els) {
+        return this.toArray(els).length;
     }
 
     function sortBy(iterator, context) {
