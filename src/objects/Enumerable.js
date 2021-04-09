@@ -170,9 +170,9 @@ var Enumerable = (function() {
         return results;
     }
 
-    function reject(iterator, context) {
+    function reject(els, iterator, context) {
         var results = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             if (!iterator.call(context, value, index, this))
                 results.push(value);
         }, this);

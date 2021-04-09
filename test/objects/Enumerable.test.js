@@ -323,8 +323,20 @@ describe('object - Enumerable', () => {
                     els.forEach(iterator)
                 }
             }, Enumerable);
-
-            expect(YourObject.pluck(YourObject.els, 'length')).toMatchObject([5, 2, 4])
+            const t = YourObject.pluck(YourObject.els, 'length')
+            expect(t).toMatchObject([5, 2, 4])
+        })
+    })
+    describe('reject', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: ['hello', 1, 'dear', 2, false, true, 3],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+            const t = YourObject.reject(YourObject.els, isString)
+            expect(t).toMatchObject([1, 2, false, true, 3])
         })
     })
 
