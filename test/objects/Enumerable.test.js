@@ -285,6 +285,36 @@ describe('object - Enumerable', () => {
             expect(YourObject.min(YourObject.els, e => e.length)).toBe(3)
         })
     })
+    describe('partition', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: ['hello', null, 42, false, true, , 17],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.partition(YourObject.els)).toMatchObject([
+                ['hello', 42, true, 17],
+                [null, false]
+            ])
+        })
+        it('should return the expected, with strategy', () => {
+            var YourObject = extend({
+                els: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+
+            expect(YourObject.partition(YourObject.els, function(n) {
+                return 0 == n % 2;
+            })).toMatchObject([
+                [2, 4, 6, 8, 10],
+                [1, 3, 5, 7, 9]
+            ])
+        })
+    })
 
     describe('toArray', () => {
         it('should return the expected', () => {

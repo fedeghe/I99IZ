@@ -151,11 +151,11 @@ var Enumerable = (function() {
         return result;
     }
 
-    function partition(iterator, context) {
+    function partition(els, iterator, context) {
         iterator = iterator || Prototype.K;
         var trues = [],
             falses = [];
-        this.each(function(value, index) {
+        this.each(els, function(value, index) {
             (iterator.call(context, value, index, this) ?
                 trues : falses).push(value);
         }, this);
