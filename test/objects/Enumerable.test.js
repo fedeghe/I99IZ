@@ -351,6 +351,18 @@ describe('object - Enumerable', () => {
             expect(t).toBe(7)
         })
     })
+    describe('sortBy', () => {
+        it('should return the expected', () => {
+            var YourObject = extend({
+                els: ['hello', 'world', 'this', 'is', 'nice'],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, Enumerable);
+            const t = YourObject.sortBy(YourObject.els, s => s.length)
+            expect(t).toMatchObject(['is', 'this', 'nice', 'hello', 'world'])
+        })
+    })
 
     describe('toArray', () => {
         it('should return the expected', () => {

@@ -183,8 +183,8 @@ var Enumerable = (function() {
         return this.toArray(els).length;
     }
 
-    function sortBy(iterator, context) {
-        return this.map(function(value, index) {
+    function sortBy(els, iterator, context) {
+        var t = this.map(els, function(value, index) {
             return {
                 value: value,
                 criteria: iterator.call(context, value, index, this)
@@ -193,7 +193,8 @@ var Enumerable = (function() {
             var a = left.criteria,
                 b = right.criteria;
             return a < b ? -1 : a > b ? 1 : 0;
-        }).pluck('value');
+        })
+        return this.pluck(t, 'value');
     }
 
     function toArray(o) {
