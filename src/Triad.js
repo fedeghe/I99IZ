@@ -471,7 +471,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function update(object) {
-        return new _Hash(object).inject(this, function(result, pair) {
+        return new _Hash(object).inject(object, this, function(result, pair) {
             result.set(pair.key, pair.value);
             return result;
         });

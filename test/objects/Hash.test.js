@@ -69,7 +69,7 @@ describe('object - Hash', function() {
         expect(k).toBe('b')
     });
 
-    it.skip('merge', () => {
+    it('merge', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.merge({ a: 'ant', e: 'elephant' });
@@ -79,7 +79,7 @@ describe('object - Hash', function() {
         expect(k.get('e')).toBe('elephant')
     });
 
-    it.skip('update', () => {
+    it('update', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a);
 
