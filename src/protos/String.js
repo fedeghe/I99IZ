@@ -1,10 +1,9 @@
 import { isNumber, isFunction, isString, isUndefined } from './../core/checkers'
 import _Prototype from './../objects/Prototype'
 import _RegExp from './RegExp'
-import _Array from './Array'
 
 import { toPaddedString } from './Number'
-import { _Template, _Object } from './../Triad'
+import { _Template, _Object, _Array } from './../Triad'
 
 
 const blank = str => /^\s*$/.test(str)

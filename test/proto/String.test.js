@@ -3,7 +3,7 @@
  */
 
 import _String from './../../src/protos/String'
-import _Array from './../../src/protos/Array'
+import { _Array } from './../../src/Triad'
 
 describe('prototype - String', function() {
 
@@ -262,7 +262,7 @@ describe('prototype - String', function() {
         )
     });
 
-    it.skip('toArray', () => {
+    it('toArray', () => {
         let benchs = {
             input: [
                 'Hello world!'
