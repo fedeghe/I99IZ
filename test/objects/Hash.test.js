@@ -89,7 +89,7 @@ describe('object - Hash', function() {
         expect(JSON.stringify(k)).toBe(JSON.stringify(['a', 'b', 'c', 'e']))
     });
 
-    it.skip('toQueryString', () => {
+    it('toQueryString', () => {
         const a = {
                 action: 'ship',
                 order_id: 123,
