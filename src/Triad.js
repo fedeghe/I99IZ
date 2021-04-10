@@ -460,7 +460,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function index(value) {
-        var match = this.detect(function(pair) {
+        var match = this.detect(this._object, function(pair) {
             return pair.value === value;
         });
         return match && match.key;
