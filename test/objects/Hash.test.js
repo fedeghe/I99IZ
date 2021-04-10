@@ -113,7 +113,7 @@ describe('object - Hash', function() {
         expect(i).toBe(`#<Hash:{"action": "ship", "order_id": 123, "fees": [\n  "f1",\n  "f2"\n]}>`);
     });
 
-    it.skip('inspect', () => {
+    it('clone', () => {
         const a = {
                 action: 'ship',
                 order_id: 123,
