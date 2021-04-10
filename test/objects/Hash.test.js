@@ -55,7 +55,7 @@ describe('object - Hash', function() {
         expect(JSON.stringify(k)).toBe(JSON.stringify(['a', 'b', 'c']))
     });
 
-    it.skip('values', () => {
+    it('values', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.values();

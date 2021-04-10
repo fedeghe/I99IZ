@@ -456,7 +456,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function values() {
-        return this.pluck('value');
+        return this.pluck(this._object, 'value');
     }
 
     function index(value) {
