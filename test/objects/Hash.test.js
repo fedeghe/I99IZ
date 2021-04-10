@@ -101,7 +101,7 @@ describe('object - Hash', function() {
         expect(qs).toBe('action=ship&order_id=123&fees=f1&fees=f2');
     });
 
-    it.skip('inspect', () => {
+    it('inspect', () => {
         const a = {
                 action: 'ship',
                 order_id: 123,
