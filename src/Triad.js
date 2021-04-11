@@ -599,15 +599,14 @@ export const _Template = (function() {
 
 
 export const _Array = extend(_Enumerable, (function() {
-    // const inject = (arr, memo, iterator, ctx) => {
-    //     iterator = iterator || Prototype.K;
-    //     return arr.reduce(iterator.bind(ctx), memo);
-    // }
-
-    const last = a => a[a.length - 1]
-    const each = (a, iterator, ctx) => a.forEach(iterator.bind(ctx))
+    const each = (a, iterator, ctx) => a.forEach(iterator.bind(ctx));
+    const clear = a => a.length = 0;
+    const clone = a => [].slice.call(a, 0);
+    const last = a => a[a.length - 1];
     return {
         _each: each,
+        clear,
+        clone,
         from: $A,
         // inject,
         inspect: ARRAY_inspect,
