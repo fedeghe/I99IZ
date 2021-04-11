@@ -34,5 +34,20 @@ describe('prototype - Array', function() {
         expect(b.length).toBe(3)
         expect(b).toMatchObject(['A', 'B', 'C'])
     });
+    it('every', () => {
+        const bench = {
+            positive: [
+                [1, 2, 3, 4, 5, 6],
+                ['a', true, 2]
+            ],
+            negative: [
+                ['', 1, 2, 3, 4, 5, 6],
+                [0, 1, 2, 3, 4, 5, 6],
+                [false, true, 1, 'a'],
+            ]
+        }
+        bench.positive.forEach(b => expect(_Array.every(b)).toBe(true))
+        bench.negative.forEach(b => expect(_Array.every(b)).toBe(false))
+    });
 
 });
