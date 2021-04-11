@@ -408,17 +408,40 @@ describe('object - Enumerable', () => {
         })
     })
     describe('zip', () => {
-        it.skip('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
-                firstNames: ['Jane', 'Nitin', 'Guy'],
+                els: ['Jane', 'Nitin', 'Guy'],
                 lastNames: ['Doe', 'Patel', 'Forcier'],
                 ages: [23, 41, 17],
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
             }, _Enumerable);
-            const t = YourObject.zip(YourObject.firstNames, YourObject.lastNames)
-            expect(t).toMatchObject(['is', 'this', 'nice', 'hello', 'world'])
+            const t = YourObject.zip(YourObject.els, YourObject.lastNames, YourObject.ages)
+            expect(t).toMatchObject([
+                ['Jane', 'Doe', 23],
+                ['Nitin', 'Patel', 41],
+                ['Guy', 'Forcier', 17]
+            ])
+        })
+        it('should return the expected - with iterator', () => {
+            var YourObject = extend({
+                els: ['Jane', 'Nitin', 'Guy'],
+                lastNames: ['Doe', 'Patel', 'Forcier'],
+                ages: [23, 41, 17],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, _Enumerable);
+            const t = YourObject.zip(
+                YourObject.els,
+                YourObject.lastNames,
+                YourObject.ages,
+                function(tuple) {
+                    return tuple[0] + ' ' + tuple[1] + ' is ' + tuple[2];
+                }
+            )
+            expect(t).toMatchObject(['Jane Doe is 23', 'Nitin Patel is 41', 'Guy Forcier is 17'])
         })
     })
 

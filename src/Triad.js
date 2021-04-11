@@ -220,14 +220,21 @@ export const _Enumerable = (function() {
 
     function zip() {
         var iterator = Prototype.K,
-            args = $A(arguments);
-        if (Object.isFunction(args.last()))
+            args = $A(arguments),
+            i = 0,
+            l = args[0].length,
+            res = [];
+        if (isFunction(_Array.last(args)))
             iterator = args.pop();
 
-        var collections = [this].concat(args).map($A);
-        return this.map(function(value, index) {
-            return iterator(collections.pluck(index));
-        });
+        while (i < l) {
+            res.push(iterator(args.reduce(function(acc, el) {
+                acc.push(el[i])
+                return acc
+            }, [])))
+            i++;
+        }
+        return res
     }
 
 
