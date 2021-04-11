@@ -27,5 +27,12 @@ describe('prototype - Array', function() {
         expect(a[0]).toBe(1)
         expect(b[0]).toBe(2)
     });
+    it('compact', () => {
+        var a = [undefined, 'A', undefined, 'B', null, 'C'],
+            b = _Array.compact(a);
+        expect(a.length).toBe(6)
+        expect(b.length).toBe(3)
+        expect(b).toMatchObject(['A', 'B', 'C'])
+    });
 
 });
