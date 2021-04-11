@@ -131,6 +131,27 @@ describe('prototype - Array', function() {
             expect(_Array.inspect(input)).toBe(bench.output[i])
         })
     });
+    it('intersect', () => {
+        const bench = {
+            input: [
+                [
+                    [3, 6, 4, 8, 6, 1, 66],
+                    [4, 7, 11, 1, 1]
+                ],
+                [
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                    [5, 6, 7, 8, 9, 10, 11, 12, 13]
+                ],
+            ],
+            output: [
+                [4, 1],
+                [5, 6, 7, 8, 9]
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.intersect.apply(null, input)).toMatchObject(bench.output[i])
+        })
+    });
     it('map', () => {
         var a = [undefined, 'A', undefined, 'B', null, 'C'],
             b = [1, 2, 3, 4, 5, 6],

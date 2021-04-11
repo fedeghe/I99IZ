@@ -613,6 +613,15 @@ export const _Array = extend(_Enumerable, (function() {
         }
     }, [])
     const indexOf = (a, e) => a.indexOf(e);
+    const intersect = (a, b) => {
+        const al = a.length,
+            bl = b.length,
+            doit = (x, y) => x.reduce((acc, e) => {
+                if (indexOf(y, e) >= 0 && indexOf(acc, e) < 0) acc.push(e)
+                return acc
+            }, [])
+        return al > bl ? doit(b, a) : doit(a, b)
+    }
     const map = (a, iterator = Prototype.K, ctx = null) => a.map(iterator);
     const last = a => a[a.length - 1];
     return {
@@ -626,8 +635,9 @@ export const _Array = extend(_Enumerable, (function() {
         flatten,
         from: $A,
         // inject,
-        inspect: ARRAY_inspect,
         indexOf,
+        inspect: ARRAY_inspect,
+        intersect,
         map,
         last
     }
