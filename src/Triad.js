@@ -22,9 +22,254 @@ import {
 } from './core/checkers'
 import _String from './protos/String'
 import _Function from './protos/Function'
-import _Enumerable from './Objects/Enumerable'
 import $A from './funcs/$A'
 import Prototype, { emptyFunction } from './objects/Prototype'
+
+
+
+var $break = {};
+
+const ARRAY_inspect = a => '[' + a.map(_Object.inspect).join(', ') + ']';
+
+export const _Enumerable = (function() {
+    function all(els, iterator, context) {
+        iterator = iterator || Prototype.K;
+        var result = true;
+        this.each(els, function(value, index) {
+            result = result && !!iterator.call(context, value, index, this);
+            if (!result) throw $break;
+        }, this);
+        return result;
+    }
+
+    function any(els, iterator, context) {
+        iterator = iterator || Prototype.K;
+        var result = false;
+        this.each(els, function(value, index) {
+            if (result = !!iterator.call(context, value, index, this))
+                throw $break;
+        }, this);
+        return result;
+    }
+
+    function collect(els, iterator, context) {
+        iterator = iterator || Prototype.K;
+        var results = [];
+        this.each(els, function(value, index) {
+            results.push(iterator.call(context, value, index, this));
+        }, this);
+        return results;
+    }
+
+    function detect(els, iterator, context) {
+        var result;
+        this.each(els, function(value, index) {
+            if (iterator.call(context, value, index, this)) {
+                result = value;
+                throw $break;
+            }
+        }, this);
+        return result;
+    }
+
+    function each(els, iterator, context) {
+        try {
+            this._each(els, iterator, context);
+        } catch (e) {
+            if (e != $break) throw e;
+        }
+        return els;
+    }
+
+    function eachSlice(els, number, iterator, context) {
+        var index = -number,
+            slices = [],
+            array = this.toArray(els);
+
+        if (number < 1) return array;
+        while ((index += number) < array.length)
+            slices.push(this.collect(array.slice(index, index + number), iterator, context))
+        return slices
+
+    }
+
+    function findAll(els, iterator, context) {
+        var results = [];
+        this.each(els, function(value, index) {
+            if (iterator.call(context, value, index, this))
+                results.push(value);
+        }, this);
+        return results;
+    }
+
+    function include(els, object) {
+        if (isFunction(els.indexOf) && els.indexOf(object) != -1)
+            return true;
+
+        var found = false;
+        this.each(els, function(value) {
+            if (value == object) {
+                found = true;
+                throw $break;
+            }
+        });
+        return found;
+    }
+
+    function inGroupsOf(els, number, fillWith) {
+        fillWith = isUndefined(fillWith) ? null : fillWith;
+        var slices = this.eachSlice(els, number, slice => slice),
+            l = slices.length;
+        while (slices[l - 1].length < number) {
+            slices[l - 1].push(fillWith)
+        }
+        return slices
+
+    }
+
+    function inject(els, memo, iterator, context) {
+        this.each(els, function(value, index) {
+            memo = iterator.call(context, memo, value, index, this);
+        }, this);
+        return memo;
+    }
+
+    function inspect(o) {
+        // return '#<Enumerable:' + this.toArray().inspect() + '>';
+        return '#<Enumerable:' + ARRAY_inspect(this.toArray(o)) + '>';
+    }
+
+    function invoke(method) {
+        var args = $A(arguments).slice(1);
+        return this.els.map(function(value) {
+            return value[method].apply(value, args);
+        });
+    }
+
+    function max(els, iterator, context) {
+        iterator = iterator || Prototype.K;
+        var result;
+        this.each(els, function(value, index) {
+            value = iterator.call(context, value, index, this);
+            if (result == null || value >= result)
+                result = value;
+        }, this);
+        return result;
+    }
+
+    function min(els, iterator, context) {
+        iterator = iterator || Prototype.K;
+        var result;
+        this.each(els, function(value, index) {
+            value = iterator.call(context, value, index, this);
+            if (result == null || value < result)
+                result = value;
+        }, this);
+        return result;
+    }
+
+    function partition(els, iterator, context) {
+        iterator = iterator || Prototype.K;
+        var trues = [],
+            falses = [];
+        this.each(els, function(value, index) {
+            (iterator.call(context, value, index, this) ?
+                trues : falses).push(value);
+        }, this);
+        return [trues, falses];
+    }
+
+    function pluck(els, property) {
+        var results = [];
+        this.each(els, function(value) {
+            results.push(value[property]);
+        });
+        return results;
+    }
+
+    function reject(els, iterator, context) {
+        var results = [];
+        this.each(els, function(value, index) {
+            if (!iterator.call(context, value, index, this))
+                results.push(value);
+        }, this);
+        return results;
+    }
+
+    function size(els) {
+        return this.toArray(els).length;
+    }
+
+    function sortBy(els, iterator, context) {
+        var t = this.map(els, function(value, index) {
+            return {
+                value: value,
+                criteria: iterator.call(context, value, index, this)
+            };
+        }, this).sort(function(left, right) {
+            var a = left.criteria,
+                b = right.criteria;
+            return a < b ? -1 : a > b ? 1 : 0;
+        })
+        return this.pluck(t, 'value');
+    }
+
+    function toArray(o) {
+        return this.map(o, Prototype.K);
+    }
+
+    function zip() {
+        var iterator = Prototype.K,
+            args = $A(arguments),
+            i = 0,
+            l = args[0].length,
+            res = [];
+        if (isFunction(_Array.last(args)))
+            iterator = args.pop();
+
+        while (i < l) {
+            res.push(iterator(args.reduce(function(acc, el) {
+                acc.push(el[i])
+                return acc
+            }, [])))
+            i++;
+        }
+        return res
+    }
+
+
+    return {
+        all: all,
+        any: any,
+        collect: collect,
+        detect: detect,
+        each: each,
+        eachSlice: eachSlice,
+        entries: toArray,
+        every: all,
+        filter: findAll,
+        find: detect,
+        findAll: findAll,
+        include: include,
+        inGroupsOf: inGroupsOf,
+        inject: inject,
+        inspect: inspect,
+        invoke: invoke,
+        map: collect,
+        max: max,
+        member: include,
+        min: min,
+        partition: partition,
+        pluck: pluck,
+        reject: reject,
+        select: findAll,
+        size: size,
+        some: any,
+        sortBy: sortBy,
+        toArray: toArray,
+        zip: zip
+    };
+})();
 
 /**
  * OBJECT
@@ -218,11 +463,11 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function values() {
-        return this.pluck('value');
+        return this.pluck(this._object, 'value');
     }
 
     function index(value) {
-        var match = this.detect(function(pair) {
+        var match = this.detect(this._object, function(pair) {
             return pair.value === value;
         });
         return match && match.key;
@@ -233,7 +478,7 @@ export const _Hash = _Class.create(_Enumerable, (function() {
     }
 
     function update(object) {
-        return new _Hash(object).inject(this, function(result, pair) {
+        return new _Hash(object).inject(object, this, function(result, pair) {
             result.set(pair.key, pair.value);
             return result;
         });
@@ -351,9 +596,31 @@ export const _Template = (function() {
 
 
 
+
+
+export const _Array = extend(_Enumerable, (function() {
+    // const inject = (arr, memo, iterator, ctx) => {
+    //     iterator = iterator || Prototype.K;
+    //     return arr.reduce(iterator.bind(ctx), memo);
+    // }
+
+    const last = a => a[a.length - 1]
+    const each = (a, iterator, ctx) => a.forEach(iterator.bind(ctx))
+    return {
+        _each: each,
+        from: $A,
+        // inject,
+        inspect: ARRAY_inspect,
+        last
+    }
+})())
+
+
 // export triad
 export default {
+    _Array,
     _Class,
+    _Enumerable,
     _Hash,
     _Object,
     _Template

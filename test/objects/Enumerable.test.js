@@ -1,8 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import Enumerable from './../../src/objects/Enumerable'
-import { _Class } from './../../src/Triad'
+import { _Class, _Enumerable } from './../../src/Triad'
 import { extend } from './../../src/core/shared'
 import { isString } from './../../src/core/checkers'
 import $H from './../../src/funcs/$H'
@@ -15,7 +14,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.all(YourObject.el)).toBeTruthy()
         });
         it('should return false', () => {
@@ -24,7 +23,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.all(YourObject.el)).toBeFalsy()
         });
         it('should return true - with iterator', () => {
@@ -33,7 +32,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.all(YourObject.el, e => e % 2 === 0)).toBeTruthy()
         });
         it('should return false - with iterator', () => {
@@ -42,7 +41,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.all(YourObject.el, e => e % 2 === 0)).toBeFalsy()
         });
 
@@ -54,7 +53,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.any(YourObject.els)).toBeTruthy()
         });
         it('should return false', () => {
@@ -63,7 +62,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.any(YourObject.els)).toBeFalsy()
         });
         it('should return true - with iterator', () => {
@@ -72,7 +71,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.any(YourObject.els, e => e % 2 === 0)).toBeTruthy()
         });
         it('should return false - with iwterator', () => {
@@ -81,7 +80,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.any(YourObject.els, e => e % 2 === 0)).toBeFalsy()
         });
     })
@@ -92,7 +91,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.collect(YourObject.els, s => s.charAt(0).toUpperCase()))
                 .toMatchObject(['H', 'H', 'G', 'T', 'T', 'G'])
         });
@@ -104,14 +103,14 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             expect(YourObject.detect(YourObject.els, s => s.charAt(0).toUpperCase() === 'G'))
                 .toBe('Guide')
         });
     })
     describe('* each', () => {
         it('class create', () => {
-            var YourObject = _Class.create(Enumerable, {
+            var YourObject = _Class.create(_Enumerable, {
                 initialize: function(e) {
                     this.e = e;
                 },
@@ -125,7 +124,7 @@ describe('object - Enumerable', () => {
             expect(s).toBe(6)
         })
         it('class create, obj', () => {
-            var YourObject = _Class.create(Enumerable, {
+            var YourObject = _Class.create(_Enumerable, {
                 initialize: function(e) {
                     this.e = e;
                 },
@@ -151,7 +150,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.eachSlice(YourObject.els, 3, s => s.name))
                 .toMatchObject([
@@ -168,7 +167,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.findAll(YourObject.els, isString))
                 .toMatchObject(['two', 'four'])
@@ -183,7 +182,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.include(YourObject.els, 3))
                 .toBeTruthy()
@@ -205,7 +204,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             var res = YourObject.inGroupsOf(YourObject.els, 2, { name: '', age: 0 })
             expect(res)
                 .toMatchObject([
@@ -224,7 +223,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.inject(YourObject.els, 0, function(acc, n) { return acc + n; }))
                 .toBe(45)
@@ -238,7 +237,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.inspect(YourObject.els)).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9]')
         })
@@ -251,7 +250,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.invoke('toUpperCase', ...YourObject.els)).toMatchObject(["HELLO", "WORLD"])
         })
@@ -263,7 +262,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.max(YourObject.els)).toBe(66)
         })
@@ -273,7 +272,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.max(YourObject.els, e => e.length)).toBe(5)
         })
@@ -285,7 +284,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.min(YourObject.els)).toBe(-5)
         })
@@ -295,7 +294,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.min(YourObject.els, e => e.length)).toBe(3)
         })
@@ -307,7 +306,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.partition(YourObject.els)).toMatchObject([
                 ['hello', 42, true, 17],
@@ -320,7 +319,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
 
             expect(YourObject.partition(YourObject.els, function(n) {
                 return 0 == n % 2;
@@ -337,7 +336,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             const t = YourObject.pluck(YourObject.els, 'length')
             expect(t).toMatchObject([5, 2, 4])
         })
@@ -349,7 +348,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             const t = YourObject.reject(YourObject.els, isString)
             expect(t).toMatchObject([1, 2, false, true, 3])
         })
@@ -361,7 +360,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             const t = YourObject.size(YourObject.els, isString)
             expect(t).toBe(7)
         })
@@ -373,7 +372,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             const t = YourObject.sortBy(YourObject.els, s => s.length)
             expect(t).toMatchObject(['is', 'this', 'nice', 'hello', 'world'])
         })
@@ -386,7 +385,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             var o = YourObject.toArray(YourObject.els)
             expect(o).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9])
             expect(o[2]).toBe(3)
@@ -399,7 +398,7 @@ describe('object - Enumerable', () => {
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
+            }, _Enumerable);
             var o = YourObject.toArray(YourObject.els)
                 // console.log(o)
             expect(o).toMatchObject([
@@ -409,17 +408,40 @@ describe('object - Enumerable', () => {
         })
     })
     describe('zip', () => {
-        it.skip('should return the expected', () => {
+        it('should return the expected', () => {
             var YourObject = extend({
-                firstNames: ['Jane', 'Nitin', 'Guy'],
+                els: ['Jane', 'Nitin', 'Guy'],
                 lastNames: ['Doe', 'Patel', 'Forcier'],
                 ages: [23, 41, 17],
                 _each: function(els, iterator) {
                     els.forEach(iterator)
                 }
-            }, Enumerable);
-            const t = YourObject.zip(YourObject.firstNames, YourObject.lastNames)
-            expect(t).toMatchObject(['is', 'this', 'nice', 'hello', 'world'])
+            }, _Enumerable);
+            const t = YourObject.zip(YourObject.els, YourObject.lastNames, YourObject.ages)
+            expect(t).toMatchObject([
+                ['Jane', 'Doe', 23],
+                ['Nitin', 'Patel', 41],
+                ['Guy', 'Forcier', 17]
+            ])
+        })
+        it('should return the expected - with iterator', () => {
+            var YourObject = extend({
+                els: ['Jane', 'Nitin', 'Guy'],
+                lastNames: ['Doe', 'Patel', 'Forcier'],
+                ages: [23, 41, 17],
+                _each: function(els, iterator) {
+                    els.forEach(iterator)
+                }
+            }, _Enumerable);
+            const t = YourObject.zip(
+                YourObject.els,
+                YourObject.lastNames,
+                YourObject.ages,
+                function(tuple) {
+                    return tuple[0] + ' ' + tuple[1] + ' is ' + tuple[2];
+                }
+            )
+            expect(t).toMatchObject(['Jane Doe is 23', 'Nitin Patel is 41', 'Guy Forcier is 17'])
         })
     })
 

@@ -55,21 +55,21 @@ describe('object - Hash', function() {
         expect(JSON.stringify(k)).toBe(JSON.stringify(['a', 'b', 'c']))
     });
 
-    it.skip('values', () => {
+    it('values', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.values();
         expect(JSON.stringify(k)).toBe(JSON.stringify(['apple', 'banana', 'coconut']))
     });
 
-    it.skip('index', () => {
+    it('index', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.index('banana');
         expect(k).toBe('b')
     });
 
-    it.skip('merge', () => {
+    it('merge', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a),
             k = h.merge({ a: 'ant', e: 'elephant' });
@@ -79,7 +79,7 @@ describe('object - Hash', function() {
         expect(k.get('e')).toBe('elephant')
     });
 
-    it.skip('update', () => {
+    it('update', () => {
         const a = { a: 'apple', b: 'banana', c: 'coconut' },
             h = new _Hash(a);
 
@@ -89,7 +89,7 @@ describe('object - Hash', function() {
         expect(JSON.stringify(k)).toBe(JSON.stringify(['a', 'b', 'c', 'e']))
     });
 
-    it.skip('toQueryString', () => {
+    it('toQueryString', () => {
         const a = {
                 action: 'ship',
                 order_id: 123,
@@ -101,7 +101,7 @@ describe('object - Hash', function() {
         expect(qs).toBe('action=ship&order_id=123&fees=f1&fees=f2');
     });
 
-    it.skip('inspect', () => {
+    it('inspect', () => {
         const a = {
                 action: 'ship',
                 order_id: 123,
@@ -113,7 +113,7 @@ describe('object - Hash', function() {
         expect(i).toBe(`#<Hash:{"action": "ship", "order_id": 123, "fees": [\n  "f1",\n  "f2"\n]}>`);
     });
 
-    it.skip('inspect', () => {
+    it('clone', () => {
         const a = {
                 action: 'ship',
                 order_id: 123,

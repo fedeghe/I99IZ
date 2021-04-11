@@ -1,4 +1,4 @@
-import _Array from './Array.js'
+import { _Array } from './../Triad'
 import _Date from './Date.js'
 import _Element from './Element.js'
 import _Event from './Event.js'

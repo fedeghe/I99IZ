@@ -1,6 +1,6 @@
 import Ajax from './Ajax.js'
 // import Class from './Class.js'
-import Enumerable from './Enumerable.js'
+import { _Enumerable } from './../Triad'
 // import Hash from './Hash.js'
 import Prototype from './Prototype'
 // import Template from './Template'
@@ -8,7 +8,7 @@ import Prototype from './Prototype'
 export default {
     Ajax,
     // Class,
-    Enumerable,
+    Enumerable: _Enumerable,
     // Hash,
     Prototype,
     // Template
