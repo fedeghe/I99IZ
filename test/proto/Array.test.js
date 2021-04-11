@@ -49,5 +49,15 @@ describe('prototype - Array', function() {
         bench.positive.forEach(b => expect(_Array.every(b)).toBe(true))
         bench.negative.forEach(b => expect(_Array.every(b)).toBe(false))
     });
+    it('map', () => {
+        var a = [undefined, 'A', undefined, 'B', null, 'C'],
+            b = [1, 2, 3, 4, 5, 6],
+            a0 = _Array.map(a),
+            b0 = _Array.map(b, e => e * e);
+
+        expect(a0).toMatchObject(a)
+        expect(b0).toMatchObject([1, 4, 9, 16, 25, 36])
+
+    });
 
 });
