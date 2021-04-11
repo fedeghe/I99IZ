@@ -57,7 +57,6 @@ describe('prototype - Array', function() {
 
         expect(a0).toMatchObject(a)
         expect(b0).toMatchObject([1, 4, 9, 16, 25, 36])
-
     });
 
 });
