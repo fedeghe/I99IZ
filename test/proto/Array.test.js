@@ -116,6 +116,21 @@ describe('prototype - Array', function() {
             expect(_Array.indexOf.apply(null, input)).toBe(bench.output[i])
         })
     });
+    it('inspect', () => {
+        const bench = {
+            input: [
+                [3, 6, 4, 8, 6, 1, 66],
+                [3, { name: 'foo' }, 66]
+            ],
+            output: [
+                '[3, 6, 4, 8, 6, 1, 66]',
+                '[3, {\n  "name": "foo"\n}, 66]'
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.inspect(input)).toBe(bench.output[i])
+        })
+    });
     it('map', () => {
         var a = [undefined, 'A', undefined, 'B', null, 'C'],
             b = [1, 2, 3, 4, 5, 6],
