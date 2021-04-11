@@ -67,6 +67,19 @@ describe('prototype - Array', function() {
             expect(_Array.filter(input.a, input.f)).toMatchObject(bench.output[i])
         })
     });
+    it('first', () => {
+        const bench = {
+            input: [
+                [1, 2, 3, 4, 5, 6],
+                ['foo'],
+                ['boo', 'foo'],
+            ],
+            output: [1, 'foo', 'boo'],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.first(input)).toBe(bench.output[i])
+        })
+    });
     it('map', () => {
         var a = [undefined, 'A', undefined, 'B', null, 'C'],
             b = [1, 2, 3, 4, 5, 6],
