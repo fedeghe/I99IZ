@@ -601,7 +601,8 @@ export const _Array = extend(_Enumerable, (function() {
     const clear = a => a.length = 0;
     const clone = a => [].slice.call(a, 0);
     const compact = a => a.filter(e => e != null);
-    const every = (a, iterator = Prototype.K, ctx = null) => a.every(iterator);
+    const every = (a, iterator = Prototype.K, ctx = null) => a.every(iterator.bind(ctx));
+    const filter = (a, iterator = Prototype.K, ctx = null) => a.filter(iterator.bind(ctx));
     const map = (a, iterator = Prototype.K, ctx = null) => a.map(iterator);
     const last = a => a[a.length - 1];
     return {
@@ -610,6 +611,7 @@ export const _Array = extend(_Enumerable, (function() {
         clone,
         compact,
         every,
+        filter,
         from: $A,
         // inject,
         inspect: ARRAY_inspect,

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import { _Array } from './../../src/Triad'
-import { isNumber, isUndefined } from './../../src/core/checkers'
+import { isNumber, isString } from './../../src/core/checkers'
 
 describe('prototype - Array', function() {
     it('each, from Enumerable', () => {
@@ -48,6 +48,24 @@ describe('prototype - Array', function() {
         }
         bench.positive.forEach(b => expect(_Array.every(b)).toBe(true))
         bench.negative.forEach(b => expect(_Array.every(b)).toBe(false))
+    });
+    it('filter', () => {
+        const bench = {
+            input: [{
+                a: [1, 2, 3, 4, 5, 6],
+                f: a => a % 2 === 0
+            }, {
+                a: [1, '2', '3', 4],
+                f: isString
+            }],
+            output: [
+                [2, 4, 6],
+                ['2', '3']
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.filter(input.a, input.f)).toMatchObject(bench.output[i])
+        })
     });
     it('map', () => {
         var a = [undefined, 'A', undefined, 'B', null, 'C'],
