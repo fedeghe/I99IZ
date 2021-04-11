@@ -80,6 +80,21 @@ describe('prototype - Array', function() {
             expect(_Array.first(input)).toBe(bench.output[i])
         })
     });
+    it('flatten', () => {
+        const bench = {
+            input: [
+                [1, 2, [3, [4, [5, [6, 7]]], 8, [9, [10]]]],
+                [1, [2, [3, [4, [5, [6, [7, [8, [9, [10]]]]]]]]], 11],
+            ],
+            output: [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.flatten(input)).toMatchObject(bench.output[i])
+        })
+    });
     it('map', () => {
         var a = [undefined, 'A', undefined, 'B', null, 'C'],
             b = [1, 2, 3, 4, 5, 6],
