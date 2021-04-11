@@ -22,6 +22,10 @@ describe('prototype - Array', function() {
             b = _Array.clone(a);
         expect(a.length).toBe(b.length)
         a.forEach((e, i) => expect(a[i]).toBe(b[i]))
+            //no ref
+        b[0] = 2;
+        expect(a[0]).toBe(1)
+        expect(b[0]).toBe(2)
     });
 
 });
