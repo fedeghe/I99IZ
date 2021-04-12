@@ -210,5 +210,20 @@ describe('prototype - Array', function() {
             expect(_Array.reverse(input)).toMatchObject(bench.output[i])
         })
     });
+    it('size', () => {
+        const bench = {
+            input: [
+                [3, 6, 4, 8, 6, 1, 66],
+                [],
+                [2],
+            ],
+            output: [
+                7, 0, 1
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.size(input)).toBe(bench.output[i])
+        })
+    });
 
 });

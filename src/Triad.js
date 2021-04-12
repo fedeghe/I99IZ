@@ -637,6 +637,7 @@ export const _Array = extend(_Enumerable, (function() {
         }
         return ret;
     }
+    const size = a => a.length
     return {
         _each: each,
         clear,
@@ -654,7 +655,8 @@ export const _Array = extend(_Enumerable, (function() {
         last,
         lastIndexOf,
         map,
-        reverse
+        reverse,
+        size
     }
 })())
 
