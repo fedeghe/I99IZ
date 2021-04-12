@@ -152,6 +152,19 @@ describe('prototype - Array', function() {
             expect(_Array.intersect.apply(null, input)).toMatchObject(bench.output[i])
         })
     });
+    it('last', () => {
+        const bench = {
+            input: [
+                [1, 2, 3, 4, 5, 6],
+                ['foo'],
+                ['boo', 'foo'],
+            ],
+            output: [6, 'foo', 'foo'],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.last(input)).toBe(bench.output[i])
+        })
+    });
     it('map', () => {
         var a = [undefined, 'A', undefined, 'B', null, 'C'],
             b = [1, 2, 3, 4, 5, 6],
