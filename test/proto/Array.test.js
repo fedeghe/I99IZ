@@ -195,5 +195,20 @@ describe('prototype - Array', function() {
         expect(a0).toMatchObject(a)
         expect(b0).toMatchObject([1, 4, 9, 16, 25, 36])
     });
+    it('reverse', () => {
+        const bench = {
+            input: [
+                [3, 6, 4, 8, 6, 1, 66],
+                [3, 6, 4, 'bbb', 6, 'AAAA', 66],
+            ],
+            output: [
+                [66, 1, 6, 8, 4, 6, 3],
+                [66, 'AAAA', 6, 'bbb', 4, 6, 3],
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.reverse(input)).toMatchObject(bench.output[i])
+        })
+    });
 
 });

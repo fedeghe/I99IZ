@@ -628,6 +628,15 @@ export const _Array = extend(_Enumerable, (function() {
         if (isUndefined(i)) i = a.length - 1;
         return a.lastIndexOf(item, i);
     }
+    const reverse = a => {
+        if (isFunction(a.reverse)) return a.slice().reverse()
+        var ret = [],
+            l = a.length;
+        while (l) {
+            ret.push(a[--l])
+        }
+        return ret;
+    }
     return {
         _each: each,
         clear,
@@ -645,6 +654,7 @@ export const _Array = extend(_Enumerable, (function() {
         last,
         lastIndexOf,
         map,
+        reverse
     }
 })())
 
