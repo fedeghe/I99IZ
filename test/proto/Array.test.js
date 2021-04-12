@@ -165,6 +165,27 @@ describe('prototype - Array', function() {
             expect(_Array.last(input)).toBe(bench.output[i])
         })
     });
+    it('lastIndexOf', () => {
+        const bench = {
+            input: [
+                [
+                    [3, 6, 4, 8, 6, 1, 66], 6
+                ],
+                [
+                    [3, 6, 4, 8, 6, 1, 66], 6, 3
+                ],
+                [
+                    [3, 6, 4, 8, 6, 1, 66], 6, -4
+                ],
+            ],
+            output: [
+                4, 1, 1
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.lastIndexOf.apply(null, input)).toBe(bench.output[i])
+        })
+    });
     it('map', () => {
         var a = [undefined, 'A', undefined, 'B', null, 'C'],
             b = [1, 2, 3, 4, 5, 6],

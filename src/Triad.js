@@ -624,6 +624,10 @@ export const _Array = extend(_Enumerable, (function() {
     }
     const map = (a, iterator = Prototype.K, ctx = null) => a.map(iterator);
     const last = a => a[a.length - 1];
+    const lastIndexOf = (a, item, i) => {
+        if (isUndefined(i)) i = a.length - 1;
+        return a.lastIndexOf(item, i);
+    }
     return {
         _each: each,
         clear,
@@ -638,8 +642,9 @@ export const _Array = extend(_Enumerable, (function() {
         indexOf,
         inspect: ARRAY_inspect,
         intersect,
+        last,
+        lastIndexOf,
         map,
-        last
     }
 })())
 
