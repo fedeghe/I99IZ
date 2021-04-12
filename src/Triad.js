@@ -650,6 +650,12 @@ export const _Array = extend(_Enumerable, (function() {
             return acc
         }, [])
     }
+    const without = (a, ...wo) => a.reduce((acc, el) => {
+        if (!(wo.includes(el))) acc.push(el)
+        return acc;
+    }, [])
+
+
     return {
         _each: each,
         clear,
@@ -670,7 +676,8 @@ export const _Array = extend(_Enumerable, (function() {
         reverse,
         size,
         some,
-        uniq
+        uniq,
+        without
     }
 })())
 
