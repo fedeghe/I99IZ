@@ -225,5 +225,32 @@ describe('prototype - Array', function() {
             expect(_Array.size(input)).toBe(bench.output[i])
         })
     });
+    it('some', () => {
+        const bench = {
+            input: [
+                [
+                    [0, false, '', null]
+                ],
+                [
+                    [0, false, '', null, 1]
+                ],
+                [
+                    [0, 1, 0, 0, 0]
+                ],
+                [
+                    [1, 45, 3, 4, 6], e => e > 45
+                ],
+                [
+                    [1, 45, 3, 4, 6], e => e > 44
+                ],
+            ],
+            output: [
+                false, true, true, false, true
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.some.apply(null, input)).toBe(bench.output[i])
+        })
+    });
 
 });

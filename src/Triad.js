@@ -638,6 +638,7 @@ export const _Array = extend(_Enumerable, (function() {
         return ret;
     }
     const size = a => a.length
+    const some = (a, iterator = Prototype.K) => a.some(iterator)
     return {
         _each: each,
         clear,
@@ -656,7 +657,8 @@ export const _Array = extend(_Enumerable, (function() {
         lastIndexOf,
         map,
         reverse,
-        size
+        size,
+        some,
     }
 })())
 
