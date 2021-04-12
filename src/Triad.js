@@ -639,6 +639,17 @@ export const _Array = extend(_Enumerable, (function() {
     }
     const size = a => a.length
     const some = (a, iterator = Prototype.K) => a.some(iterator)
+    const uniq = (a, sorted = false) => {
+        return sorted ? a.reduce((acc, el) => {
+            if (acc[acc.length - 1] !== el) {
+                acc.push(el)
+            }
+            return acc
+        }, []) : a.reduce((acc, el) => {
+            if (!(acc.includes(el))) acc.push(el)
+            return acc
+        }, [])
+    }
     return {
         _each: each,
         clear,
@@ -659,6 +670,7 @@ export const _Array = extend(_Enumerable, (function() {
         reverse,
         size,
         some,
+        uniq
     }
 })())
 

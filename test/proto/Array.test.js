@@ -252,5 +252,32 @@ describe('prototype - Array', function() {
             expect(_Array.some.apply(null, input)).toBe(bench.output[i])
         })
     });
+    it('uniq', () => {
+        const bench = {
+            input: [
+                [
+                    [0, false, '', null]
+                ],
+                [
+                    [2, 6, 3, 8, 5, 3, 5, 9, 1, 9, 0]
+                ],
+                [
+                    [1, 1, 2, 3, 4, 4, 5, 5, 6, 7, 8, 8, 9, 9, 9]
+                ],
+                [
+                    [1, 1, 2, 3, 4, 4, 5, 5, 6, 7, 8, 8, 9, 9, 9], true
+                ],
+            ],
+            output: [
+                [0, false, '', null],
+                [2, 6, 3, 8, 5, 9, 1, 0],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            ],
+        };
+        bench.input.forEach(function(input, i) {
+            expect(_Array.uniq.apply(null, input)).toMatchObject(bench.output[i])
+        })
+    });
 
 });
