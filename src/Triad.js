@@ -596,22 +596,88 @@ export const _Template = (function() {
 
 
 
-
-
 export const _Array = extend(_Enumerable, (function() {
-    // const inject = (arr, memo, iterator, ctx) => {
-    //     iterator = iterator || Prototype.K;
-    //     return arr.reduce(iterator.bind(ctx), memo);
-    // }
+    const each = (a, iterator, ctx) => a.forEach(iterator.bind(ctx));
+    const clear = a => a.length = 0;
+    const clone = a => [].slice.call(a, 0);
+    const compact = a => a.filter(e => e != null);
+    const every = (a, iterator = Prototype.K, ctx = null) => a.every(iterator.bind(ctx));
+    const filter = (a, iterator = Prototype.K, ctx = null) => a.filter(iterator.bind(ctx));
+    const first = a => a[0];
+    const flatten = a => a.reduce((acc, el) => {
+        if (isArray(el)) {
+            return acc.concat(flatten(el))
+        } else {
+            acc.push(el)
+            return acc
+        }
+    }, [])
+    const indexOf = (a, e) => a.indexOf(e);
+    const intersect = (a, b) => {
+        const al = a.length,
+            bl = b.length,
+            doit = (x, y) => x.reduce((acc, e) => {
+                if (indexOf(y, e) >= 0 && indexOf(acc, e) < 0) acc.push(e)
+                return acc
+            }, [])
+        return al > bl ? doit(b, a) : doit(a, b)
+    }
+    const map = (a, iterator = Prototype.K, ctx = null) => a.map(iterator);
+    const last = a => a[a.length - 1];
+    const lastIndexOf = (a, item, i) => {
+        if (isUndefined(i)) i = a.length - 1;
+        return a.lastIndexOf(item, i);
+    }
+    const reverse = a => {
+        if (isFunction(a.reverse)) return a.slice().reverse()
+        var ret = [],
+            l = a.length;
+        while (l) {
+            ret.push(a[--l])
+        }
+        return ret;
+    }
+    const size = a => a.length
+    const some = (a, iterator = Prototype.K) => a.some(iterator)
+    const uniq = (a, sorted = false) => {
+        return sorted ? a.reduce((acc, el) => {
+            if (acc[acc.length - 1] !== el) {
+                acc.push(el)
+            }
+            return acc
+        }, []) : a.reduce((acc, el) => {
+            if (!(acc.includes(el))) acc.push(el)
+            return acc
+        }, [])
+    }
+    const without = (a, ...wo) => a.reduce((acc, el) => {
+        if (!(wo.includes(el))) acc.push(el)
+        return acc;
+    }, [])
 
-    const last = a => a[a.length - 1]
-    const each = (a, iterator, ctx) => a.forEach(iterator.bind(ctx))
+
     return {
         _each: each,
+        clear,
+        clone,
+        compact,
+        every,
+        filter,
+        first,
+        flatten,
         from: $A,
         // inject,
+        indexOf,
         inspect: ARRAY_inspect,
-        last
+        intersect,
+        last,
+        lastIndexOf,
+        map,
+        reverse,
+        size,
+        some,
+        uniq,
+        without
     }
 })())
 
