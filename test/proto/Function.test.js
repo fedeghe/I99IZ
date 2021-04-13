@@ -16,10 +16,10 @@ describe('prototype - Function', function() {
         function showArguments() {
             return $A(arguments).join(', ');
         }
-        const fn = _Function.curry(showArguments, 1, 2, 3);
-        const r = fn(4, 5)
-
-        expect(r).toBe('1, 2, 3, 4, 5')
+        const fn1 = _Function.curry(showArguments, 1, 2, 3);
+        expect(fn1(6, 7, 8)).toBe('1, 2, 3, 6, 7, 8')
+        const fn2 = _Function.curry(fn1, 4, 5);
+        expect(fn2(4, 5)).toBe('1, 2, 3, 4, 5, 4, 5')
     })
 
     it('wrap', () => {
