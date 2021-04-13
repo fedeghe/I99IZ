@@ -12,6 +12,15 @@ describe('prototype - Function', function() {
         expect(_Function.argumentNames(aFunction)).toMatchObject(["foo", "boo", "too"])
     })
 
+    it('bind', () => {
+        function O() {}
+        O.prototype.sayIt = function() { return 'foo foo' }
+
+        function iSayIt() { return this.sayIt() }
+        const fn = _Function.bind(iSayIt, new O);
+        expect(fn()).toBe('foo foo')
+    })
+
     it('curry', () => {
         function showArguments() {
             return $A(arguments).join(', ');

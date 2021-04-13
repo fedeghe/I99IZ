@@ -1,3 +1,5 @@
+import { isFunction, isUndefined } from './../core/checkers'
+
 function update(array, args) {
     var arrayLength = array.length,
         length = args.length;
@@ -41,8 +43,32 @@ function curry(func, ...args) {
     }
 }
 
+function bind(fn, context) {
+    if (arguments.length < 3 && isUndefined(arguments[1]))
+        return fn;
+
+    if (!isFunction(fn))
+        throw new TypeError("The object is not callable.");
+
+    var nop = function() {};
+    var __method = fn,
+        args = [].slice.call(arguments, 2);
+
+    var bound = function() {
+        var a = merge(args, arguments);
+        var c = this instanceof bound ? this : context;
+        return __method.apply(c, a);
+    };
+
+    nop.prototype = fn.prototype;
+    bound.prototype = new nop();
+
+    return bound;
+}
+
 const _Function = {
     argumentNames,
+    bind,
     bindAsEventListener,
     curry,
     wrap
