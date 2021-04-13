@@ -5,6 +5,8 @@ import _Function from './../../src/protos/Function'
 import $A from './../../src/funcs/$A'
 import { isNumber, isString } from './../../src/core/checkers'
 
+jest.useFakeTimers();
+
 describe('prototype - Function', function() {
 
     it('argumentNames', () => {
@@ -30,6 +32,15 @@ describe('prototype - Function', function() {
         const fn2 = _Function.curry(fn1, 4, 5);
         expect(fn2(4, 5)).toBe('1, 2, 3, 4, 5, 4, 5')
     })
+
+    it('delay', () => {
+        const callback = jest.fn();
+        _Function.delay(callback, 1, 'hello')
+        jest.runAllTimers();
+        expect(callback).toBeCalled();
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback).toHaveBeenCalledWith('hello')
+    }, 2000)
 
     it('wrap', () => {
         function aFunction(foo, boo, too) {

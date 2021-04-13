@@ -66,11 +66,21 @@ function bind(fn, context) {
     return bound;
 }
 
+function delay(fn, timeout) {
+    var __method = fn,
+        args = [].slice.call(arguments, 2);
+    timeout = timeout * 1000;
+    return window.setTimeout(function() {
+        return __method.apply(__method, args);
+    }, timeout);
+}
+
 const _Function = {
     argumentNames,
     bind,
     bindAsEventListener,
     curry,
+    delay,
     wrap
 }
 export default _Function
