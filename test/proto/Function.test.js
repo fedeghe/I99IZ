@@ -50,6 +50,18 @@ describe('prototype - Function', function() {
         expect(callback).toHaveBeenCalledTimes(1);
     })
 
+    it('methodize', () => {
+        function setName(target, name) {
+            target.name = name;
+        }
+        var obj = {};
+        setName(obj, 'Fred');
+        expect(obj.name).toBe('Fred');
+        obj.setName = _Function.methodize(setName);
+        obj.setName('Barney');
+        expect(obj.name).toBe('Barney');
+    })
+
     it('wrap', () => {
         function aFunction(foo, boo, too) {
             return `${foo} - ${boo} - ${too}`

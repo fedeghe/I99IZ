@@ -80,6 +80,15 @@ function defer(fn) {
     return delay.apply(fn, args);
 }
 
+function methodize(fn) {
+    if (fn._methodized) return fn._methodized;
+    var __method = fn;
+    return fn._methodized = function() {
+        var a = update([this], arguments);
+        return __method.apply(null, a);
+    };
+}
+
 const _Function = {
     argumentNames,
     bind,
@@ -87,6 +96,7 @@ const _Function = {
     curry,
     defer,
     delay,
+    methodize,
     wrap
 }
 export default _Function
