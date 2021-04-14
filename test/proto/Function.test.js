@@ -40,7 +40,15 @@ describe('prototype - Function', function() {
         expect(callback).toBeCalled();
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback).toHaveBeenCalledWith('hello')
-    }, 2000)
+    })
+
+    it('defer', () => {
+        const callback = jest.fn();
+        _Function.defer(callback, 'hello')
+        jest.runAllTimers();
+        expect(callback).toBeCalled();
+        expect(callback).toHaveBeenCalledTimes(1);
+    })
 
     it('wrap', () => {
         function aFunction(foo, boo, too) {

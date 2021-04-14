@@ -75,11 +75,17 @@ function delay(fn, timeout) {
     }, timeout);
 }
 
+function defer(fn) {
+    var args = update([fn, 0.01], arguments);
+    return delay.apply(fn, args);
+}
+
 const _Function = {
     argumentNames,
     bind,
     bindAsEventListener,
     curry,
+    defer,
     delay,
     wrap
 }
