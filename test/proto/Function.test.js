@@ -23,6 +23,12 @@ describe('prototype - Function', function() {
         expect(fn()).toBe('foo foo')
     })
 
+    it('bindAsEventListener', () => {
+        var sayIt = function(event, to, who) { return `I say foo foo ${to} ${who}` }
+        const fn = _Function.bindAsEventListener(sayIt, 'a', 'b');
+        expect(fn({})).toBe('I say foo foo a b')
+    })
+
     it('curry', () => {
         function showArguments() {
             return $A(arguments).join(', ');

@@ -28,7 +28,7 @@ function wrap(func, wrapper) {
 }
 
 function bindAsEventListener(func, context) {
-    var args = slice.call(arguments, 2);
+    var args = [].slice.call(arguments, 1);
     return function(event) {
         var a = update([event || window.event], args);
         return func.apply(context, a);
