@@ -1,6 +1,6 @@
 import 'expect-puppeteer'
 let page;
-describe('$$', function() {
+describe('Number.prototype', function() {
     beforeAll(async() => {
         page = await browser.newPage();
         await page.goto('http://localhost:8080/', {
