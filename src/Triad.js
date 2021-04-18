@@ -376,22 +376,20 @@ export const _Class = (function() {
         for (var i = 0, length = properties.length; i < length; i++) {
             var property = properties[i],
                 value = source[property];
-            if (ancestor && isFunction(value) &&
-
-                _Object.argumentNames(value)[0] == "$super") {
-
+            if (
+                ancestor &&
+                isFunction(value) &&
+                _Function.argumentNames(value)[0] == "$super"
+            ) {
                 var method = value;
-                value = _Function.wrap(
-                    (function(m) {
-                        return function() {
-                            return ancestor[m].apply(this, arguments);
-                        };
-                    })(property),
-                    method
-                );
-                value.valueOf = (function(method) {
+                value = _Function.wrap((function(m) {
                     return function() {
-                        return method.valueOf.call(method);
+                        return ancestor[m].apply(this, arguments);
+                    };
+                })(property), method);
+                value.valueOf = (function(m) {
+                    return function() {
+                        return m.valueOf.call(m);
                     };
                 })(method);
 
@@ -401,6 +399,7 @@ export const _Class = (function() {
                     };
                 })(method);
             }
+            // console.log(this)
             this.prototype[property] = value;
         }
         return this;
