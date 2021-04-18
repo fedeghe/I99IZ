@@ -34,6 +34,7 @@ describe('object - Class', () => {
             expect(p.program()).toBe('System.out.println(\"Hello world\");')
         });
     });
+    // TODO
     describe('addMethods', () => {
         it.skip('should add Methods as expected', () => {
             var Animal = _Class.create({
