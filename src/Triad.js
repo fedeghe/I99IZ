@@ -326,8 +326,6 @@ export const _Object = (function() {
     }
 })();
 
-
-
 /**
  * Class
  */
@@ -414,8 +412,6 @@ export const _Class = (function() {
         }
     }
 })();
-
-
 
 /**
  * Hash
