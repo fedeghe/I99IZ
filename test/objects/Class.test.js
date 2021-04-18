@@ -19,17 +19,42 @@ describe('object - Class', () => {
             expect(a.speak()).toBe('Blue says: Woof!')
         });
         it('should extend a class as expected', () => {
-            function Person(name) {
-                this.name = name
-            }
-            const Programmer = _Class.create(new Person('Jack'), {
+            const Person = _Class.create({
+                initialize: function(name) {
+                    this.name = name
+                }
+            })
+            const Programmer = _Class.create(Person, {
                 program: () => 'System.out.println("Hello world");'
             })
-            const p = new Programmer()
+            const p = new Programmer('Jack')
             expect(p.name).toBe('Jack')
             p.name = 'Jeff'
             expect(p.name).toBe('Jeff')
             expect(p.program()).toBe('System.out.println(\"Hello world\");')
+        });
+    });
+    // TODO
+    describe('addMethods', () => {
+        it.skip('should add Methods as expected', () => {
+            var Animal = _Class.create({
+                initialize: function(name, sound) {
+                    // console.log(this)
+                    this.name = name;
+                    this.sound = sound;
+                },
+                speak: function() {
+                    return this.name + " says: " + this.sound + "!";
+                }
+            });
+            var Snake = _Class.create(Animal, {
+                initialize: function($super, name) {
+                    // console.log('super', this, $super)
+                    $super(name, 'hissssssssss');
+                }
+            });
+            var ringneck = new Snake('xxxx')
+            expect(ringneck.speak()).toBe('Ringneck says: hissssssssss!')
         });
     });
 });
