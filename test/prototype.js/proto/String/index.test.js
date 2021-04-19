@@ -84,5 +84,24 @@ describe('String.prototype', function() {
         })
     });
 
+    it('endsWith', async() => {
+        const out = [
+            true, true,
+            false, false
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                [' ', ' '],
+                ['hello!', 'lo!'],
+                ['hello!', 'lo'],
+                ['', ' '],
+            ]
+            return d.map(e => e[0].endsWith(e[1]));
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
