@@ -67,5 +67,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('empty', async() => {
+        const out = [
+            false, true, false
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ' ',
+                '',
+                'a'
+            ]
+            return d.map(e => e.empty());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
