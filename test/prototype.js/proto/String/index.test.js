@@ -87,16 +87,18 @@ describe('String.prototype', function() {
     it('endsWith', async() => {
         const out = [
             true, true,
-            false, false
+            false, false,
+            true
         ]
         const r = await page.evaluate(() => {
             var d = [
-                [' ', ' '],
-                ['hello!', 'lo!'],
-                ['hello!', 'lo'],
-                ['', ' '],
+                [' ', [' ']],
+                ['hello!', ['lo!']],
+                ['hello!', ['lo']],
+                ['', [' ']],
+                ['slaughter', ['laugh', 6]]
             ]
-            return d.map(e => e[0].endsWith(e[1]));
+            return d.map(e => e[0].endsWith.apply(e[0], e[1]));
         })
         out.forEach((v, i) => {
             expect(r[i]).toBe(out[i])
