@@ -105,5 +105,20 @@ describe('String.prototype', function() {
         })
     });
 
+    it('escapeHTML', async() => {
+        const out = [
+            '&lt;div class="article"&gt;This is an article&lt;/div&gt;'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                '<div class="article">This is an article</div>',
+            ]
+            return d.map(e => e.escapeHTML());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
