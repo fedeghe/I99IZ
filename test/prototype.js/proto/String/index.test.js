@@ -120,5 +120,25 @@ describe('String.prototype', function() {
         })
     });
 
+    it('evalJSON', async() => {
+        const out = [
+            { "name": "Violet", "occupation": "character" },
+            { "name": "Violet", "occupation": "character" },
+
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['{ "name": "Violet", "occupation": "character" }'],
+                ['/*-secure-\n{"name": "Violet", "occupation": "character"}\n*\/']
+            ]
+            return d.map(e => e.length ? e[0].evalJSON(e[1]) :
+                e[0].evalJSON()
+            );
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
 
 });
