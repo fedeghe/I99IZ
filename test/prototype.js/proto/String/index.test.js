@@ -228,5 +228,24 @@ describe('String.prototype', function() {
         })
     });
 
+    it('inspect', async() => {
+        const out = [
+            '\'I\\\'m so happy.\'',
+            '"I\'m so happy."'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['I\'m so happy.', false],
+                ['I\'m so happy.', true],
+            ]
+            return d.map(e => {
+                return e[0].inspect.call(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
