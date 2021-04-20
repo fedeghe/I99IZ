@@ -207,5 +207,26 @@ describe('String.prototype', function() {
         })
     });
 
+    it('include', async() => {
+        const out = [
+            true, false, true, true, false
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['Prototype framework', 'frame'],
+                ['Prototype framework', 'frameset'],
+                ['Prototype framework', 'work'],
+                ['Prototype framework', 'type'],
+                ['Prototype framework', 'Type'] // it is case sensitive
+            ]
+            return d.map(e => {
+                return e[0].include.call(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
