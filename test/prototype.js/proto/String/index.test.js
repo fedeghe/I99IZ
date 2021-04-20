@@ -120,5 +120,221 @@ describe('String.prototype', function() {
         })
     });
 
+    it('evalJSON', async() => {
+        const out = [
+            { "name": "Violet", "occupation": "character" },
+            { "name": "Violet", "occupation": "character" },
+
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['{ "name": "Violet", "occupation": "character" }'],
+                ['/*-secure-\n{"name": "Violet", "occupation": "character"}\n*\/']
+            ]
+            return d.map(e => e.length ? e[0].evalJSON(e[1]) :
+                e[0].evalJSON()
+            );
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
+    it('evalScripts', async() => {
+        const out = [
+            [4],
+            [6, "hello"]
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'lorem... <script>2 + 2</script>',
+                '<script>2 + 4</script><script>(function (){return "hello"})()</script>'
+            ]
+            return d.map(e => e.evalScripts());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
+    it('extractScripts', async() => {
+        const out = [
+            ['2 + 2'],
+            ['2 + 4', '(function (){return "hello"})()']
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'lorem... <script>2 + 2</script>',
+                '<script>2 + 4</script><script>(function (){return "hello"})()</script>'
+            ]
+            return d.map(e => e.extractScripts());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
+    it('gsub', async() => {
+        const out = [
+            'click, dblclick, mousedown, mouseup, mouseover, mousemove, mouseout',
+            'click, dblclick, mousedown, mouseup, mouseover, mousemove, mouseout',
+            'onClick onDblclick onMousedown onMouseup onMouseover onMousemove onMouseout',
+            '<img alt="a pear" src="/img/pear.jpg" /> <img alt="an orange" src="/img/orange.jpg" />',
+            '<img alt="a pear" src="/img/pear.jpg" /> <img alt="an orange" src="/img/orange.jpg" />'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['click dblclick mousedown mouseup mouseover mousemove mouseout', [' ', ', ']],
+                ['click dblclick mousedown mouseup mouseover mousemove mouseout', [/\s+/, ', ']],
+                ['click dblclick mousedown mouseup mouseover mousemove mouseout', [/\w+/, function(match) { return 'on' + match[0].capitalize() }]],
+                ['![a pear](/img/pear.jpg) ![an orange](/img/orange.jpg)', [
+                    /!\[(.*?)\]\((.*?)\)/,
+                    function(match) {
+                        return '<img alt="' + match[1] + '" src="' + match[2] + '" />';
+                    }
+                ]],
+                ['![a pear](/img/pear.jpg) ![an orange](/img/orange.jpg)', [
+                    /!\[(.*?)\]\((.*?)\)/, '<img alt="#{1}" src="#{2}" />'
+                ]]
+
+            ]
+            return d.map(e => {
+                return e[0].gsub.apply(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('include', async() => {
+        const out = [
+            true, false, true, true, false
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['Prototype framework', 'frame'],
+                ['Prototype framework', 'frameset'],
+                ['Prototype framework', 'work'],
+                ['Prototype framework', 'type'],
+                ['Prototype framework', 'Type'] // it is case sensitive
+            ]
+            return d.map(e => {
+                return e[0].include.call(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('inspect', async() => {
+        const out = [
+            '\'I\\\'m so happy.\'',
+            '"I\'m so happy."'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['I\'m so happy.', false],
+                ['I\'m so happy.', true],
+            ]
+            return d.map(e => {
+                return e[0].inspect.call(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('interpolate', async() => {
+        const out = [
+            "I'm Federico and I can do anything",
+            "I'm Federico and I can do anything",
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ["I'm #{name} and I can do #{what}", [{ name: 'Federico', what: 'anything' }]],
+                ["I'm ${name} and I can do ${what}", [{ name: 'Federico', what: 'anything' }, /(^|.|\r|\n)(\$\{(\w*)\})/]],
+            ]
+            return d.map(e => {
+                return e[0].interpolate.apply(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('interpret', async() => {
+        const out = [
+            "1",
+            "2.1212",
+            "false",
+            "true",
+            "",
+            "",
+            "function () {}",
+        ]
+        const r = await page.evaluate(() => {
+            var d = [1, 2.1212, false, true, null, undefined, () => {}]
+            return d.map(e => {
+                return String.interpret(e)
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('isJSON', async() => {
+        const out = [
+            false, false,
+            // false, buggy (prototype.js line 765)
+            true
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                "what",
+                "\"something\"",
+                // '{foo:42}',
+                "{\"foo\":42}"
+            ]
+            return d.map(e => {
+                return e[0].isJSON.call(e[0])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('parseQuery', async() => {
+        const out = [
+            { section: 'blog', id: '45' },
+            { section: 'blog', id: '45' },
+            { section: 'blog', id: '45' },
+            { section: 'blog', tag: ['javascript', 'prototype', 'doc'] },
+            { tag: 'ruby on rails' },
+            { id: '45', raw: undefined }
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ["section=blog&id=45", '&'],
+                ['section=blog;id=45', ';'],
+                ['http://www.example.com?section=blog&id=45#comments'],
+                ['section=blog&tag=javascript&tag=prototype&tag=doc'],
+                ['tag=ruby%20on%20rails'],
+                ['id=45&raw']
+            ]
+            return d.map(e => {
+                return e[0].parseQuery.call(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(JSON.stringify(r[i])).toBe(JSON.stringify(out[i]))
+        })
+    });
+
 
 });
