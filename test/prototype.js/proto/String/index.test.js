@@ -311,11 +311,21 @@ describe('String.prototype', function() {
 
     it('parseQuery', async() => {
         const out = [
-            { section: 'blog', id: '45' }
+            { section: 'blog', id: '45' },
+            { section: 'blog', id: '45' },
+            { section: 'blog', id: '45' },
+            { section: 'blog', tag: ['javascript', 'prototype', 'doc'] },
+            { tag: 'ruby on rails' },
+            { id: '45', raw: undefined }
         ]
         const r = await page.evaluate(() => {
             var d = [
-                ["section=blog&id=45", '&']
+                ["section=blog&id=45", '&'],
+                ['section=blog;id=45', ';'],
+                ['http://www.example.com?section=blog&id=45#comments'],
+                ['section=blog&tag=javascript&tag=prototype&tag=doc'],
+                ['tag=ruby%20on%20rails'],
+                ['id=45&raw']
             ]
             return d.map(e => {
                 return e[0].parseQuery.call(e[0], e[1])
