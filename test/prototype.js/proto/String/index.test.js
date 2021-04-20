@@ -157,5 +157,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('extractScripts', async() => {
+        const out = [
+            ['2 + 2'],
+            ['2 + 4', '(function (){return "hello"})()']
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'lorem... <script>2 + 2</script>',
+                '<script>2 + 4</script><script>(function (){return "hello"})()</script>'
+            ]
+            return d.map(e => e.extractScripts());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
 
 });
