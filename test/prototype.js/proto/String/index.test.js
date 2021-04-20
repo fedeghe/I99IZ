@@ -174,5 +174,38 @@ describe('String.prototype', function() {
         })
     });
 
+    it('gsub', async() => {
+        const out = [
+            'click, dblclick, mousedown, mouseup, mouseover, mousemove, mouseout',
+            'click, dblclick, mousedown, mouseup, mouseover, mousemove, mouseout',
+            'onClick onDblclick onMousedown onMouseup onMouseover onMousemove onMouseout',
+            '<img alt="a pear" src="/img/pear.jpg" /> <img alt="an orange" src="/img/orange.jpg" />',
+            '<img alt="a pear" src="/img/pear.jpg" /> <img alt="an orange" src="/img/orange.jpg" />'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['click dblclick mousedown mouseup mouseover mousemove mouseout', [' ', ', ']],
+                ['click dblclick mousedown mouseup mouseover mousemove mouseout', [/\s+/, ', ']],
+                ['click dblclick mousedown mouseup mouseover mousemove mouseout', [/\w+/, function(match) { return 'on' + match[0].capitalize() }]],
+                ['![a pear](/img/pear.jpg) ![an orange](/img/orange.jpg)', [
+                    /!\[(.*?)\]\((.*?)\)/,
+                    function(match) {
+                        return '<img alt="' + match[1] + '" src="' + match[2] + '" />';
+                    }
+                ]],
+                ['![a pear](/img/pear.jpg) ![an orange](/img/orange.jpg)', [
+                    /!\[(.*?)\]\((.*?)\)/, '<img alt="#{1}" src="#{2}" />'
+                ]]
+
+            ]
+            return d.map(e => {
+                return e[0].gsub.apply(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
