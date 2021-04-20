@@ -287,5 +287,27 @@ describe('String.prototype', function() {
         })
     });
 
+    it('isJSON', async() => {
+        const out = [
+            false, false,
+            // false, buggy (prototype.js line 765)
+            true
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                "what",
+                "\"something\"",
+                // '{foo:42}',
+                "{\"foo\":42}"
+            ]
+            return d.map(e => {
+                return e[0].isJSON.call(e[0])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
