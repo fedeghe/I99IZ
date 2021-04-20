@@ -247,5 +247,24 @@ describe('String.prototype', function() {
         })
     });
 
+    it('interpolate', async() => {
+        const out = [
+            "I'm Federico and I can do anything",
+            "I'm Federico and I can do anything",
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ["I'm #{name} and I can do #{what}", [{ name: 'Federico', what: 'anything' }]],
+                ["I'm ${name} and I can do ${what}", [{ name: 'Federico', what: 'anything' }, /(^|.|\r|\n)(\$\{(\w*)\})/]],
+            ]
+            return d.map(e => {
+                return e[0].interpolate.apply(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
