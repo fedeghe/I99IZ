@@ -140,5 +140,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('evalScripts', async() => {
+        const out = [
+            [4],
+            [6, "hello"]
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'lorem... <script>2 + 2</script>',
+                '<script>2 + 4</script><script>(function (){return "hello"})()</script>'
+            ]
+            return d.map(e => e.evalScripts());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
 
 });
