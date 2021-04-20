@@ -266,5 +266,26 @@ describe('String.prototype', function() {
         })
     });
 
+    it('interpret', async() => {
+        const out = [
+            "1",
+            "2.1212",
+            "false",
+            "true",
+            "",
+            "",
+            "function () {}",
+        ]
+        const r = await page.evaluate(() => {
+            var d = [1, 2.1212, false, true, null, undefined, () => {}]
+            return d.map(e => {
+                return String.interpret(e)
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
