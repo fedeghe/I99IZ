@@ -309,5 +309,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('parseQuery', async() => {
+        const out = [
+            { section: 'blog', id: '45' }
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ["section=blog&id=45", '&']
+            ]
+            return d.map(e => {
+                return e[0].parseQuery.call(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(JSON.stringify(r[i])).toBe(JSON.stringify(out[i]))
+        })
+    });
+
 
 });
