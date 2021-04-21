@@ -542,5 +542,28 @@ describe('String.prototype', function() {
         })
     });
 
+    it('truncate', async() => {
+        const out = [
+            'A random sentence whose len...',
+            'Some random text',
+            'Some ra...',
+            'Some [...]'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['A random sentence whose length exceeds 30 characters.', []],
+                ['Some random text', []],
+                ['Some random text', [10]],
+                ['Some random text', [10, ' [...]']],
+            ]
+            return d.map(e => {
+                return e[0].truncate.apply(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(JSON.stringify(r[i])).toBe(JSON.stringify(out[i]))
+        })
+    });
+
 
 });
