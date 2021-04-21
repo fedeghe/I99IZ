@@ -336,5 +336,26 @@ describe('String.prototype', function() {
         })
     });
 
+    it('scan', async() => {
+        const out = [
+            ['<!--apple--!>', '<!--pear--!>', '<!--orange--!>'],
+        ]
+        const r = await page.evaluate(() => {
+            const realOuts = [
+                []
+            ]
+            var d = [
+                ['apple, pear & orange', [/\w+/, s => realOuts[0].push('<!--' + s[0] + '--!>')]],
+            ]
+            return {
+                real: d.map(e => { return e[0].scan.apply(e[0], e[1]) }),
+                realOuts
+            }
+        })
+        out.forEach((v, i) => {
+            expect(JSON.stringify(r.realOuts[i])).toBe(JSON.stringify(out[i]))
+        })
+    });
+
 
 });
