@@ -465,5 +465,20 @@ describe('String.prototype', function() {
         })
     });
 
+    it('succ', async() => {
+        const out = [
+            'b', 3, 'aab', 'zz{'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'a', 2, 'aaa', 'zzz'
+            ]
+            return d.map(e => e.succ());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
