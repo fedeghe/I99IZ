@@ -357,5 +357,26 @@ describe('String.prototype', function() {
         })
     });
 
+    it('startsWith', async() => {
+        const out = [
+            true, true,
+            false, false,
+            true
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                [' ', [' ']],
+                ['hello!', ['he']],
+                ['hello!', ['!he']],
+                ['', [' ']],
+                ['slaughter', ['ugh', 3]]
+            ]
+            return d.map(e => e[0].startsWith.apply(e[0], e[1]));
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
