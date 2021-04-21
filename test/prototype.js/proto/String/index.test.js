@@ -561,7 +561,24 @@ describe('String.prototype', function() {
             });
         })
         out.forEach((v, i) => {
-            expect(JSON.stringify(r[i])).toBe(JSON.stringify(out[i]))
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('underscore', async() => {
+        const out = [
+            'border_bottom_width'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'borderBottomWidth'
+            ]
+            return d.map(e => {
+                return e.underscore()
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
         })
     });
 
