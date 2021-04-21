@@ -419,4 +419,22 @@ describe('String.prototype', function() {
     });
 
 
+    it('stripTags', async() => {
+        const out = [
+            "a link",
+            'a linkalert("hello world!");'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'a <a href="#">link</a>',
+                'a <a href="#">link</a><script>alert("hello world!");</script>'
+            ]
+            return d.map(e => e.stripTags());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+
 });
