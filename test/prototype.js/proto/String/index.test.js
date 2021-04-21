@@ -378,5 +378,28 @@ describe('String.prototype', function() {
         })
     });
 
+    it('strip', async() => {
+        const out = [
+            'hello !',
+            'hello !',
+            'hello !',
+            'hello !',
+            'hello !',
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                '     hello !',
+                'hello !     ',
+                '      hello !     ',
+                ' hello !    ',
+                'hello !',
+            ]
+            return d.map(e => e.strip());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
