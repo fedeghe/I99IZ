@@ -497,5 +497,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('toArray', async() => {
+        const out = [
+            ['a'],
+            ['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'],
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'a',
+                'hello world'
+            ]
+            return d.map(e => e.toArray());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
 
 });
