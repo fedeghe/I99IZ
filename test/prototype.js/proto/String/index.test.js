@@ -290,7 +290,7 @@ describe('String.prototype', function() {
     it('isJSON', async() => {
         const out = [
             false, false,
-            // false, buggy (prototype.js line 765)
+            // false, buggy (prototype.js line 765) // TODO: not forget
             true
         ]
         const r = await page.evaluate(() => {
@@ -333,6 +333,288 @@ describe('String.prototype', function() {
         })
         out.forEach((v, i) => {
             expect(JSON.stringify(r[i])).toBe(JSON.stringify(out[i]))
+        })
+    });
+
+    it('scan', async() => {
+        const out = [
+            ['<!--apple--!>', '<!--pear--!>', '<!--orange--!>'],
+        ]
+        const r = await page.evaluate(() => {
+            const realOuts = [
+                []
+            ]
+            var d = [
+                ['apple, pear & orange', [/\w+/, s => realOuts[0].push('<!--' + s[0] + '--!>')]],
+            ]
+            return {
+                real: d.map(e => { return e[0].scan.apply(e[0], e[1]) }),
+                realOuts
+            }
+        })
+        out.forEach((v, i) => {
+            expect(JSON.stringify(r.realOuts[i])).toBe(JSON.stringify(out[i]))
+        })
+    });
+
+    it('startsWith', async() => {
+        const out = [
+            true, true,
+            false, false,
+            true
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                [' ', [' ']],
+                ['hello!', ['he']],
+                ['hello!', ['!he']],
+                ['', [' ']],
+                ['slaughter', ['ugh', 3]]
+            ]
+            return d.map(e => e[0].startsWith.apply(e[0], e[1]));
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('strip', async() => {
+        const out = [
+            'hello !',
+            'hello !',
+            'hello !',
+            'hello !',
+            'hello !',
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                '     hello !',
+                'hello !     ',
+                '      hello !     ',
+                ' hello !    ',
+                'hello !',
+            ]
+            return d.map(e => e.strip());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('stripScripts', async() => {
+        const out = [
+            "<p>This is a test.End of test</p>",
+            "<p>This is a test.End of test</p>"
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                "<p>This is a test.<script>alert(\"Look, a test!\");</script>End of test</p>",
+                "<p>This is a test.<script type=\"text/javascript\">alert(\"Look, a test!\");</script>End of test</p>"
+            ]
+            return d.map(e => e.stripScripts());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('stripTags', async() => {
+        const out = [
+            "a link",
+            'a linkalert("hello world!");'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'a <a href="#">link</a>',
+                'a <a href="#">link</a><script>alert("hello world!");</script>'
+            ]
+            return d.map(e => e.stripTags());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('sub', async() => {
+        const out = [
+            'apple, pear orange',
+            'apple, pear orange',
+            'apple, pear, orange',
+            'Apple, Pear, orange',
+            '<img alt="a pear" src="/img/pear.jpg" /> ![an orange](/img/orange.jpg)'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['apple pear orange', [' ', ', ']],
+                ['apple pear orange', [' ', ', ', 1]],
+                ['apple pear orange', [' ', ', ', 2]],
+                ['apple pear orange', [/\w+/, function(match) { return match[0].capitalize() + ',' }, 2]],
+                [
+                    '![a pear](/img/pear.jpg) ![an orange](/img/orange.jpg)', [
+                        /!\[(.*?)\]\((.*?)\)/,
+                        function(match) {
+                            return '<img alt="' + match[1] + '" src="' + match[2] + '" />';
+                        }
+                    ]
+                ],
+            ]
+            return d.map(e => e[0].sub.apply(e[0], e[1]));
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('succ', async() => {
+        const out = [
+            'b', 3, 'aab', 'zz{'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'a', 2, 'aaa', 'zzz'
+            ]
+            return d.map(e => e.succ());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('times', async() => {
+        const out = [
+            'aa',
+            'echo echo echo '
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['a', 2],
+                ['echo ', 3],
+            ]
+            return d.map(e => e[0].times.call(e[0], e[1]));
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('toArray', async() => {
+        const out = [
+            ['a'],
+            ['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'],
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'a',
+                'hello world'
+            ]
+            return d.map(e => e.toArray());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
+    // aliased by parseQuery
+    it('toQueryParams', async() => {
+        const out = [
+            { section: 'blog', id: '45' },
+            { section: 'blog', id: '45' },
+            { section: 'blog', id: '45' },
+            { section: 'blog', tag: ['javascript', 'prototype', 'doc'] },
+            { tag: 'ruby on rails' },
+            { id: '45', raw: undefined }
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ["section=blog&id=45", '&'],
+                ['section=blog;id=45', ';'],
+                ['http://www.example.com?section=blog&id=45#comments'],
+                ['section=blog&tag=javascript&tag=prototype&tag=doc'],
+                ['tag=ruby%20on%20rails'],
+                ['id=45&raw']
+            ]
+            return d.map(e => {
+                return e[0].toQueryParams.call(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(JSON.stringify(r[i])).toBe(JSON.stringify(out[i]))
+        })
+    });
+
+    it('truncate', async() => {
+        const out = [
+            'A random sentence whose len...',
+            'Some random text',
+            'Some ra...',
+            'Some [...]'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['A random sentence whose length exceeds 30 characters.', []],
+                ['Some random text', []],
+                ['Some random text', [10]],
+                ['Some random text', [10, ' [...]']],
+            ]
+            return d.map(e => {
+                return e[0].truncate.apply(e[0], e[1])
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('underscore', async() => {
+        const out = [
+            'border_bottom_width'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'borderBottomWidth'
+            ]
+            return d.map(e => {
+                return e.underscore()
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('unescapeHTML', async() => {
+        const out = [
+            'x > 10',
+            'Pride & Prejudice;'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'x &gt; 10',
+                '<h1>Pride &amp; Prejudice</h1>;'
+            ]
+            return d.map(e => {
+                return e.unescapeHTML()
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('unfilterJSON', async() => {
+        const out = [
+            '\n{"name": "Violet", "occupation": "character", "age": 25}\n'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                '/*-secure-\n{"name": "Violet", "occupation": "character", "age": 25}\n*\/'
+            ]
+            return d.map(e => {
+                return e.unfilterJSON()
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
         })
     });
 
