@@ -601,5 +601,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('unfilterJSON', async() => {
+        const out = [
+            '\n{"name": "Violet", "occupation": "character", "age": 25}\n'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                '/*-secure-\n{"name": "Violet", "occupation": "character", "age": 25}\n*\/'
+            ]
+            return d.map(e => {
+                return e.unfilterJSON()
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
