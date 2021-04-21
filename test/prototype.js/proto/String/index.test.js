@@ -480,5 +480,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('times', async() => {
+        const out = [
+            'aa',
+            'echo echo echo '
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['a', 2],
+                ['echo ', 3],
+            ]
+            return d.map(e => e[0].times.call(e[0], e[1]));
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
