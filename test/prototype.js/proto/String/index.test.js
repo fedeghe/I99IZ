@@ -582,5 +582,24 @@ describe('String.prototype', function() {
         })
     });
 
+    it('unescapeHTML', async() => {
+        const out = [
+            'x > 10',
+            'Pride & Prejudice;'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                'x &gt; 10',
+                '<h1>Pride &amp; Prejudice</h1>;'
+            ]
+            return d.map(e => {
+                return e.unescapeHTML()
+            });
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
