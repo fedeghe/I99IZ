@@ -290,7 +290,7 @@ describe('String.prototype', function() {
     it('isJSON', async() => {
         const out = [
             false, false,
-            // false, buggy (prototype.js line 765)
+            // false, buggy (prototype.js line 765) // TODO: not forget
             true
         ]
         const r = await page.evaluate(() => {
