@@ -401,5 +401,22 @@ describe('String.prototype', function() {
         })
     });
 
+    it('stripScripts', async() => {
+        const out = [
+            "<p>This is a test.End of test</p>",
+            "<p>This is a test.End of test</p>"
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                "<p>This is a test.<script>alert(\"Look, a test!\");</script>End of test</p>",
+                "<p>This is a test.<script type=\"text/javascript\">alert(\"Look, a test!\");</script>End of test</p>"
+            ]
+            return d.map(e => e.stripScripts());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
