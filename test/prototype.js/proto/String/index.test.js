@@ -418,7 +418,6 @@ describe('String.prototype', function() {
         })
     });
 
-
     it('stripTags', async() => {
         const out = [
             "a link",
@@ -430,6 +429,36 @@ describe('String.prototype', function() {
                 'a <a href="#">link</a><script>alert("hello world!");</script>'
             ]
             return d.map(e => e.stripTags());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    it('sub', async() => {
+        const out = [
+            'apple, pear orange',
+            'apple, pear orange',
+            'apple, pear, orange',
+            'Apple, Pear, orange',
+            '<img alt="a pear" src="/img/pear.jpg" /> ![an orange](/img/orange.jpg)'
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                ['apple pear orange', [' ', ', ']],
+                ['apple pear orange', [' ', ', ', 1]],
+                ['apple pear orange', [' ', ', ', 2]],
+                ['apple pear orange', [/\w+/, function(match) { return match[0].capitalize() + ',' }, 2]],
+                [
+                    '![a pear](/img/pear.jpg) ![an orange](/img/orange.jpg)', [
+                        /!\[(.*?)\]\((.*?)\)/,
+                        function(match) {
+                            return '<img alt="' + match[1] + '" src="' + match[2] + '" />';
+                        }
+                    ]
+                ],
+            ]
+            return d.map(e => e[0].sub.apply(e[0], e[1]));
         })
         out.forEach((v, i) => {
             expect(r[i]).toBe(out[i])
