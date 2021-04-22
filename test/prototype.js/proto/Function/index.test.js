@@ -28,5 +28,20 @@ describe('Function.prototype', function() {
         })
     });
 
+    it('bind', async() => {
+        const r = await page.evaluate(() => {
+            function Context(name) { this.name = name }
+            Context.prototype.getName = function() { return this.name; };
+            const ctx = new Context('js')
+
+            function hello(n) {
+                return `Hello I'm ${this.name} (${n})`
+            }
+            const binded = hello.bind(ctx)
+            return binded(4)
+        })
+        expect(r).toBe("Hello I'm js (4)")
+    });
+
 
 });
