@@ -71,5 +71,33 @@ describe('Function.prototype', function() {
         })
     });
 
+    // TODO cant see how
+    it.skip('defer', async() => {
+        const out = [
+            '1',
+            '2',
+        ]
+        const r = await page.evaluate(() => {
+            var res = []
+            var d = [
+                [
+                    function(...args) { res.push([1, ...args].join(', ')) },
+                    [1, 2, 3]
+                ]
+                [
+                    function(...args) { res.push([1, ...args].join(', ')) },
+                    ['a', 'b', 'c']
+                ],
+            ]
+            d.forEach(e => {
+                e[0].defer(e[1])
+            });
+            return res
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 });
