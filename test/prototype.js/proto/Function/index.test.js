@@ -43,5 +43,26 @@ describe('Function.prototype', function() {
         expect(r).toBe("Hello I'm js (4)")
     });
 
+    // TODO: boring
+    it.skip('bindAsEventListener', async() => {});
+
+    it('curry', async() => {
+        const out = [
+            [],
+        ]
+        const r = await page.evaluate(() => {
+            var d = [
+                [
+                    function() { return [].slice.call(arguments, 0).join(', ') },
+                    ['']
+                ]
+            ]
+            return d.map(e => e.curry());
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toMatchObject(out[i])
+        })
+    });
+
 
 });
