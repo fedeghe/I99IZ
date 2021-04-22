@@ -48,19 +48,26 @@ describe('Function.prototype', function() {
 
     it('curry', async() => {
         const out = [
-            [],
+            'a, 1, 2, 3',
+            '1, 2, 3, a',
         ]
         const r = await page.evaluate(() => {
             var d = [
                 [
-                    function() { return [].slice.call(arguments, 0).join(', ') },
-                    ['']
+                    function(...args) { return args.join(', ') },
+                    ['a'],
+                    ['1', '2', '3']
+                ],
+                [
+                    function(...args) { return args.join(', ') },
+                    ['1', '2', '3'],
+                    ['a'],
                 ]
             ]
-            return d.map(e => e.curry());
+            return d.map(e => e[0].curry.apply(e[0], e[1]).apply(null, e[2]));
         })
         out.forEach((v, i) => {
-            expect(r[i]).toMatchObject(out[i])
+            expect(r[i]).toBe(out[i])
         })
     });
 
