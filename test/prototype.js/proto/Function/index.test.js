@@ -43,8 +43,15 @@ describe('Function.prototype', function() {
         expect(r).toBe("Hello I'm js (4)")
     });
 
-    // TODO: boring
-    it.skip('bindAsEventListener', async() => {});
+    it('bindAsEventListener', async() => {
+        const r = await page.evaluate(() => {
+            function sayIt(event, to, who) { return `I say foo foo ${to} ${who}`; };
+            const fn = sayIt.bindAsEventListener({}, 'a', 'b');
+            return fn()
+                // console.log(fn({}))
+        })
+        expect(r).toBe('I say foo foo a b')
+    });
 
     it('curry', async() => {
         const out = [
