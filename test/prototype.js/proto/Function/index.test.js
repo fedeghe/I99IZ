@@ -129,8 +129,7 @@ describe('Function.prototype', function() {
         })
     });
 
-
-    it.only('methodize', async() => {
+    it('methodize', async() => {
         const out = [
             'hello Fred',
             'hello Federico',
