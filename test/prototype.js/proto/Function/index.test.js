@@ -71,29 +71,81 @@ describe('Function.prototype', function() {
         })
     });
 
-    // TODO cant see how
+    // TODO cant get how
     it.skip('defer', async() => {
         const out = [
-            '1',
-            '2',
+            '1, 2, 3',
+            'a, b, c',
         ]
-        const r = await page.evaluate(() => {
+        const r = await page.evaluate(async() => {
             var res = []
             var d = [
                 [
-                    function(...args) { res.push([1, ...args].join(', ')) },
+                    function(...args) { res.push([1, ...args].join(', ')); },
                     [1, 2, 3]
                 ]
                 [
-                    function(...args) { res.push([1, ...args].join(', ')) },
+                    function(...args) { res.push([1, ...args].join(', ')); },
                     ['a', 'b', 'c']
                 ],
             ]
+            await page.waitFor(300);
             d.forEach(e => {
-                e[0].defer(e[1])
+                e[0].defer.call(e[0], e[1])
             });
             return res
         })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+    // TODO: same here
+    it.skip('delay', async() => {
+        const out = [
+            '1, 2, 3',
+            'a, b, c',
+        ]
+        const r = await page.evaluate(async() => {
+            var res = []
+            var d = [
+                [
+                    function(...args) { res.push([1, ...args].join(', ')); },
+                    [0, 1, 2, 3]
+                ]
+                [
+                    function(...args) { res.push([1, ...args].join(', ')); },
+                    [0, 'a', 'b', 'c']
+                ],
+            ]
+            await page.waitFor(300);
+            d.forEach(e => {
+                e[0].delay.apply(e[0], e[1])
+            });
+            return res
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
+
+    it.only('methodize', async() => {
+        const out = [
+            'hello Fred',
+            'hello Federico',
+        ];
+        const r = await page.evaluate(() => {
+            var d = [
+                [{}, function setName(target, name) { target.name = name; }, 'Fred'],
+                [{}, function setName(target, name) { target.name = name; }, 'Federico'],
+            ];
+            return d.map(e => {
+                e[0].setName = e[1].methodize();
+                e[0].setName(e[2]);
+                return `hello ${e[0].name}`;
+            });
+        });
         out.forEach((v, i) => {
             expect(r[i]).toBe(out[i])
         })
