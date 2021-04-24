@@ -136,8 +136,8 @@ describe('Function.prototype', function() {
         ];
         const r = await page.evaluate(() => {
             var d = [
-                [{}, function setName(target, name) { target.name = name; }, 'Fred'],
-                [{}, function setName(target, name) { target.name = name; }, 'Federico'],
+                [{}, function(target, name) { target.name = name; }, 'Fred'],
+                [{}, function(target, name) { target.name = name; }, 'Federico'],
             ];
             return d.map(e => {
                 e[0].setName = e[1].methodize();
@@ -149,6 +149,45 @@ describe('Function.prototype', function() {
             expect(r[i]).toBe(out[i])
         })
     });
+
+    it('wrap', async() => {
+        const out = [
+            'Hello fred',
+            '1-2',
+        ];
+        const r = await page.evaluate(() => {
+            var d = [
+                [
+                    String.prototype.capitalize,
+                    function(original, one, two) {
+                        if (one || two) {
+                            return `${one}-${two}`
+                        }
+                        return original()
+                    },
+                    'hello Fred', []
+                ],
+                [
+                    String.prototype.capitalize,
+                    function(original, one, two) {
+                        if (one || two) {
+                            return `${one}-${two}`
+                        }
+                        return original()
+                    },
+                    'hello Fred', ['1', '2']
+                ],
+            ];
+            return d.map(e => {
+                e[0] = e[0].wrap(e[1])
+                return e[0].apply(e[2], e[3]);
+            });
+        });
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
+    });
+
 
 
 });
