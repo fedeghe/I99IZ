@@ -8,6 +8,7 @@
         "start": "webpack serve --open --config src/webpack.dev.js",
         "build": "webpack --config src/webpack.prod.js",
         "test": "jest",
+        "testw": "jest --watch",
         "serve": "node test/server.js",
         "cover": "jest --coverage"
     },
