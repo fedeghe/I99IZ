@@ -47,16 +47,14 @@ describe('RegExp.prototype', function() {
         ]
         const r = await page.evaluate(() => {
             const bench = [
-                new RegExp('\\r\e?\/{[]\]'),
-                new RegExp('/([.*+?^=!:${}()|[\]\/\\])/g')
+                '\\r\e?\/{[]\]',
+                '/([.*+?^=!:${}()|[\]\/\\])/g'
             ]
-            return bench.map(el => el.escape())
+            return bench.map(el => RegExp.escape(el))
         })
         out.forEach((v, i) => {
             expect(r[i]).toBe(out[i])
         })
-        expect(r.positive).toBeTruthy()
-        expect(r.negative).toBeTruthy()
     });
 
 });
