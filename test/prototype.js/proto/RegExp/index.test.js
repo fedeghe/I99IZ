@@ -35,6 +35,26 @@ describe('RegExp.prototype', function() {
                 }, true)
             }
         })
+
+        expect(r.positive).toBeTruthy()
+        expect(r.negative).toBeTruthy()
+    });
+
+    it('escape', async() => {
+        const out = [
+            '\\\\re\\?\\/\\{\\[\\]\\]',
+            '\\/\\(\\[\\.\\*\\+\\?\\^\\=\\!\\:\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\\\]\\)\\/g'
+        ]
+        const r = await page.evaluate(() => {
+            const bench = [
+                new RegExp('\\r\e?\/{[]\]'),
+                new RegExp('/([.*+?^=!:${}()|[\]\/\\])/g')
+            ]
+            return bench.map(el => el.escape())
+        })
+        out.forEach((v, i) => {
+            expect(r[i]).toBe(out[i])
+        })
         expect(r.positive).toBeTruthy()
         expect(r.negative).toBeTruthy()
     });
