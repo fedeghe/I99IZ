@@ -5,17 +5,17 @@ import { extend } from './../../core/shared'
 import pkg from './../../../package.json'
 
 
-export const K = x => x 
+export const K = x => x
 export const emptyFunction = () => {}
-const Prototype =  {
+const Prototype = {
     ScriptFragment: '<script[^>]*>([\\S\\s]*?)<\/script\\s*>',
     JSONFilter: /^\/\*-secure-([\s\S]*)\*\/\s*$/,
     Version: pkg.version,
     emptyFunction,
     K,
 };
-extend(Prototype, Browser)
-extend(Prototype, BrowserFeatures)
-extend(Prototype, Selector)
+extend(Prototype, { Browser })
+extend(Prototype, { BrowserFeatures })
+extend(Prototype, { Selector })
 
 export default Prototype
