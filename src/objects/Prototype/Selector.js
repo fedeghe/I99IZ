@@ -1,7 +1,10 @@
 const Selector = {};
-
+const engine = {}
 export default {
-    Selector
+    engine,
+    select: () => {},
+    match: () => {},
+    find: () => {},
+    extendElements: () => {},
+    extendElement: () => {},
 }
-
-
