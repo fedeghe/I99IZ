@@ -154,6 +154,8 @@ var Class = (function() {
         }
     };
 })();
+
+// Object
 (function() {
 
     var _toString = Object.prototype.toString,
@@ -394,6 +396,7 @@ var Class = (function() {
         isUndefined: isUndefined
     });
 })();
+
 Object.extend(Function.prototype, (function() {
     var slice = Array.prototype.slice;
 
@@ -509,8 +512,6 @@ Object.extend(Function.prototype, (function() {
 
 
 (function(proto) {
-
-
     function toISOString() {
         return this.getUTCFullYear() + '-' +
             (this.getUTCMonth() + 1).toPaddedString(2) + '-' +
@@ -519,15 +520,11 @@ Object.extend(Function.prototype, (function() {
             this.getUTCMinutes().toPaddedString(2) + ':' +
             this.getUTCSeconds().toPaddedString(2) + 'Z';
     }
-
-
     function toJSON() {
         return this.toISOString();
     }
-
     if (!proto.toISOString) proto.toISOString = toISOString;
     if (!proto.toJSON) proto.toJSON = toJSON;
-
 })(Date.prototype);
 
 
@@ -1158,7 +1155,7 @@ function $w(string) {
 
 Array.from = $A;
 
-
+// array proto
 (function() {
     var arrayProto = Array.prototype,
         slice = arrayProto.slice,
@@ -1941,13 +1938,6 @@ Ajax.Request = Class.create(Ajax.Base, {
 });
 
 Ajax.Request.Events = ['Uninitialized', 'Loading', 'Loaded', 'Interactive', 'Complete'];
-
-
-
-
-
-
-
 
 Ajax.Response = Class.create({
     initialize: function(request) {
@@ -3169,23 +3159,23 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
         return value === 'auto' ? null : value;
     }
 
-    function getStyle_Opera(element, style) {
-        switch (style) {
-            case 'height':
-            case 'width':
-                if (!Element.visible(element)) return null;
+    // function getStyle_Opera(element, style) {
+    //     switch (style) {
+    //         case 'height':
+    //         case 'width':
+    //             if (!Element.visible(element)) return null;
 
-                var dim = parseInt(getStyle(element, style), 10);
+    //             var dim = parseInt(getStyle(element, style), 10);
 
-                if (dim !== element['offset' + style.capitalize()])
-                    return dim + 'px';
+    //             if (dim !== element['offset' + style.capitalize()])
+    //                 return dim + 'px';
 
-                return Element.measure(element, style);
+    //             return Element.measure(element, style);
 
-            default:
-                return getStyle(element, style);
-        }
-    }
+    //         default:
+    //             return getStyle(element, style);
+    //     }
+    // }
 
     function getStyle_IE(element, style) {
         element = $(element);
@@ -3284,7 +3274,7 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
         methods.getOpacity = getOpacity_IE;
     }
 
-    var UID = 0;
+    // var UID = 0;
 
     GLOBAL.Element.Storage = {
         UID: 1
@@ -3577,6 +3567,9 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
         window.attachEvent('onunload', destroyCache_IE);
 
 })(this);
+
+
+
 (function() {
 
     function toDecimal(pctString) {
@@ -3683,11 +3676,11 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
         return 0;
     }
 
-    function toCSSPixels(number) {
-        if (Object.isString(number) && number.endsWith('px'))
-            return number;
-        return number + 'px';
-    }
+    // function toCSSPixels(number) {
+    //     if (Object.isString(number) && number.endsWith('px'))
+    //         return number;
+    //     return number + 'px';
+    // }
 
     function isDisplayed(element) {
         while (element && element.parentNode) {
@@ -5028,6 +5021,8 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
         return Form.serialize(this.element);
     }
 });
+
+// Event
 (function(GLOBAL) {
     var DIV = document.createElement('div');
     var docEl = document.documentElement;
