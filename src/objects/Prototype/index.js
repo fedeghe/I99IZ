@@ -75,6 +75,7 @@ Prototype.Selector = (function() {
         })(Prototype._original_property);
 
     delete window.Sizzle;
+    delete Prototype._original_property;
     return ret;
 })();
 
