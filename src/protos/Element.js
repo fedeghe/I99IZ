@@ -1,6 +1,6 @@
 
 const _Element = {
-    n: () => + new Date
+    extend: () => {}
 }
 
 export default _Element
