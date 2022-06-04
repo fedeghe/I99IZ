@@ -11,6 +11,7 @@ import Triad from './Triad'
     const NS = CTX[vars.LIB];
 
     protos.p.Object = Triad._Object
+    protos.p.Array = Triad._Array
     objects.Hash = Triad._Hash
     objects.Class = Triad._Class
     objects.Template = Triad._Template
