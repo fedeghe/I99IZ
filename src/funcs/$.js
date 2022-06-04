@@ -1,6 +1,10 @@
 import { isElement } from './../core/checkers'
 
-export default id => {
-    if (isElement(id)) return id;
-    return document.getElementById(id)
+const $ =  (...args) => {
+    if (args.length > 1) return args.map(a => $(a))
+    var e = args[0]
+    if (isElement(e)) return e;
+    return document.getElementById(e)
 }
+
+export default $

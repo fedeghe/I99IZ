@@ -37,4 +37,19 @@ describe('$', () => {
         const r1 = $(e)
         expect(e).toBe(r1)
     })
+
+    it('should return more elements', () => {
+        document.body.innerHTML = `
+            <span data-testid="not-empty">
+                <span data-testid="empty"></span>
+            </span>
+            <div id="visible" data-testid="visible">Visible Example</div>
+            <div id="invisible" data-testid="invisible">Invisible Example</div>
+        `
+        const e1 = document.getElementById('visible'),
+            e2 = document.getElementById('invisible'),
+            r = $('visible', 'invisible')
+        expect(JSON.stringify([e1, e2])).toBe(JSON.stringify(r))
+    })
+
 })
