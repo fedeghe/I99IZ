@@ -2579,26 +2579,26 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
         }
     }
 
-    function purgeCollection(elements) {
-        var i = elements.length;
-        while (i--)
-            purgeElement(elements[i]);
-    }
+    // function purgeCollection(elements) {
+    //     var i = elements.length;
+    //     while (i--)
+    //         purgeElement(elements[i]);
+    // }
 
-    function purgeCollection_IE(elements) {
-        var i = elements.length,
-            element, uid;
-        while (i--) {
-            element = elements[i];
-            uid = getUniqueElementID(element);
-            delete Element.Storage[uid];
-            delete Event.cache[uid];
-        }
-    }
+    // function purgeCollection_IE(elements) {
+    //     var i = elements.length,
+    //         element, uid;
+    //     while (i--) {
+    //         element = elements[i];
+    //         uid = getUniqueElementID(element);
+    //         delete Element.Storage[uid];
+    //         delete Event.cache[uid];
+    //     }
+    // }
 
-    if (HAS_UNIQUE_ID_PROPERTY) {
-        purgeCollection = purgeCollection_IE;
-    }
+    // if (HAS_UNIQUE_ID_PROPERTY) {
+    //     purgeCollection = purgeCollection_IE;
+    // }
 
 
     function purge(element) {
