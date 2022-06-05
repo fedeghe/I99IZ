@@ -1,6 +1,6 @@
 
 const _Element = {
-    extend: () => {}
+    extend: e => e
 }
 
 export default _Element
